@@ -1,0 +1,137 @@
+en:
+  activation:
+    please_continue: "Your Civically account is confirmed. You will be redirected shortly."
+
+  place:
+    petition:
+      intro:
+        title: "Place Petition"
+        description: |
+          <div>
+            Petition for your city, town or village to be added to Civically.
+          </div>
+          <div class='image-container'>
+            <img class='small' src='%{base_url}/plugins/civically-place/images/woman.svg'>
+            <img class='small' src='%{base_url}/plugins/civically-place/images/house.svg'>
+            <img class='small' src='%{base_url}/plugins/civically-place/images/government.svg'>
+          </div>
+          <div>
+            Before starting, please read <a href='/faq#adding_a_place' target='_blank'>Adding A Place</a>.
+          </div>
+          <div class='tip'>
+            <img src='%{base_url}/plugins/civically-user/images/person.svg'>
+            <span>
+              Tip: Check if there is already a <a href='/c/petitions/place' target='_blank'>petition for your place</a>.
+            </span>
+          </div>
+      location:
+        title: "Place"
+        description: |
+          <div>
+            A place is a city, town or village. Search for your place, and select a result to continue.
+          </div>
+          <div class='tip'>
+            <img src='%{base_url}/plugins/civically-user/images/person.svg'>
+            <span>Tip: Your place is where you live.</span>
+          </div>
+        validation:
+          petition_exists: "A petition already exists for that location: <a href=%{topic_url} target='_blank'>%{topic_title}</a> "
+          place_exists: "A place already exists for that location: <a href=%{category_url} target='_blank'>%{category_name}</a>"
+        error: "There is no valid location in your submission. If the problem persists, please contact help@civicallys.co"
+      topic:
+        title: "Petition"
+        description: |
+          <div>
+            Compose the first post in the <a href='/faq#new_place#petition_topic' target='_blank'>petition topic</a>.
+            Say a bit about why your place should be on Civically.
+          </div>
+          <div class='tip'>
+            <img src='%{base_url}/plugins/civically-user/images/person.svg'>
+            <span>Tip: If you're stuck <a href='/c/place-petitions'>read some other first posts here</a>.</span>
+          </div>
+        post:
+          label: "Post"
+          placeholder: "You can edit this after you've posted it."
+        error: "There is no valid post in your submission. If the problem persists, please contact help@civicallys.co"
+      submit:
+        title: "Submit"
+        description: |
+          <div>
+            When you submit this form a petition will be created.
+            The petition needs at least 100^ people who live in your place to support it.
+          </div>
+          <img class='large' src='%{base_url}/plugins/civically-place/images/ballot_box.svg'>
+          <div>
+            Read <a href='/faq#founding_a_place' target='_blank'>Founding a Place</a> to learn more.
+          </div>
+          <div class='tip'>
+            ^ Or 10% of the population. Whichever is lower.
+          </div>
+
+        error: "There was a problem submitting your petition. If the problem persits, please contact help@civicallys.co"
+
+    topic:
+      error:
+        insufficient_supporters: "Insufficient supporters to create place."
+        parent_category_creation: "Failed to create place parent category."
+        category_creation: "Failed to create place category."
+        election_topic_creation: "Failed to create '%{type}' election topic: \"%{message}\""
+        petition_supporter: "Failed to add '%{user}': \"%{message}\""
+
+    petition_topic:
+      title: "%{place}, %{country}"
+
+    election:
+      title: "%{place} %{position} Election"
+
+    moderator_election:
+      nomination_message: For more details on the position and the election process <a href=''>see here</a>.
+      poll_message: For more details on the election process <a href=''>see here</a>.
+      closed_poll_message: A site moderator will declare the official result shortly. For more details on the election process <a href=''>see here</a>.
+
+  site_settings:
+    place_city_user_count_min: "Minimum users for a city"
+    place_town_user_count_min: "Minimum users for a town"
+    place_village_user_count_min: "Minimum users for a village"
+    place_change_min: "Days before user can change their place place"
+    place_petition_category_id: "Place petition category"
+    place_country_active_min: "Minimum active places in country needed for country to be active."
+    place_permitted_types: "Permitted place types"
+
+  system_messages:
+    identical_place_petition:
+      title: "Identical Place Petition"
+      subject_template: "A petition for an identical place has been created"
+      text_body_template: |
+        Petition - [%{title}](%{path})
+        Identical Place - [%{identical_name}](%{identical_url})
+
+    place_creation_issues:
+      title: "There were issues when creating %{place}"
+      subject_template: "There were issues when creating %{place}"
+      text_body_template: |
+        %{errors}
+
+        [%{place}](%{path})
+
+    place_reached_user_count_min:
+      title: "%{place} reached its minimum user count"
+      subject_template: "%{place} reached its minimum user count"
+      text_body_template: |
+        %{place} reached its minimum user count.
+
+        [%{place}](%{path})
+
+    place_below_user_count_min:
+      title: "%{place} has gone below its minimum user count"
+      subject_template: "%{place} has gone below its minimum user count"
+      text_body_template: |
+        %{place} has gone below its minimum user count.
+
+        [%{place}](%{path})
+
+  user:
+    errors:
+      place_not_found: "The place could not be found"
+      place_not_changed: "Place has not been changed"
+      place_set_limit: "You can only set your place once every %{change_min} days. You set your place to %{place} on %{past_time}. You can next set your place on %{next_time}."

@@ -1,0 +1,88 @@
+en:
+  js:
+    map:
+      search_placeholder: "Place"
+
+    place:
+      select:
+        title: "Set Your Place"
+        set_description: Set your place to the city, town or village you live in.
+        set_note: |
+          Setting your place correctly is important. You can only set it once every 30 days.
+          <a href='/t/place-in-civically' target='_blank'>Read more about the role of place in Civically</a>.
+        not_listed: "Where I live is not listed"
+        petition_description: "If your city, town or village is not listed, check if there's a petition to add it."
+        add_description: "If there's no petition, you can start one"
+        instructions: "city, town or village"
+        placeholder: "Select a place"
+        similar_placeholder: "Filter"
+        no_petitions: "No relevant petitions"
+        start_petition: "Start Petition"
+
+      user:
+        label: "Place can be joined."
+
+      user_count:
+        label: "Users"
+        value: "{{userCount}} users"
+
+      moderator:
+        label: "Moderator"
+        list_label: "Moderators"
+
+      user_count_min:
+        label: "Minimum user count"
+        needed: "{{userCountMin}} users are needed for {{place}} to go live."
+
+      notifications:
+        label: "Your Notifications"
+
+      about:
+        title: "About"
+        help: "Information about this place"
+
+      election:
+        title: "Elections"
+        help: "Elections in this place"
+
+      event:
+        title: "Events"
+        help: "Events in this place"
+        create: "New Event"
+
+      petition:
+        title: "Petitions"
+        help: "Petitions in this place"
+
+      group:
+        title: "Groups"
+        help: "Groups in this place"
+        create: "New Group"
+
+      rating:
+        title: "Ratings"
+        help: "Ratings in this place"
+        create: "New Rating"
+
+      list:
+        none: "No {{type}} for {{place}}."
+        not_permitted:
+          intro: "You can't do that at the moment"
+          moderator: "{{place}} needs at least one moderator."
+          moderator_link: "Help elect a moderator."
+          member: "You have to be a member of {{place}}."
+
+    user:
+      place_label: "Place"
+      set_place: "Set Place"
+      current_place: "Your place is {{userPlace}}"
+      current_place_marker: "(current)"
+      update_place_set: "Your place was set to {{place}} on <b>{{setTime}}</b>."
+      update_place_period: "You can set your place once every {{changeMin}} days."
+      update_place_next: "You can next set your place on <b>{{nextTime}}</b>."
+      institution:
+        title: "Institution"
+        instructions: "government or organization (optional)"
+      position:
+        title: "Position"
+        instructions: "your title (optional)"

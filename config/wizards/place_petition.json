@@ -1,0 +1,40 @@
+{
+  "id": "place_petition",
+  "name": "Place Petition",
+  "background": "#d1f0ff",
+  "save_submissions": true,
+  "steps": [
+    {
+      "id": "intro",
+      "key": "place.petition.intro"
+    },
+    {
+      "id": "location",
+      "key": "place.petition.location",
+      "fields": [
+        {
+          "id": "location",
+          "type": "location",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "topic",
+      "key": "place.petition.topic",
+      "fields": [
+        {
+          "id": "post",
+          "type": "textarea",
+          "key": "place.petition.topic.post",
+          "required": true,
+          "min_length": "200"
+        }
+      ]
+    },
+    {
+      "id": "submit",
+      "key": "place.petition.submit"
+    }
+  ]
+}

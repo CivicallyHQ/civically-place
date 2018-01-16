@@ -1,0 +1,24 @@
+plugins:
+  place_city_user_count_min:
+    default: 100
+  place_town_user_count_min:
+    default: 50
+  place_village_user_count_min:
+    default: 10
+  place_change_min:
+    default: 30
+    client: true
+  place_petition_category_id:
+    default: 1
+    type: category_list
+    client: true
+  place_country_active_min:
+    default: 3
+    client: true
+  place_permitted_types:
+    type: 'list'
+    default: 'city|town|village'
+    choices:
+      - city
+      - town
+      - village

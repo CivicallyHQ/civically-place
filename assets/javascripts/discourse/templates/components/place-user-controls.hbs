@@ -1,0 +1,54 @@
+<div class="p-note small">{{{i18n 'place.select.set_note'}}}</div>
+{{#if place}}
+  <div class="place-update">
+    <div class="p-text small">
+      {{i18n 'user.update_place_period' changeMin=siteSettings.place_change_min}}
+    </div>
+    <div class="p-text small">
+      {{{i18n 'user.update_place_set' place=place.category.name setTime=(place-time place.joined_at)}}}
+    </div>
+    {{#unless updatePlaceAllowed}}
+      <div class="p-text small">
+        {{{i18n 'user.update_place_next' nextTime=(place-time place.nextTime)}}}
+      </div>
+    {{/unless}}
+  </div>
+{{else}}
+  <div class="p-text medium">{{i18n 'place.select.title'}}</div>
+  <div class="p-text small">{{i18n 'place.select.set_description'}}</div>
+{{/if}}
+{{#if setPlaceAllowed}}
+  {{place-select selectedId=selectedId
+                 setDisabled=setDisabled
+                 setPlace="setPlace"
+                 loading=loading}}
+  {{#if showExtraControls}}
+    <div class="extra-controls">
+      <div class="container">
+        <div class="p-text small">
+          {{i18n 'place.select.petition_description'}}
+        </div>
+        <div class="container">
+          <span class="p-text small title">{{i18n 'petition.similar.title'}}</span>
+          {{input type='text' value=placeTitle placeholder=(i18n 'place.select.similar_placeholder')}}
+          <div class="p-list-box">
+            {{similar-titles title=placeTitle
+                             categoryId=siteSettings.place_petition_category_id
+                             allowBlankSearch=true
+                             requireCategory=true
+                             none="place.select.no_petitions"
+                             noDefinitions=true}}
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="p-text small add-description">
+          {{i18n 'place.select.add_description'}}
+        </div>
+        {{d-button label='place.select.start_petition' action='addPlace' class="btn btn-primary"}}
+      </div>
+    </div>
+  {{else}}
+    <a class='p-link p-text small' {{action 'toggleExtraControls'}}>{{i18n 'place.select.not_listed'}}</a>
+  {{/if}}
+{{/if}}

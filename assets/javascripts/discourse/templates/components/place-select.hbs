@@ -1,0 +1,8 @@
+<div class="controls">
+  {{combo-box value=selectedId content=places width=300 none='place.select.placeholder'}}
+  {{d-button label='user.set_place' action='setPlace' disabled=setDisabled class="btn btn-primary"}}
+  {{conditional-loading-spinner size="small" condition=loading}}
+  <div class='instructions'>
+    {{i18n 'place.select.instructions'}}
+  </div>
+</div>

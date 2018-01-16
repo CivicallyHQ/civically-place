@@ -1,0 +1,417 @@
+.place-select {
+  margin: 15px 0;
+
+  .title {
+    margin: 5px 0;
+  }
+
+  .controls button {
+    margin: 0 10px;
+  }
+
+  .instructions {
+    margin-top: 5px;
+    margin-left: 2px;
+    margin-bottom: 10px;
+    font-size: 80%;
+    line-height: 1.4em;
+    color: #919191;
+  }
+
+  .combobox {
+    height: 32px;
+
+    .select-box-kit-header {
+      height: 30px;
+    }
+
+    a {
+      box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.25);
+      padding: 6px 12px;
+    }
+
+    .select2-arrow b {
+      background-position-y: 8px;
+      background-position-x: -5px;
+    }
+
+    .select2-choice {
+      border: none;
+    }
+  }
+
+  .p-text {
+    margin-top: 10px;
+  }
+}
+
+.place-user-controls {
+  padding: 0 10px;
+  max-width: 900px;
+
+  .p-text a {
+    @extend .p-link;
+  }
+
+  .p-note {
+    margin-top: 7px;
+    float: right;
+    width: 300px;
+  }
+
+  .extra-controls .container {
+    margin-top: 20px;
+
+    .title {
+      margin-right: 10px;
+    }
+  }
+
+  .add-description {
+    display: inline-block;
+    margin-right: 20px;
+  }
+}
+
+.place-update {
+  margin-top: 5px;
+
+  .p-text {
+    padding: 5px 0;
+  }
+}
+
+.place-info {
+  max-width: 700px;
+  display: inline-block;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: $secondary;
+  border: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.25);
+
+  .title {
+    font-size: 20px;
+    display: inline-block;
+    margin-right: 15px;
+  }
+
+  .status {
+    display: inline-block;
+    margin-right: 15px;
+
+    .label, .active, .founding {
+      display: inline-block;
+    }
+  }
+
+  .user-count {
+    display: inline-block;
+  }
+
+  .inactive-info {
+    margin-bottom: 20px;
+    line-height: 25px;
+  }
+
+  .map-component {
+    margin-top: 20px;
+    width: auto;
+  }
+}
+
+.place-status {
+  padding: 10px;
+  width: 550px;
+  margin: 0 auto;
+}
+
+.place-add {
+  .p-text a {
+    @extend .p-link
+  }
+
+  .criteria {
+    margin-top: 15px;
+  }
+
+  .location-form {
+    margin: 20px 0;
+  }
+
+  .p-text.small {
+    line-height: 35px;
+  }
+}
+
+ul.user-nav > span {
+  float: left;
+  margin-right: 5px;
+
+  a {
+    border: none;
+    padding: 5px 12px;
+    color: dark-light-choose(scale-color($primary, $lightness: 40%), scale-color($secondary, $lightness: 40%));
+    font-size: 1.143em;
+    line-height: 20px;
+    transition: background .15s;
+    display: block;
+    text-decoration: none;
+
+    &:hover {
+      color: $quaternary;
+      background-color: dark-light-diff($quaternary, $secondary, 70%, -70%);
+    }
+
+    &.active {
+      color: $secondary;
+      background-color: $quaternary;
+    }
+
+    .d-icon {
+      margin-right: 5px;
+      opacity: .65;
+    }
+  }
+}
+
+.place-add-similar .similar-result {
+  margin-top: 20px;
+}
+
+.place-add-user {
+  .input-container {
+    margin-top: 20px;
+  }
+
+  .left-input {
+    width: 20%;
+    display: inline-block;
+  }
+
+  .right-input {
+    width: 70%;
+    vertical-align: top;
+    margin-left: 30px;
+  }
+
+  .raw-bio {
+    width: 100%;
+  }
+
+  .d-editor-textarea-wrapper, .d-editor-preview-wrapper {
+    display: inline-block;
+    vertical-align: top;
+    margin: 5px;
+    width: 48%;
+    height: 100%;
+
+    textarea, .d-editor-preview {
+      margin: 0;
+      padding: 5px;
+      width: 98%;
+      height: 150px;
+    }
+  }
+}
+
+.place-add-message + .user-form-composer #reply-control {
+  height: 300px;
+}
+
+.place-add-submit {
+  padding-top: 30px;
+
+  &+ .user-form-composer {
+    display: none;
+  }
+}
+
+.user-place-link {
+  display: inline-block;
+}
+
+// classes used in other plugins
+
+.action-box {
+  max-width: 800px;
+  margin-bottom: 10px;
+  line-height: 25px;
+  border: 1px solid $tertiary;
+  background-color: white;
+  border-radius: 4px;
+
+  button {
+    margin-top: 5px;
+    margin-right: 10px;
+  }
+
+  .btn-success {
+    background-color: $success;
+    color: $secondary;
+  }
+
+  .explanation {
+    padding: 20px;
+  }
+
+  .content {
+    overflow: hidden;
+  }
+}
+
+.main-content.editing .action-box {
+  border: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+}
+
+.p-link {
+  background-image: linear-gradient(180deg,transparent 95%, $tertiary 0);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  text-decoration: none;
+  color: $primary;
+}
+
+.p-text {
+  text-align: left;
+
+  &.title {
+    font-size: 2.5em;
+    line-height: 60px;
+    margin-bottom: 150px;
+    text-align: center;
+
+    &.start {
+      text-align: left;
+      margin-bottom: 70px;
+    }
+  }
+
+  &.large {
+    font-size: 2em;
+    line-height: 40px;
+    margin-bottom: 20px;
+  }
+
+  &.medium {
+    font-size: 1.5em;
+    line-height: 30px;
+    margin-bottom: 10px;
+  }
+
+  &.small {
+    font-size: 1.1em;
+    line-height: 27px;
+  }
+
+  &.bold {
+    font-weight: 800;
+  }
+
+  &.centered {
+    text-align: center;
+  }
+
+  &.seperator {
+    margin: 0 10px;
+    font-size: 2em;
+  }
+
+  &.active {
+    color: $success;
+  }
+}
+
+.p-note {
+  @extend .p-text;
+  display: inline-block;
+  line-height: initial;
+  padding: 6px 10px;
+  border: 1px solid $primary-medium;
+  background-color: $highlight-low;
+}
+
+.step-title {
+  margin-bottom: 50px;
+
+  .p-text {
+    margin-bottom: 0 !important;
+  }
+
+  img {
+    margin-right: 10px;
+  }
+
+  .p-text, img {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.place-checklist {
+  padding: 10px 15px;
+
+  .checklist-title {
+    display: inline-block;
+    margin-bottom: 7px;
+  }
+
+  ul {
+    margin: 0;
+    list-style: none;
+  }
+
+  .strikethrough {
+    text-decoration: line-through;
+  }
+
+  .check-circle {
+    display: inline-block;
+  }
+
+  i.active {
+    color: $success;
+  }
+}
+
+.place-details {
+  margin-top: 7px;
+
+  ul {
+    margin: 0;
+    list-style: none;
+  }
+}
+
+.about-list .elections {
+  display: inline-block;
+
+  li {
+    margin: 0;
+  }
+}
+
+.about-list-controls {
+  .notification-options {
+    position: relative;
+  }
+
+  .dropdown-menu {
+    bottom: initial;
+    top: 21px;
+  }
+}
+
+.civically-place .dropdown-menu {
+  top: -180px;
+  left: 165px;
+}
+
+.list-not-permitted {
+  margin-top: 5px;
+  margin-bottom: 0;
+
+  li {
+    margin: 3px 0;
+  }
+}
