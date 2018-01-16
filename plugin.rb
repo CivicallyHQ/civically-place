@@ -140,6 +140,12 @@ DiscourseEvent.on(:locations_ready) do
 end
 
 DiscourseEvent.on(:custom_wizard_ready) do
+  unless PluginStoreRow.exists?(plugin_name: 'custom_wizard', key: 'place_petition')
+    CustomWizard::Wizard.add_wizard(File.read(File.join(
+      Rails.root, 'plugins', 'civically-place', 'config', 'wizards', 'place_petition.json'
+    )))
+  end
+
   CustomWizard::Builder.add_step_handler('place_petition') do |builder|
     if builder.updater && builder.updater.step && builder.updater.step.id === 'submit'
       updater = builder.updater
@@ -177,12 +183,6 @@ after_initialize do
   User.register_custom_field_type('place_category_id', :integer)
   User.register_custom_field_type('place_topic_id', :integer)
   Group.register_custom_field_type('category_id', :integer)
-
-  unless PluginStoreRow.exists?(plugin_name: 'custom_wizard', key: 'place_petition')
-    CustomWizard::Wizard.add_wizard(File.read(File.join(
-      Rails.root, 'plugins', 'civically-place', 'config', 'wizards', 'place_petition.json'
-    )))
-  end
 
   require_dependency "application_controller"
   module ::CivicallyPlace
