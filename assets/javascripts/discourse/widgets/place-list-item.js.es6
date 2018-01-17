@@ -45,12 +45,12 @@ export default createWidget('place-list-item', {
     const type = attrs.type;
     let contents = [];
 
+    contents.push(h('span.title', itemTitle(type, item)));
+
     const right = rightContent(type, item);
     if (right) {
       contents.push(h('div.right', right));
     }
-
-    contents.push(h('span.title', itemTitle(type, item)));
 
     return contents;
   },
