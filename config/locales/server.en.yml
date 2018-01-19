@@ -16,7 +16,7 @@ en:
             <img class='small' src='%{base_url}/plugins/civically-place/images/government.svg'>
           </div>
           <div>
-            Before starting, please read <a href='/faq#adding_a_place' target='_blank'>Adding A Place</a>.
+            Before starting, please read <a href='/t/creating-a-place' target='_blank'>Creating A Place</a>.
           </div>
           <div class='tip'>
             <img src='%{base_url}/plugins/civically-user/images/person.svg'>
@@ -42,8 +42,7 @@ en:
         title: "Petition"
         description: |
           <div>
-            Compose the first post in the <a href='/faq#new_place#petition_topic' target='_blank'>petition topic</a>.
-            Say a bit about why your place should be on Civically.
+            Compose the first post in the petition. Say a bit about why your place should be on Civically.
           </div>
           <div class='tip'>
             <img src='%{base_url}/plugins/civically-user/images/person.svg'>
@@ -62,7 +61,7 @@ en:
           </div>
           <img class='large' src='%{base_url}/plugins/civically-place/images/ballot_box.svg'>
           <div>
-            Read <a href='/faq#founding_a_place' target='_blank'>Founding a Place</a> to learn more.
+            Read <a href='/t/creating-a-place' target='_blank'>Creating a Place</a> to learn more.
           </div>
           <div class='tip'>
             ^ Or 10% of the population. Whichever is lower.
