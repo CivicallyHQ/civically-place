@@ -8,8 +8,8 @@ en:
         title: "Set Your Place"
         set_description: Set your place to the city, town or village you live in.
         set_note: |
-          Setting your place correctly is important. You can only set it once every 30 days.
-          <a href='/t/place-in-civically' target='_blank'>Read more about the role of place in Civically</a>.
+          Careful, you can only set your place once every 30 days.
+          <a href='/t/place-in-civically' target='_blank'>Read more</a>.
         not_listed: "Where I live is not listed"
         petition_description: "If your city, town or village is not listed, check if there's a petition to add it."
         add_description: "If there's no petition, you can start one"

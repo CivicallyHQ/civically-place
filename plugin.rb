@@ -5,7 +5,8 @@
 # authors: angus
 # url: https://github.com/civicallyhq/civically-place
 
-register_asset "stylesheets/civically-place.scss"
+register_asset "stylesheets/common/place.scss"
+register_asset "stylesheets/mobile/place.scss", :mobile
 
 DiscourseEvent.on(:petition_ready) do
   CivicallyPetition::Petition.add_resolution('place') do |topic, forced|

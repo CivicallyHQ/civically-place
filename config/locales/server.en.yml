@@ -46,7 +46,7 @@ en:
           </div>
           <div class='tip'>
             <img src='%{base_url}/plugins/civically-user/images/person.svg'>
-            <span>Tip: If you're stuck <a href='/c/place-petitions'>read some other first posts here</a>.</span>
+            <span>Tip: If you're stuck <a href='/c/petitions/place' target='_blank'>read some other first posts here</a>.</span>
           </div>
         post:
           label: "Post"

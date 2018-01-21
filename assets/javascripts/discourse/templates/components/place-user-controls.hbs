@@ -1,4 +1,3 @@
-<div class="p-note small">{{{i18n 'place.select.set_note'}}}</div>
 {{#if place}}
   <div class="place-update">
     <div class="p-text small">
@@ -16,6 +15,7 @@
 {{else}}
   <div class="p-text medium">{{i18n 'place.select.title'}}</div>
   <div class="p-text small">{{i18n 'place.select.set_description'}}</div>
+  <div class="p-note small">{{{i18n 'place.select.set_note'}}}</div>
 {{/if}}
 {{#if setPlaceAllowed}}
   {{place-select selectedId=selectedId
