@@ -15,15 +15,15 @@
 {{else}}
   <div class="p-text medium">{{i18n 'place.select.title'}}</div>
   <div class="p-text small">{{i18n 'place.select.set_description'}}</div>
-  <div class="p-note small">{{{i18n 'place.select.set_note'}}}</div>
 {{/if}}
 {{#if setPlaceAllowed}}
   {{place-select selectedId=selectedId
                  setDisabled=setDisabled
                  setPlace="setPlace"
                  loading=loading}}
-  {{#if showExtraControls}}
-    <div class="extra-controls">
+  <div class="p-note small">{{{i18n 'place.select.set_note'}}}</div>
+  <div class="extra-controls">
+    {{#if showExtraControls}}
       <div class="container">
         <div class="p-text small">
           {{i18n 'place.select.petition_description'}}
@@ -47,8 +47,8 @@
         </div>
         {{d-button label='place.select.start_petition' action='addPlace' class="btn btn-primary"}}
       </div>
-    </div>
-  {{else}}
-    <a class='p-link p-text small' {{action 'toggleExtraControls'}}>{{i18n 'place.select.not_listed'}}</a>
-  {{/if}}
+    {{else}}
+      <a class='p-link p-text small' {{action 'toggleExtraControls'}}>{{i18n 'place.select.not_listed'}}</a>
+    {{/if}}
+  </div>
 {{/if}}

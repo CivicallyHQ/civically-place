@@ -52,17 +52,25 @@
     @extend .p-link;
   }
 
-  .p-note {
-    margin-top: 7px;
-    float: right;
-    width: 300px;
+  .place-select {
+    float: left;
   }
 
-  .extra-controls .container {
-    margin-top: 20px;
+  .p-note {
+    float: left;
+    width: 300px;
+    margin-left: 40px;
+  }
 
-    .title {
-      margin-right: 10px;
+  .extra-controls {
+    clear: both;
+
+    .container {
+      margin-top: 20px;
+
+      .title {
+        margin-right: 10px;
+      }
     }
   }
 
@@ -326,8 +334,7 @@ ul.user-nav > span {
   display: inline-block;
   line-height: initial;
   padding: 6px 10px;
-  border: 1px solid $primary-medium;
-  background-color: $highlight-low;
+  border: 1px solid $tertiary;
 }
 
 .step-title {
