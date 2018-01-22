@@ -8,7 +8,7 @@ en:
         title: "Place Petition"
         description: |
           <div>
-            Petition for your city, town or village to be added to Civically.
+            Petition for your city, town or village to be added to Civically. If your petition is successful you will earn a rare <a href='/badge/founder' class='p-link' target='_blank'>Founder badge</a>!
           </div>
           <div class='image-container'>
             <img class='small' src='%{base_url}/plugins/civically-place/images/woman.svg'>
@@ -16,12 +16,12 @@ en:
             <img class='small' src='%{base_url}/plugins/civically-place/images/government.svg'>
           </div>
           <div>
-            Before starting, please read <a href='/t/creating-a-place' target='_blank'>Creating A Place</a>.
+            Before starting, please read <a href='/t/adding-a-place' target='_blank'>Adding A Place</a>.
           </div>
           <div class='tip'>
             <img src='%{base_url}/plugins/civically-user/images/person.svg'>
             <span>
-              Tip: Check if there is already a <a href='/c/petitions/place' target='_blank'>petition for your place</a>.
+              Tip: You can only create one place petition. Use it wisely.
             </span>
           </div>
       location:
@@ -37,12 +37,12 @@ en:
         validation:
           petition_exists: "A petition already exists for that location: <a href=%{topic_url} target='_blank'>%{topic_title}</a> "
           place_exists: "A place already exists for that location: <a href=%{category_url} target='_blank'>%{category_name}</a>"
-        error: "There is no valid location in your submission. If the problem persists, please contact help@civicallys.co"
+        error: "There is no valid location in your submission. If the problem persists, please contact help@civically.io"
       topic:
         title: "Petition"
         description: |
           <div>
-            Compose the first post in the petition. Say a bit about why your place should be on Civically.
+            Compose the first post in the petition. You can use this to talk about
           </div>
           <div class='tip'>
             <img src='%{base_url}/plugins/civically-user/images/person.svg'>
@@ -51,23 +51,22 @@ en:
         post:
           label: "Post"
           placeholder: "You can edit this after you've posted it."
-        error: "There is no valid post in your submission. If the problem persists, please contact help@civicallys.co"
+        error: "There is no valid post in your submission. If the problem persists, please contact help@civically.io"
       submit:
         title: "Submit"
         description: |
           <div>
-            When you submit this form a petition will be created.
-            The petition needs at least 100^ people who live in your place to support it.
+            When you submit this form a petition will be created. The petition needs at least 100^ people who live in your place to support it.
           </div>
           <img class='large' src='%{base_url}/plugins/civically-place/images/ballot_box.svg'>
           <div>
-            Read <a href='/t/creating-a-place' target='_blank'>Creating a Place</a> to learn more.
+            Read <a href='/t/adding-a-place' target='_blank'>Adding a Place</a> to learn more.
           </div>
           <div class='tip'>
             ^ Or 10% of the population. Whichever is lower.
           </div>
 
-        error: "There was a problem submitting your petition. If the problem persits, please contact help@civicallys.co"
+        error: "There was a problem submitting your petition. If the problem persits, please contact help@civically.io"
 
     topic:
       error:

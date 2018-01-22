@@ -59,11 +59,18 @@
   .p-note {
     float: left;
     width: 300px;
+    margin-top: 10px;
     margin-left: 40px;
   }
 
   .extra-controls {
     clear: both;
+
+    .p-text {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      max-width: 700px;
+    }
 
     .container {
       margin-top: 20px;

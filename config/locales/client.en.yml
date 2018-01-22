@@ -6,18 +6,20 @@ en:
     place:
       select:
         title: "Set Your Place"
-        set_description: Set your place to the city, town or village you live in.
-        set_note: |
+        description: Before you use Civically set your 'Place' to the city, town or village you live in.
+        placeholder: "Select a place"
+        instructions: "city, town or village"
+        note: |
           Careful, you can only set your place once every 30 days.
           <a href='/t/place-in-civically' target='_blank'>Learn more</a>.
         not_listed: "Where I live is not listed"
-        petition_description: "If your city, town or village is not listed, check if there's a petition to add it."
-        add_description: "If there's no petition, you can start one"
-        instructions: "city, town or village"
-        placeholder: "Select a place"
-        similar_placeholder: "Filter"
-        no_petitions: "No relevant petitions"
-        start_petition: "Start Petition"
+        petition:
+          intro: "If your Place is not listed, you can play a role in adding it and earn a special <a href='/badge/pioneer' class='p-link' target='_blank'>Pioneer badge</a>!"
+          description: "First, check if there's an existing petition to add your Place."
+          placeholder: "Search place petitions"
+          none: "No relevant petitions"
+          start: "If there's no petition for your Place, you can start one and earn a rare <a href='/badge/founder' class='p-link' target='_blank'>Founder badge</a>."
+          start_btn: "Start Place Petition"
 
       user:
         label: "Place can be joined."
