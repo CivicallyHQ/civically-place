@@ -2,13 +2,27 @@ en:
   activation:
     please_continue: "Your Civically account is confirmed. You will be redirected shortly."
 
+  badges:
+    pioneer:
+      name: "Pioneer"
+      description: "Supported a successful place petition"
+      long_description: "This badge is granted when a place petition you supported is accepted. Your support mattered in getting your town on Pavilion :heart:."
+    marshal:
+      name: "Marshal"
+      description: "Marshalled support for a successful place petition"
+      long_description: "This badge is granted when you are one of the top 4 supporters of a successful place petition. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was important in getting your town on Pavilion :star:."
+    founder:
+      name: "Founder"
+      description: "Played a key role in the addition of a place"
+      long_description: "This badge is granted when you are the top supporter of a successful place petition, or the first moderator of a new place. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was invaluable in getting your town on Pavilion :star2:."
+
   place:
     petition:
       intro:
         title: "Place Petition"
         description: |
           <div>
-            Petition for your city, town or village to be added to Civically. If your petition is successful you will earn a rare <a href='/badge/founder' class='p-link' target='_blank'>Founder badge</a>!
+            Petition for your city, town or village to be added to Civically. If your petition is successful you can earn a <a href='/badges/200/pioneer' class='p-text bronze' target='_blank'>Pioneer</a>, <a href='/badges/201/marshal' class='p-text silver' target='_blank'>Marshal</a> or <a href='/badges/202/founder' class='p-text gold' target='_blank'>Founder</a> badge.
           </div>
           <div class='image-container'>
             <img class='small' src='%{base_url}/plugins/civically-place/images/woman.svg'>
@@ -42,7 +56,7 @@ en:
         title: "Petition"
         description: |
           <div>
-            Compose the first post in the petition. You can use this to talk about
+            Compose the first post in the petition. Use this to explain why you think your town should be added to Civically.
           </div>
           <div class='tip'>
             <img src='%{base_url}/plugins/civically-user/images/person.svg'>

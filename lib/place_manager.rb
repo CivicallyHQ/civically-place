@@ -188,11 +188,40 @@ class CivicallyPlace::PlaceManager
     )
 
     user_errors = []
-    topic.petition_supporters.each do |u|
-      user_result = User.update_place_category_id(u, category.id)
+    supporters = topic.petition_supporters
+
+    supporters.each do |user|
+      user_result = User.update_place_category_id(user, category.id)
 
       if user_result[:error]
-        user_errors.push(user: u.username, error: user_result[:error])
+        user_errors.push(user: user.username, error: user_result[:error])
+      end
+
+      score = 0
+
+      Invite.where(invited_by_id: user.id).where.not(redeemed_at: nil).each do |invite|
+        if invite.user_id && supporters.select { |s| s.id == invite.user_id }.any?
+          score += 1
+        end
+      end
+
+      if topic.user_id == user.id
+        score += 3
+      end
+
+      user.custom_fields['place_score'] = score
+      user.save_custom_fields(true)
+    end
+
+    ranked_supporters = topic.petition_supporters.sort_by { |u| [u.place_score, u.created_at] }.reverse!
+
+    ranked_supporters.each_with_index do |user, index|
+      if index === 0
+        BadgeGranter.grant(Badge.find(Badge::Founder), user)
+      elsif index > 0 && index < 4
+        BadgeGranter.grant(Badge.find(Badge::Marshal), user)
+      else
+        BadgeGranter.grant(Badge.find(Badge::Pioneer), user)
       end
     end
 

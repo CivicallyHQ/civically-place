@@ -69,7 +69,7 @@
     .p-text {
       margin-top: 10px;
       margin-bottom: 10px;
-      max-width: 700px;
+      max-width: 750px;
     }
 
     .container {
@@ -84,6 +84,10 @@
   .add-description {
     display: inline-block;
     margin-right: 20px;
+
+    &+ .btn-primary {
+      display: block;
+    }
   }
 }
 
@@ -333,6 +337,18 @@ ul.user-nav > span {
 
   &.active {
     color: $success;
+  }
+
+  &.bronze {
+    color: #cd7f32 !important;
+  }
+
+  &.silver {
+    color: #c0c0c0 !important;
+  }
+
+  &.gold {
+    color: rgb(231, 195, 0) !important;
   }
 }
 

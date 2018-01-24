@@ -185,6 +185,7 @@ after_initialize do
   Category.register_custom_field_type('place_location', :json)
   User.register_custom_field_type('place_category_id', :integer)
   User.register_custom_field_type('place_topic_id', :integer)
+  User.register_custom_field_type('place_score', :integer)
   Group.register_custom_field_type('category_id', :integer)
 
   require_dependency "application_controller"
@@ -220,6 +221,7 @@ after_initialize do
   load File.expand_path('../controllers/user_place.rb', __FILE__)
   load File.expand_path('../jobs/notify_moderators_of_place_creation_errors.rb', __FILE__)
   load File.expand_path('../lib/place_manager.rb', __FILE__)
+  load File.expand_path('../lib/place_badges.rb', __FILE__)
   load File.expand_path('../serializers/place.rb', __FILE__)
   load File.expand_path('../serializers/place_user.rb', __FILE__)
 
@@ -231,6 +233,14 @@ after_initialize do
         self.custom_fields['place_category_id']
       else
         nil
+      end
+    end
+
+    def place_score
+      if self.custom_fields['place_score']
+        self.custom_fields['place_score'].to_i
+      else
+        0
       end
     end
 
