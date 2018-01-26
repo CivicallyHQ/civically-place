@@ -10,8 +10,7 @@ en:
         placeholder: "Select a place"
         instructions: "city, town or village"
         note: |
-          Careful, you can only set your place once every 30 days.
-          <a href='/t/place-in-civically' target='_blank'>Learn more</a>.
+          Careful, you can only set your place once every 30 days. <a href='/t/place-in-civically' class='p-link' target='_blank'>Learn more</a>.
         not_listed: "Where I live is not listed"
         petition:
           intro: "If your place is not listed, you can help add it and earn a <a href='/badges/200/pioneer' class='p-text bronze' target='_blank'>Pioneer</a>, <a href='/badges/201/marshal' class='p-text silver' target='_blank'>Marshal</a> or <a href='/badges/202/founder' class='p-text gold' target='_blank'>Founder</a> badge!"
