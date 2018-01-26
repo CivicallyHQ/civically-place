@@ -48,10 +48,6 @@
 .place-user-controls {
   padding: 0 10px;
 
-  .p-text a {
-    @extend .p-link;
-  }
-
   .place-select {
     float: left;
   }
@@ -358,6 +354,7 @@ ul.user-nav > span {
   line-height: initial;
   padding: 6px 10px;
   border: 1px solid $tertiary;
+  border-radius: 4px;
 }
 
 .step-title {
