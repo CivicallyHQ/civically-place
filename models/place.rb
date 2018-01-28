@@ -9,6 +9,7 @@ class CivicallyPlace::Place
                 :user_count,
                 :user_count_min,
                 :category,
+                :has_moderator_election,
                 :moderator_election_url
 
   def initialize(category_id, user = nil)
@@ -68,6 +69,10 @@ class CivicallyPlace::Place
     else
       nil
     end
+  end
+
+  def has_moderator_election
+    moderator_election_topics.any?
   end
 
   def members

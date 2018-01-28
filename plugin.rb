@@ -165,6 +165,18 @@ DiscourseEvent.on(:custom_wizard_ready) do
           raw: submission['post']
         )
 
+        petition_checklist_item = {
+          id: "pass_petition",
+          checked: false,
+          checkable: false,
+          active: true,
+          title: I18n.t('checklist.getting_started.pass_petition.title'),
+          detail: I18n.t('checklist.getting_started.pass_petition.detail')
+        }
+
+        CivicallyChecklist::Checklist.add_item(user, petition_checklist_item, 1)
+        CivicallyChecklist::Checklist.toggle_active(user, 'set_place', false)
+
         if result.errors.any?
           updater.errors.add(:place_petition, result.errors.full_messages.join("\n"))
         else
@@ -274,9 +286,26 @@ after_initialize do
         end
 
         CivicallyPlace::PlaceManager.update_user_count(user_place.category.id, -1)
+      else
+        ## part_of_getting_started_checklist
+        CivicallyChecklist::Checklist.toggle_checked(user, 'set_place', true)
+        CivicallyChecklist::Checklist.toggle_active(user, 'set_place', false)
+        CivicallyChecklist::Checklist.toggle_checked(user, 'pass_petition', true)
+        CivicallyChecklist::Checklist.toggle_active(user, 'pass_petition', false)
       end
 
       CivicallyPlace::PlaceManager.update_user_count(category_id, 1)
+
+      if place.has_moderator_election
+        CivicallyChecklist::Checklist.add_item(user,
+          id: "elect_moderator",
+          checked: false,
+          checkable: false,
+          active: true,
+          title: I18n.t('checklist.getting_started.elect_moderator.title'),
+          detail: I18n.t('checklist.getting_started.elect_moderator.detail', mod_url: place.moderator_election_url)
+        )
+      end
 
       UserHistory.create(
         action: UserHistory.actions[:place],
@@ -346,6 +375,17 @@ after_initialize do
   DiscourseEvent.on(:vote_removed) do |user, topic|
     if topic.category_id === SiteSetting.place_petition_category_id
       user.custom_fields['place_topic_id'] = nil
+    end
+  end
+
+  DiscourseEvent.on(:category_moderators_updated) do |category, first|
+    if first
+      user_ids = CivicallyPlace::Place.members(category.id).map(&:id)
+      checked = {
+        id: 'elect_moderator',
+        state: true
+      }
+      Jobs.enqueue(:bulk_checklist_update, user_ids: user_ids, checked: checked)
     end
   end
 

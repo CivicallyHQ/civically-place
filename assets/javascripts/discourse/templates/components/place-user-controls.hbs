@@ -13,31 +13,38 @@
     {{/unless}}
   </div>
 {{else}}
-  <div class="p-text medium">{{i18n 'place.select.title'}}</div>
-  <div class="p-text small">{{i18n 'place.select.description'}}</div>
-{{/if}}
-{{#if setPlaceAllowed}}
-  {{place-select selectedId=selectedId
-                 setDisabled=setDisabled
-                 setPlace="setPlace"
-                 loading=loading}}
-  <div class="p-note small">{{{i18n 'place.select.note'}}}</div>
-  <div class="extra-controls">
-    {{#if showExtraControls}}
+  <div class="place-set">
+    <div class="p-text medium">{{i18n 'place.select.title'}}</div>
+    <div class="p-note small">{{{i18n 'place.select.note'}}}</div>
+    <div class="p-text small">{{{i18n 'place.select.description'}}}</div>
+    {{#if setPlaceAllowed}}
       <div class="container">
-        <div class="p-text small">{{{i18n 'place.select.petition.intro'}}}</div>
-        <div class="p-text small">{{{i18n 'place.select.petition.description'}}}</div>
-        <div class="container">
-          <span class="p-text small title">{{i18n 'petition.similar.title'}}</span>
-          {{input type='text' value=placeTitle placeholder=(i18n 'place.select.petition.placeholder')}}
-          <div class="p-list-box">
-            {{similar-titles title=placeTitle
-                             categoryId=siteSettings.place_petition_category_id
-                             allowBlankSearch=true
-                             requireCategory=true
-                             none="place.select.petition.none"
-                             noDefinitions=true}}
-          </div>
+        {{place-select selectedId=selectedId
+                       setDisabled=setDisabled
+                       setPlace="setPlace"
+                       loading=loading
+                       toggleExtraControls='toggleExtraControls'}}
+      </div>
+    {{/if}}
+  </div>
+{{/if}}
+
+{{#if setPlaceAllowed}}
+  {{#if showPetition}}
+    <div class="place-petition">
+      <div class="p-text medium">{{i18n 'place.select.petition.title'}}</div>
+      <div class="p-note small">{{{i18n 'place.select.petition.note'}}}</div>
+      <div class="p-text small">{{{i18n 'place.select.petition.description'}}}</div>
+      <div class="container">
+        <span class="p-text small title">{{i18n 'petition.similar.title'}}</span>
+        {{input type='text' value=placeTitle placeholder=(i18n 'place.select.petition.placeholder')}}
+        <div class="p-list-box">
+          {{similar-titles title=placeTitle
+                           categoryId=siteSettings.place_petition_category_id
+                           allowBlankSearch=true
+                           requireCategory=true
+                           none="place.select.petition.none"
+                           noDefinitions=true}}
         </div>
       </div>
       <div class="container">
@@ -46,8 +53,8 @@
         </div>
         {{d-button label='place.select.petition.start_btn' action='addPlace' class="btn btn-primary"}}
       </div>
-    {{else}}
-      <a class='p-link p-text small' {{action 'toggleExtraControls'}}>{{i18n 'place.select.not_listed'}}</a>
-    {{/if}}
-  </div>
+    </div>
+  {{else}}
+    {{d-button action='showPetition' label='place.select.not_listed'}}
+  {{/if}}
 {{/if}}

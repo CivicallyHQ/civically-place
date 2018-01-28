@@ -6,7 +6,7 @@ import DiscourseURL from 'discourse/lib/url';
 export default Ember.Component.extend({
   classNames: ['place-user-controls'],
   inputFields: ['city', 'countrycode'],
-  showExtraControls: false,
+  showPetition: false,
 
   @on('init')
   initSelectedId() {
@@ -64,8 +64,8 @@ export default Ember.Component.extend({
       window.location.href = '/w/place-petition';
     },
 
-    toggleExtraControls() {
-      this.set('showExtraControls', true);
+    showPetition() {
+      this.set('showPetition', true);
     }
   }
 });

@@ -1,5 +1,9 @@
 <div class="controls">
-  {{combo-box value=selectedId content=places width=300 none='place.select.placeholder' filterable=true}}
+  {{combo-box value=selectedId
+              content=places
+              width=300
+              none='place.select.placeholder'
+              filterable=true}}
   {{d-button label='user.set_place' action='setPlace' disabled=setDisabled class="btn btn-primary"}}
   {{conditional-loading-spinner size="small" condition=loading}}
   <div class='instructions'>
