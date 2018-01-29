@@ -16,6 +16,16 @@ en:
       description: "Played a key role in the addition of a place"
       long_description: "This badge is granted when you are the top supporter of a successful place petition, or the first moderator of a new place. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was invaluable in getting your town on Pavilion :star2:."
 
+  checklist:
+    place_setup:
+      pass_petition:
+        title: "Get your place petition passed"
+        detail: "Your place petition needs to pass so you can use Civically. <a href='/' class='p-link'>Go to the petition</a>."
+      elect_moderator:
+        title: "Elect your place moderator"
+        detail: "Before you can start posting, your place needs a moderator. <a href='%{mod_url}' class='p-link'>Go to the election</a>."
+
+
   place:
     petition:
       intro:
