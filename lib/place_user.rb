@@ -57,7 +57,7 @@ User.class_eval do
     CivicallyPlace::PlaceManager.update_user_count(category_id, 1)
 
     if place.has_moderator_election
-      CivicallyPlace::User.add_elect_moderator_to_checklist(user)
+      CivicallyPlace::User.add_elect_moderator_to_checklist(user, place)
     end
 
     UserHistory.create(
@@ -88,7 +88,7 @@ class CivicallyPlace::User
     CivicallyChecklist::Checklist.update_item(user, 'set_place', active: false)
   end
 
-  def self.add_elect_moderator_to_checklist(user)
+  def self.add_elect_moderator_to_checklist(user, place)
     CivicallyChecklist::Checklist.add_item(user,
       id: "elect_moderator",
       checked: false,
