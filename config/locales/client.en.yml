@@ -9,7 +9,7 @@ en:
         description: "Civically is centered around your <span class='p-emphasis'>Place</span>: your city or town. Find your place in the list below, select it and click <span class='p-emphasis'>Set Place</span>. If you can't find your place, click <span class='p-emphasis'>Add My Place</span>."
         placeholder: "Select a place"
         instructions: "city or town"
-        note: "Careful, you can only set your place once every 30 days. <a href='/t/place-in-civically' class='p-link' target='_blank'>Learn more</a>."
+        note: "Careful, you can only set your place once every 30 days. <a href='/t/setting-your-place' class='p-link' target='_blank'>Learn more</a>."
         not_listed: "Add My Place"
         petition:
           title: "Add Your Place"

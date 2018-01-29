@@ -52,16 +52,16 @@ export default createWidget('place-list-controls', {
     const moreLink = typeUrl(type, category);
 
     let links = [this.attach('link', {
+      className: 'p-link no-underline',
       href: moreLink,
       label: 'civically.list.more'
     })];
 
     if (user && HAS_CREATE.indexOf(type) > -1) {
       links.push(this.attach('link', {
-        icon: 'plus',
         label: `place.${type}.create`,
         action: 'create',
-        className: 'pull-right'
+        className: 'pull-right p-link no-underline'
       }));
     }
 
@@ -89,7 +89,7 @@ export default createWidget('place-list-controls', {
           place: currentPlace.category.name
         });
         if (key === 'moderator' && currentPlace.moderator_election_url) {
-          message += ` <a href='${currentPlace.moderator_election_url}' target='_blank'>
+          message += ` <a href='${currentPlace.moderator_election_url}' class='p-link' target='_blank'>
                       ${I18n.t('place.list.not_permitted.moderator_link')}</a>`;
         }
         message += '</li>';

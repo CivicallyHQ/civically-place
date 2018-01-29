@@ -63,12 +63,15 @@ export default createWidget('civically-place', {
       contents.push(h('div.spinner.small'));
       this.createPlace(category.id);
     } else {
-      contents.push(h('div.widget-multi-title', [
-        this.buildTitle('event'),
-        this.buildTitle('group'),
-        this.buildTitle('rating'),
-        this.buildTitle('petition')
-      ]));
+      contents.push(
+        h('div.widget-label', category.name),
+        h('div.widget-multi-title', [
+          this.buildTitle('event'),
+          this.buildTitle('group'),
+          this.buildTitle('rating'),
+          this.buildTitle('petition')
+        ])
+      );
 
       let listAttrs = {
         category,
