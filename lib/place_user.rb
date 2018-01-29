@@ -48,7 +48,6 @@ User.class_eval do
 
       CivicallyPlace::PlaceManager.update_user_count(user_place.category.id, -1)
     else
-      ## part_of_getting_started_checklist
       CivicallyChecklist::Checklist.toggle_checked(user, 'set_place', true)
       CivicallyChecklist::Checklist.toggle_active(user, 'set_place', false)
       CivicallyChecklist::Checklist.toggle_checked(user, 'pass_petition', true)
