@@ -48,10 +48,10 @@ User.class_eval do
 
       CivicallyPlace::PlaceManager.update_user_count(user_place.category.id, -1)
     else
-      CivicallyChecklist::Checklist.toggle_checked(user, 'set_place', true)
-      CivicallyChecklist::Checklist.toggle_active(user, 'set_place', false)
-      CivicallyChecklist::Checklist.toggle_checked(user, 'pass_petition', true)
-      CivicallyChecklist::Checklist.toggle_active(user, 'pass_petition', false)
+      CivicallyChecklist::Checklist.update_item(user, 'set_place', checked: true)
+      CivicallyChecklist::Checklist.update_item(user, 'set_place', active: false)
+      CivicallyChecklist::Checklist.update_item(user, 'pass_petition', checked: true)
+      CivicallyChecklist::Checklist.update_item(user, 'pass_petition', active: false)
     end
 
     CivicallyPlace::PlaceManager.update_user_count(category_id, 1)
@@ -85,7 +85,7 @@ class CivicallyPlace::User
     }
 
     CivicallyChecklist::Checklist.add_item(user, petition_checklist_item, 1)
-    CivicallyChecklist::Checklist.toggle_active(user, 'set_place', false)
+    CivicallyChecklist::Checklist.update_item(user, 'set_place', active: false)
   end
 
   def self.add_elect_moderator_to_checklist(user)
