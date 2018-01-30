@@ -1,3 +1,4 @@
+import { clearUnreadList } from 'discourse/plugins/civically-layout/discourse/lib/utilities';
 import { createWidget } from 'discourse/widgets/widget';
 import { ajax } from 'discourse/lib/ajax';
 import { h } from 'virtual-dom';
@@ -57,6 +58,8 @@ export default createWidget('place-list', {
           });
         });
       };
+
+      clearUnreadList(this, type);
 
       contents.push(h('ul', listContents));
     }

@@ -1,6 +1,7 @@
 import { createWidget } from 'discourse/widgets/widget';
 import Place from '../models/place';
 import { h } from 'virtual-dom';
+import { buildTitle } from 'discourse/plugins/civically-layout/discourse/lib/utilities';
 
 export default createWidget('civically-place', {
   tagName: 'div',
@@ -21,24 +22,6 @@ export default createWidget('civically-place', {
       classes += ' hidden';
     }
     return classes;
-  },
-
-  buildTitle(type) {
-    const currentType = this.state.currentType;
-    const active = currentType === type;
-
-    let classes = 'list-title';
-    if (active) classes += ' active';
-
-    let attrs = {
-      action: 'showList',
-      actionParam: type,
-      title: `place.${type}.help`,
-      label: `place.${type}.title`,
-      className: classes
-    };
-
-    return this.attach('link', attrs);
   },
 
   showList(currentType) {
@@ -66,10 +49,10 @@ export default createWidget('civically-place', {
       contents.push(
         h('div.widget-label', category.name),
         h('div.widget-multi-title', [
-          this.buildTitle('event'),
-          this.buildTitle('group'),
-          this.buildTitle('rating'),
-          this.buildTitle('petition')
+          buildTitle(this, 'place', 'event'),
+          buildTitle(this, 'place', 'group'),
+          buildTitle(this, 'place', 'rating'),
+          buildTitle(this, 'place', 'petition')
         ])
       );
 
