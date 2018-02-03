@@ -6,15 +6,15 @@ en:
     pioneer:
       name: "Pioneer"
       description: "Supported a successful place petition"
-      long_description: "This badge is granted when a place petition you supported is accepted. Your support mattered in getting your town on Pavilion :heart:."
+      long_description: "This badge is granted when a place petition you supported is accepted. Your support mattered in getting your town on Civically."
     marshal:
       name: "Marshal"
       description: "Marshalled support for a successful place petition"
-      long_description: "This badge is granted when you are one of the top 4 supporters of a successful place petition. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was important in getting your town on Pavilion :star:."
+      long_description: "This badge is granted when you are one of the top 4 supporters of a successful place petition. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was important in getting your town on Civically."
     founder:
       name: "Founder"
       description: "Played a key role in the addition of a place"
-      long_description: "This badge is granted when you are the top supporter of a successful place petition, or the first moderator of a new place. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was invaluable in getting your town on Pavilion :star2:."
+      long_description: "This badge is granted when you are the top supporter of a successful place petition, or the first moderator of a new place. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was invaluable in getting your town on Civically."
 
   checklist:
     place_setup:
@@ -81,7 +81,7 @@ en:
 
             If you vote for this petition, %{placeName} will become your [Place on Civically](https://civically.io/t/places-policy/29) when the petition passes.
 
-            If the petition passes all supporters will earn a [Pioneer Badge](https://civically.io/badges/200/pioneer). For those who successfully invite other supporters:
+            If the petition passes, all supporters will earn a [Pioneer Badge](https://civically.io/badges/200/pioneer). For those who successfully invite other supporters:
 
             - The top 4 successful inviters will earn a [Marshall Badge](https://civically.io/badges/201/marshal)
 
@@ -99,7 +99,7 @@ en:
             Read <a href='/t/adding-a-place' target='_blank'>Adding a Place</a> to learn more.
           </div>
           <div class='tip'>
-            ^ Or 10% of the population. Whichever is lower.
+            ^ Or 10% of the population of your Place. Whichever is lower.
           </div>
 
         error: "There was a problem submitting your petition. If the problem persits, please contact help@civically.io"

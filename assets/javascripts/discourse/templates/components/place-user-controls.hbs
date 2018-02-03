@@ -37,14 +37,24 @@
       <div class="p-text small">{{{i18n 'place.select.petition.description'}}}</div>
       <div class="container">
         <span class="p-text small title">{{i18n 'petition.similar.title'}}</span>
-        {{input type='text' value=placeTitle placeholder=(i18n 'place.select.petition.placeholder')}}
+        <div class="petition-search">
+          {{input type='text' value=placeTitle placeholder=(i18n 'place.select.petition.placeholder')}}
+          <div class="icon">
+            {{#if searchingPetitions}}
+              {{loading-spinner size='small'}}
+            {{else}}
+              {{d-icon 'search'}}
+            {{/if}}
+          </div>
+        </div>
         <div class="p-list-box">
           {{similar-titles title=placeTitle
                            categoryId=siteSettings.place_petition_category_id
                            allowBlankSearch=true
                            requireCategory=true
                            none="place.select.petition.none"
-                           noDefinitions=true}}
+                           noDefinitions=true
+                           searching=searchingPetitions}}
         </div>
       </div>
       <div class="container">

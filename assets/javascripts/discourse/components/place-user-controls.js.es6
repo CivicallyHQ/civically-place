@@ -7,6 +7,8 @@ export default Ember.Component.extend({
   classNames: ['place-user-controls'],
   inputFields: ['city', 'countrycode'],
   showPetition: false,
+  searchingPetitions: false,
+  placeTitle: '',
 
   @on('init')
   initSelectedId() {

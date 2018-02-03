@@ -93,6 +93,21 @@
         margin-right: 10px;
       }
     }
+
+    .petition-search {
+      position: relative;
+      display: inline-block;
+
+      input {
+        padding-right: 30px;
+      }
+
+      .icon {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+      }
+    }
   }
 
   .add-description {
