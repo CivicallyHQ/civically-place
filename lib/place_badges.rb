@@ -23,7 +23,7 @@ end
 
 module BadgePlaceExtension
   Pioneer = 200
-  Marshal = 201
+  Pathfinder = 201
   Founder = 202
 end
 
@@ -31,7 +31,7 @@ class ::Badge
   prepend BadgePlaceExtension
 end
 
-unless Badge.where(name: "Pioneer").exists?
+unless Badge.exists?(Badge::Pioneer)
   pioneer = Badge.new(
     id: Badge::Pioneer,
     name: I18n.t('badges.pioneer.name'),
@@ -50,10 +50,10 @@ unless Badge.where(name: "Pioneer").exists?
   pioneer.save
 end
 
-unless Badge.where(name: "Marshal").exists?
-  notable = Badge.new(
-    id: Badge::Marshal,
-    name: I18n.t('badges.marshal.name'),
+unless Badge.exists?(Badge::Pathfinder)
+  pathfinder = Badge.new(
+    id: Badge::Pathfinder,
+    name: I18n.t('badges.pathfinder.name'),
     badge_type_id: BadgeType::Silver,
     badge_grouping_id: BadgeGrouping::Place,
     default_icon: 'fa-tree',
@@ -63,13 +63,13 @@ unless Badge.where(name: "Marshal").exists?
     show_posts: false,
     default_badge_grouping_id: BadgeGrouping::Place,
     auto_revoke: false,
-    description: I18n.t('badges.marshal.description'),
-    long_description: I18n.t('badges.marshal.long_description')
+    description: I18n.t('badges.pathfinder.description'),
+    long_description: I18n.t('badges.pathfinder.long_description')
   )
-  notable.save
+  pathfinder.save
 end
 
-unless Badge.where(name: "Founder").exists?
+unless Badge.exists?(Badge::Founder)
   founder = Badge.new(
     id: Badge::Founder,
     name: I18n.t('badges.founder.name'),

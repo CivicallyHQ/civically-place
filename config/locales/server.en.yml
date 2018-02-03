@@ -7,9 +7,9 @@ en:
       name: "Pioneer"
       description: "Supported a successful place petition"
       long_description: "This badge is granted when a place petition you supported is accepted. Your support mattered in getting your town on Civically."
-    marshal:
-      name: "Marshal"
-      description: "Marshalled support for a successful place petition"
+    pathfinder:
+      name: "Pathfinder"
+      description: "Gathered support for a successful place petition"
       long_description: "This badge is granted when you are one of the top 4 supporters of a successful place petition. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was important in getting your town on Civically."
     founder:
       name: "Founder"
@@ -31,7 +31,7 @@ en:
         title: "Place Petition"
         description: |
           <div>
-            Petition for your city or town to be added to Civically. If your petition is successful you can earn a <a href='/badges/200/pioneer' class='p-text bronze' target='_blank'>Pioneer</a>, <a href='/badges/201/marshal' class='p-text silver' target='_blank'>Marshal</a> or <a href='/badges/202/founder' class='p-text gold' target='_blank'>Founder</a> badge.
+            Petition for your city or town to be added to Civically. If your petition is successful you can earn a <a href='/badges/200/pioneer' class='p-text bronze' target='_blank'>Pioneer</a>, <a href='/badges/201/pathfinder' class='p-text silver' target='_blank'>Pathfinder</a> or <a href='/badges/202/founder' class='p-text gold' target='_blank'>Founder</a> badge.
           </div>
           <div class='image-container'>
             <img class='small' src='%{base_url}/plugins/civically-place/images/woman.svg'>
@@ -81,9 +81,9 @@ en:
 
             If you vote for this petition, %{placeName} will become your [Place on Civically](https://civically.io/t/places-policy/29) when the petition passes.
 
-            If the petition passes, all supporters will earn a [Pioneer Badge](https://civically.io/badges/200/pioneer). For those who successfully invite other supporters:
+            If the petition passes all supporters will earn a [Pioneer Badge](https://civically.io/badges/200/pioneer). For those who successfully invite other supporters:
 
-            - The top 4 successful inviters will earn a [Marshall Badge](https://civically.io/badges/201/marshal)
+            - The top 4 successful inviters will earn a [Pathfinder Badge](https://civically.io/badges/201/pathfinder)
 
             - The most successful inviter will earn a [Founder Badge](https://civically.io/badges/202/founder)
 

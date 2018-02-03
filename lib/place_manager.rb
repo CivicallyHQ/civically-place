@@ -219,7 +219,7 @@ class CivicallyPlace::PlaceManager
       if index === 0
         BadgeGranter.grant(Badge.find(Badge::Founder), user)
       elsif index > 0 && index < 4
-        BadgeGranter.grant(Badge.find(Badge::Marshal), user)
+        BadgeGranter.grant(Badge.find(Badge::Pathfinder), user)
       else
         BadgeGranter.grant(Badge.find(Badge::Pioneer), user)
       end

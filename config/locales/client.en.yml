@@ -14,7 +14,7 @@ en:
         petition:
           title: "Add Your Place"
           description: "A place is added when <span class='p-emphasis'>100 or more people</span> support a petition to add it. First, check if there's an existing petition for your place."
-          note: "If you help to add your place you can earn a <a href='/badges/200/pioneer' class='p-text bronze' target='_blank'>Pioneer</a>, <a href='/badges/201/marshal' class='p-text silver' target='_blank'>Marshal</a> or <a href='/badges/202/founder' class='p-text gold' target='_blank'>Founder</a> badge."
+          note: "If you help to add your place you can earn a <a href='/badges/200/pioneer' class='p-text bronze' target='_blank'>Pioneer</a>, <a href='/badges/201/pathfinder' class='p-text silver' target='_blank'>Pathfinder</a> or <a href='/badges/202/founder' class='p-text gold' target='_blank'>Founder</a> badge."
           placeholder: "Search place petitions"
           none: "No relevant petitions"
           start: "If there's no petition for your Place, you can start one and increase your chances of earning a rare badge."
