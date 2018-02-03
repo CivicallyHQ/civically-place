@@ -52,19 +52,26 @@
   max-width: 1000px;
   min-height: 50vh;
 
+  &.show-petition .place-set {
+    padding-bottom: 30px;
+  }
+
   .p-text, .container {
     max-width: 600px;
+  }
+
+  .container {
+    display: inline-block;
+  }
+
+  .p-text.small {
+    float: left;
   }
 
   .p-note {
     float: right;
     width: 300px;
-    margin-top: 10px;
     margin-left: 40px;
-  }
-
-  .place-set {
-    padding-bottom: 30px;
   }
 
   .place-petition {
@@ -90,6 +97,7 @@
       float: left;
 
       .title {
+        float: none;
         margin-right: 10px;
       }
     }

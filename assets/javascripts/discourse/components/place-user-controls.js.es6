@@ -4,7 +4,7 @@ import Category from 'discourse/models/category';
 import DiscourseURL from 'discourse/lib/url';
 
 export default Ember.Component.extend({
-  classNames: ['place-user-controls'],
+  classNameBindings: [':place-user-controls', 'showPetition'],
   inputFields: ['city', 'countrycode'],
   showPetition: false,
   searchingPetitions: false,

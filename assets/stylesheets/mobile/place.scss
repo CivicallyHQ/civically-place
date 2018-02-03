@@ -1,6 +1,10 @@
 .place-user-controls {
   padding: 20px 0;
 
+  .place-select .combobox {
+    min-width: initial;
+  }
+
   .p-note {
     margin: 10px 0;
     width: initial;
