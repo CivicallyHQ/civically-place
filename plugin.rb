@@ -150,17 +150,12 @@ DiscourseEvent.on(:custom_wizard_ready) do
   end
 
   CustomWizard::Builder.add_step_handler('place_petition') do |builder|
-    if builder.updater && builder.updater.step && builder.updater.step.id === 'location'
-      input = builder.updater.fields.to_h
-
-      if builder.submissions.empty?
-        builder.submissions.push({})
-      end
-
-      default_post = I18n.t('place.petition.topic.post.default', placeName: input['location']['city'])
-      builder.submissions.last["post"] = default_post
-
-      builder.updater.refresh_required = true
+    updater = builder.updater
+    if updater && updater.step && updater.step.id === 'location'
+      updater.fields["post"] = I18n.t('place.petition.topic.post.default',
+        placeName: updater.fields['location']['city']
+      )
+      updater.refresh_required = true
     end
 
     if builder.updater && builder.updater.step && builder.updater.step.id === 'submit'

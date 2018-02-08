@@ -29,44 +29,21 @@ en:
     petition:
       intro:
         title: "Place Petition"
-        description: |
-          <div>
-            Petition for your city or town to be added to Civically. If your petition is successful you can earn a <a href='/badges/200/pioneer' class='p-text bronze' target='_blank'>Pioneer</a>, <a href='/badges/201/pathfinder' class='p-text silver' target='_blank'>Pathfinder</a> or <a href='/badges/202/founder' class='p-text gold' target='_blank'>Founder</a> badge.
-          </div>
-          <div class='image-container'>
-            <img class='small' src='%{base_url}/plugins/civically-place/images/woman.svg'>
-            <img class='small' src='%{base_url}/plugins/civically-place/images/house.svg'>
-            <img class='small' src='%{base_url}/plugins/civically-place/images/government.svg'>
-          </div>
-          <div>
-            Before starting, please read <a href='/t/adding-a-place' target='_blank'>Adding A Place</a>.
-          </div>
-          <div class='tip'>
-            <img src='%{base_url}/plugins/civically-user/images/person.svg'>
-            <span>
-              Tip: You can only create one place petition. Use it wisely.
-            </span>
-          </div>
+        description: "Petition for your city or town to be added to Civically."
+        tip:
+          description: "<img src='%{base_url}/plugins/civically-user/images/person.svg'><i>You can only create one place petition.</i>"
       location:
         title: "Place"
-        description: |
-          <div>
-            A place is a city or town. Search for your place, and select a result to continue.
-          </div>
-          <div class='tip'>
-            <img src='%{base_url}/plugins/civically-user/images/person.svg'>
-            <span>Tip: Your place is where you live.</span>
-          </div>
+        description: "A place is a city or town. Search for your place, and select a result."
+        tip:
+          description: "<img src='%{base_url}/plugins/civically-user/images/person.svg'><i>Your place is where you live.</i>"
         validation:
           petition_exists: "A petition already exists for that location: <a href=%{topic_url} target='_blank'>%{topic_title}</a> "
           place_exists: "A place already exists for that location: <a href=%{category_url} target='_blank'>%{category_name}</a>"
         error: "There is no valid location in your submission. If the problem persists, please contact help@civically.io"
       topic:
         title: "Petition"
-        description: |
-          <div>
-            Compose the first post in the petition. You can use the words we've added or write your own.
-          </div>
+        description: "Compose the first post in the petition. You can edit the words we've added."
         post:
           label: "Post"
           placeholder: "You can edit this after you've posted it."
@@ -86,18 +63,9 @@ en:
         error: "There is no valid post in your submission. If the problem persists, please contact help@civically.io"
       submit:
         title: "Submit"
-        description: |
-          <div>
-            When you submit this form a petition will be created. The petition needs at least 100^ people who live in your place to support it.
-          </div>
-          <img class='large' src='%{base_url}/plugins/civically-place/images/ballot_box.svg'>
-          <div>
-            Read <a href='/t/adding-a-place' target='_blank'>Adding a Place</a> to learn more.
-          </div>
-          <div class='tip'>
-            ^ Or 10% of the population of your Place. Whichever is lower.
-          </div>
-
+        description: "When you submit this form a petition will be created."
+        tip:
+          description: "<img src='%{base_url}/plugins/civically-user/images/person.svg'><i>Your petition needs 100 people who live in your city or town to support it.</i>"
         error: "There was a problem submitting your petition. If the problem persits, please contact help@civically.io"
 
     topic:

@@ -6,7 +6,15 @@
   "steps": [
     {
       "id": "intro",
-      "key": "place.petition.intro"
+      "key": "place.petition.intro",
+      "banner": "/plugins/civically-place/images/petition_start.png",
+      "fields": [
+        {
+          "id": "tip",
+          "type": "text-only",
+          "key": "place.petition.intro.tip"
+        }
+      ]
     },
     {
       "id": "location",
@@ -16,6 +24,11 @@
           "id": "location",
           "type": "location",
           "required": true
+        },
+        {
+          "id": "tip",
+          "type": "text-only",
+          "key": "place.petition.location.tip"
         }
       ]
     },
@@ -25,7 +38,7 @@
       "fields": [
         {
           "id": "post",
-          "type": "textarea",
+          "type": "composer",
           "key": "place.petition.topic.post",
           "required": true,
           "min_length": "200"
@@ -34,7 +47,15 @@
     },
     {
       "id": "submit",
-      "key": "place.petition.submit"
+      "key": "place.petition.submit",
+      "banner": "/plugins/civically-place/images/ballot_box.png",
+      "fields": [
+        {
+          "id": "tip",
+          "type": "text-only",
+          "key": "place.petition.submit.tip"
+        }
+      ]
     }
   ]
 }
