@@ -52,7 +52,7 @@ export default createWidget('place-list-controls', {
     const moreLink = typeUrl(type, category);
 
     let links = [this.attach('link', {
-      className: 'p-link no-underline',
+      className: 'p-link',
       href: moreLink,
       label: 'civically.list.more'
     })];
@@ -61,7 +61,7 @@ export default createWidget('place-list-controls', {
       links.push(this.attach('link', {
         label: `place.${type}.create`,
         action: 'create',
-        className: 'pull-right p-link no-underline'
+        className: 'pull-right p-link'
       }));
     }
 

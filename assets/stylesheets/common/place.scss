@@ -324,12 +324,6 @@ a.p-link {
   background-repeat: no-repeat;
   text-decoration: none;
   color: $primary;
-
-  &.no-underline {
-    background-image: initial;
-    background-size: initial;
-    background-repeat: initial;
-  }
 }
 
 .p-emphasis {
