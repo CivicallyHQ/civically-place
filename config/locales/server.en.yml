@@ -67,19 +67,15 @@ en:
           <div>
             Compose the first post in the petition. You can use the words we've added or write your own.
           </div>
-          <div class='tip'>
-            <img src='%{base_url}/plugins/civically-user/images/person.svg'>
-            <span>Tip: You can edit this after you've posted it.</span>
-          </div>
         post:
           label: "Post"
           placeholder: "You can edit this after you've posted it."
           default: |
             This is a petition to add %{placeName} to Civically.
 
-            Civically's mission is to make government work, law easier and community real.
+            Civically's mission is to make [government work](https://civically.io/t/make-government-work), [law easier](https://civically.io/t/make-law-easier) and [community stronger](https://civically.io/t/make-community-stronger).
 
-            If you vote for this petition, %{placeName} will become your [Place on Civically](https://civically.io/t/places-policy/29) when the petition passes.
+            If you vote for this petition, %{placeName} will become your [Place on Civically](https://civically.io/t/places-policy) when the petition passes.
 
             If the petition passes all supporters will earn a [Pioneer Badge](https://civically.io/badges/200/pioneer). For those who successfully invite other supporters:
 
