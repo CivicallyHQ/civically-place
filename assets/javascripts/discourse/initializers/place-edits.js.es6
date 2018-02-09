@@ -55,6 +55,14 @@ export default {
           noContent() {
             this.didSelect();
             this.sendAction('noContent', this.get('filter'));
+          },
+
+          // Allows noneRow to display when select-kit has no contents
+          highlight(rowComputedContent) {
+            if (rowComputedContent) {
+              this.set("highlightedValue", rowComputedContent.value);
+              this._boundaryActionHandler("onHighlight", rowComputedContent);
+            }
           }
         }
       });

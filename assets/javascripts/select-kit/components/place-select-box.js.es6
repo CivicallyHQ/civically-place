@@ -2,6 +2,9 @@ import ComboBoxComponent from "select-kit/components/combo-box";
 import { observes } from 'ember-addons/ember-computed-decorators';
 
 export default ComboBoxComponent.extend({
+  // Allows noneRow to display when select-kit has no contents
+  hasSelection: true,
+
   init() {
     this._super();
     this.appEvents.on('place-select:add-place', () => this.didSelect());
