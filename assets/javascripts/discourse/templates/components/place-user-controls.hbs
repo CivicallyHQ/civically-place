@@ -16,10 +16,12 @@
   <div class="place-set">
     <div class="title">{{i18n 'place.select.title'}}</div>
     <div class="p-text description small">{{i18n 'place.select.description'}}</div>
-    <div class="p-note small">
-      {{i18n 'place.select.note'}}
-      {{d-button action='showPetition' label='place.select.not_listed'}}
-    </div>
+    {{#unless site.mobileView}}
+      <div class="p-note small">
+        {{i18n 'place.select.note'}}
+        {{d-button action='showPetition' label='place.select.not_listed'}}
+      </div>
+    {{/unless}}
     {{#if setPlaceAllowed}}
       <div class="container">
         {{place-select selectedId=selectedId
@@ -38,7 +40,9 @@
     <div class="place-petition">
       <div class="title">{{i18n 'place.select.petition.title'}}</div>
       <div class="p-text description small">{{{i18n 'place.select.petition.description'}}}</div>
-      <div class="p-note small">{{{i18n 'place.select.petition.note'}}}</div>
+      {{#unless site.mobileView}}
+        <div class="p-note small">{{{i18n 'place.select.petition.note'}}}</div>
+      {{/unless}}
       <div class="container">
         <span class="petition-search-title">{{i18n 'place.select.petition.search.title'}}</span>
         <div class="petition-search">

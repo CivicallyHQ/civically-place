@@ -7,6 +7,14 @@
     float: none;
   }
 
+  .controls {
+    width: 100%;
+
+    .select-kit {
+      width: 100%;
+    }
+  }
+
   .extra-controls {
     margin-top: 20px;
 
@@ -18,5 +26,28 @@
 
   .controls .select-kit-body {
     max-width: 100% !important;
+  }
+
+  .place-petition {
+    .container {
+      max-width: 100%;
+    }
+
+    .petition-search {
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .p-list-box {
+      max-width: 100%;
+    }
+
+    .similar-titles {
+      width: calc(100% - 2px);
+    }
+
+    .add-description {
+      margin-top: 10px;
+    }
   }
 }
