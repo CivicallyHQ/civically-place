@@ -17,9 +17,10 @@ en:
           description: "A place is added when 100 people who live there support a petition to add it."
           note: "Help to add your place and earn a <a href='/badges/200/pioneer' class='p-text bronze' target='_blank'>Pioneer</a>, <a href='/badges/201/pathfinder' class='p-text silver' target='_blank'>Pathfinder</a> or <a href='/badges/202/founder' class='p-text gold' target='_blank'>Founder</a> badge."
           search:
-            title: Place Petitions
-            placeholder: "Search place petitions"
-          none: "No current petitions for {{title}}."
+            title: Current Petitions
+            placeholder: "Search petitions"
+            none_title: "No current petitions for {{title}}."
+            none: "No current petitions."
           start: "If there's no petition for your place, you can start one."
           start_btn: "Start Place Petition"
 

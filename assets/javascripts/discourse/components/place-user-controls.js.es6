@@ -45,7 +45,11 @@ export default Ember.Component.extend({
 
   @computed('placeTitle')
   noPetitions(title) {
-    return I18n.t("place.select.petition.none", { title });
+    if (title) {
+      return I18n.t("place.select.petition.search.none_title", { title });
+    } else {
+      return I18n.t("place.select.petition.search.none");
+    }
   },
 
   willDestroyElement() {
