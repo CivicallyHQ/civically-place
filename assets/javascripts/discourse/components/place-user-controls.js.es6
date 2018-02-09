@@ -83,6 +83,15 @@ export default Ember.Component.extend({
     showPetition(filter) {
       if (filter) this.set('placeTitle', filter);
       this.set('showPetition', true);
+
+      Ember.run.scheduleOnce('afterRender', () => {
+        const petitionOffset = $(".place-petition").offset().top;
+        const headerHeight = $('.d-header').height();
+        const offset = petitionOffset - headerHeight + 10;
+        $('html, body').animate({
+          scrollTop: offset
+        }, 500);
+      });
     }
   }
 });
