@@ -14,9 +14,12 @@
   </div>
 {{else}}
   <div class="place-set">
-    <div class="p-text medium">{{i18n 'place.select.title'}}</div>
-    <div class="p-text small">{{{i18n 'place.select.description'}}}</div>
-    <div class="p-note small">{{{i18n 'place.select.note'}}}</div>
+    <div class="title">{{i18n 'place.select.title'}}</div>
+    <div class="p-text description small">{{i18n 'place.select.description'}}</div>
+    <div class="p-note small">
+      {{i18n 'place.select.note'}}
+      {{d-button action='showPetition' label='place.select.not_listed'}}
+    </div>
     {{#if setPlaceAllowed}}
       <div class="container">
         {{place-select selectedId=selectedId
@@ -33,11 +36,11 @@
 {{#if setPlaceAllowed}}
   {{#if showPetition}}
     <div class="place-petition">
-      <div class="p-text medium">{{i18n 'place.select.petition.title'}}</div>
-      <div class="p-text small">{{{i18n 'place.select.petition.description'}}}</div>
+      <div class="title">{{i18n 'place.select.petition.title'}}</div>
+      <div class="p-text description small">{{{i18n 'place.select.petition.description'}}}</div>
       <div class="p-note small">{{{i18n 'place.select.petition.note'}}}</div>
       <div class="container">
-        <span class="p-text small title">{{i18n 'place.select.petition.search.title'}}</span>
+        <span class="petition-search-title">{{i18n 'place.select.petition.search.title'}}</span>
         <div class="petition-search">
           {{input type='text' value=placeTitle placeholder=(i18n 'place.select.petition.search.placeholder')}}
           <div class="icon">
@@ -65,7 +68,8 @@
         {{d-button label='place.select.petition.start_btn' action='addPlace' class="btn btn-primary"}}
       </div>
     </div>
-  {{else}}
-    {{d-button action='showPetition' label='place.select.not_listed'}}
   {{/if}}
 {{/if}}
+{{#unless site.mobileView}}
+  <img class='place-set-image' src='/plugins/civically-place/images/place_set.png'>
+{{/unless}}

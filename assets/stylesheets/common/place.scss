@@ -51,6 +51,31 @@
   max-width: 1000px;
   min-height: 400px;
 
+  span, .p-text:not(.medium, .large), input, li {
+    font-size: 16px;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    letter-spacing: 1.1px;
+  }
+
+  .description {
+    float: left;
+  }
+
+  .place-set {
+    padding-top: 10px;
+  }
+
+  .place-set-image {
+    float: right;
+    clear: both;
+    width: 1000px;
+    height: 250px;
+  }
+
   &.show-petition .place-set {
     padding-bottom: 30px;
   }
@@ -72,7 +97,7 @@
   .place-petition {
     clear: both;
     padding-top: 30px;
-    border-top: 2px solid $tertiary;
+    border-top: 1px solid $tertiary;
 
     .p-note {
       float: right;
@@ -85,6 +110,12 @@
 
     .p-list-box {
       width: 550px;
+
+      .similar-titles {
+        border-radius: 4px;
+        height: 150px;
+        padding: 5px 0;
+      }
     }
 
     .container {
@@ -107,12 +138,18 @@
       }
     }
 
+    .petition-search-title {
+      font-size: 18px;
+      margin-right: 5px;
+    }
+
     .petition-search {
       position: relative;
       display: inline-block;
 
       input {
         padding-right: 30px;
+        border-radius: 4px;
       }
 
       .icon {
@@ -177,24 +214,6 @@
   margin: 0 auto;
 }
 
-.place-add {
-  .p-text a {
-    @extend .p-link
-  }
-
-  .criteria {
-    margin-top: 15px;
-  }
-
-  .location-form {
-    margin: 20px 0;
-  }
-
-  .p-text.small {
-    line-height: 35px;
-  }
-}
-
 ul.user-nav > span {
   float: left;
   margin-right: 5px;
@@ -223,58 +242,6 @@ ul.user-nav > span {
       margin-right: 5px;
       opacity: .65;
     }
-  }
-}
-
-.place-add-similar .similar-result {
-  margin-top: 20px;
-}
-
-.place-add-user {
-  .input-container {
-    margin-top: 20px;
-  }
-
-  .left-input {
-    width: 20%;
-    display: inline-block;
-  }
-
-  .right-input {
-    width: 70%;
-    vertical-align: top;
-    margin-left: 30px;
-  }
-
-  .raw-bio {
-    width: 100%;
-  }
-
-  .d-editor-textarea-wrapper, .d-editor-preview-wrapper {
-    display: inline-block;
-    vertical-align: top;
-    margin: 5px;
-    width: 48%;
-    height: 100%;
-
-    textarea, .d-editor-preview {
-      margin: 0;
-      padding: 5px;
-      width: 98%;
-      height: 150px;
-    }
-  }
-}
-
-.place-add-message + .user-form-composer #reply-control {
-  height: 300px;
-}
-
-.place-add-submit {
-  padding-top: 30px;
-
-  &+ .user-form-composer {
-    display: none;
   }
 }
 
@@ -395,6 +362,10 @@ a.p-link {
   padding: 6px 10px;
   border: 1px solid $tertiary;
   border-radius: 4px;
+
+  .btn {
+    margin: 5px 0;
+  }
 }
 
 .step-title {
