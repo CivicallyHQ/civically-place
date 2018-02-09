@@ -1,6 +1,10 @@
 .place-user-controls {
   padding: 20px 0;
 
+  &.show-petition .place-set {
+    padding-bottom: 20px;
+  }
+
   .p-note {
     margin: 10px 0;
     width: initial;
@@ -44,10 +48,6 @@
 
     .similar-titles {
       width: calc(100% - 2px);
-    }
-
-    .add-description {
-      margin-top: 10px;
     }
   }
 }
