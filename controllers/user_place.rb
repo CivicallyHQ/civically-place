@@ -1,4 +1,6 @@
 class CivicallyPlace::UserPlaceController < ::ApplicationController
+  requires_login
+
   def index
     render nothing: true
   end
