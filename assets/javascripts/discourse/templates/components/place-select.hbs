@@ -6,9 +6,11 @@
                      filterable=true
                      noneRowComponent='none-place-row'
                      noContentLabel=''}}
-  {{d-button label='user.set_place' action='setPlace' disabled=setDisabled class="btn btn-primary"}}
-  {{conditional-loading-spinner size="small" condition=loading}}
   <div class='instructions'>
     {{i18n 'place.select.instructions'}}
   </div>
+</div>
+<div class='controls'>
+  {{d-button label='user.set_place' action='setPlace' disabled=setDisabled class="btn btn-primary"}}
+  {{conditional-loading-spinner size="small" condition=loading}}
 </div>

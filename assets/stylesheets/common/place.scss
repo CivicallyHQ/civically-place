@@ -5,8 +5,14 @@
     margin: 5px 0;
   }
 
-  .controls button {
-    margin: 0 10px;
+  .controls {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 5px;
+
+    button {
+      min-height: 32px;
+    }
   }
 
   .instructions {
@@ -19,12 +25,6 @@
   }
 
   .combobox {
-    height: 32px;
-
-    .select-box-kit-header {
-      height: 30px;
-    }
-
     .select2-arrow b {
       background-position-y: 8px;
       background-position-x: -5px;

@@ -1,10 +1,6 @@
 .place-user-controls {
   padding: 20px 0;
 
-  .place-select .combobox {
-    min-width: initial;
-  }
-
   .p-note {
     margin: 10px 0;
     width: initial;
@@ -18,5 +14,9 @@
       margin-top: 0;
       margin-bottom: 20px;
     }
+  }
+
+  .controls .select-kit-body {
+    max-width: 100% !important;
   }
 }
