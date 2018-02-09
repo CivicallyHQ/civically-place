@@ -46,6 +46,10 @@ export default Ember.Component.extend({
   actions: {
     setPlace() {
       this.sendAction('setPlace', this.get('selectedId'));
+    },
+
+    addPlace(filter) {
+      this.sendAction('addPlace', filter);
     }
   }
 });

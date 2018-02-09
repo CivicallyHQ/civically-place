@@ -25,6 +25,7 @@ export default Ember.Component.extend({
     }
 
     this.set('selectedId', selectedId);
+    this.appEvents.on('place-select:add-place', (f) => this.send('showPetition', f));
   },
 
   @computed('place.joined_at')
@@ -40,6 +41,15 @@ export default Ember.Component.extend({
   @computed('selectedId', 'currentUser.place_category_id', 'setPlaceAllowed')
   setDisabled(selectedId, placeCategoryId, setPlaceAllowed) {
     return !selectedId || selectedId === placeCategoryId || !setPlaceAllowed;
+  },
+
+  @computed('placeTitle')
+  noPetitions(title) {
+    return I18n.t("place.select.petition.none", { title });
+  },
+
+  willDestroyElement() {
+    this.appEvents.off('place-select:add-place', (f) => this.send('showPetition', f));
   },
 
   actions: {
@@ -66,7 +76,8 @@ export default Ember.Component.extend({
       window.location.href = '/w/place-petition';
     },
 
-    showPetition() {
+    showPetition(filter) {
+      if (filter) this.set('placeTitle', filter);
       this.set('showPetition', true);
     }
   }

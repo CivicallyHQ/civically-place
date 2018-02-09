@@ -49,6 +49,15 @@ export default {
           this.queueRerender();
         }
       });
+
+      api.modifyClass('component:select-kit', {
+        actions: {
+          noContent() {
+            this.didSelect();
+            this.sendAction('noContent', this.get('filter'));
+          }
+        }
+      });
     });
 
     Topic.reopen({

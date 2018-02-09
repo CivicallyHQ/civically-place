@@ -25,11 +25,6 @@
       height: 30px;
     }
 
-    a {
-      box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.25);
-      padding: 6px 12px;
-    }
-
     .select2-arrow b {
       background-position-y: 8px;
       background-position-x: -5px;
@@ -37,6 +32,10 @@
 
     .select2-choice {
       border: none;
+    }
+
+    .select-kit-row.hidden {
+      display: none;
     }
   }
 
@@ -50,7 +49,7 @@
   overflow: scroll;
   padding: 0 10px;
   max-width: 1000px;
-  min-height: 50vh;
+  min-height: 400px;
 
   &.show-petition .place-set {
     padding-bottom: 30px;
@@ -62,10 +61,6 @@
 
   .container {
     display: inline-block;
-  }
-
-  .p-text.small {
-    float: left;
   }
 
   .p-note {
@@ -94,11 +89,21 @@
 
     .container {
       margin-top: 10px;
-      float: left;
 
       .title {
         float: none;
         margin-right: 10px;
+      }
+
+      .add-description {
+        display: block;
+        float: none;
+        margin-right: 20px;
+
+        &+ .btn-primary {
+          float: none;
+          display: block;
+        }
       }
     }
 
@@ -115,15 +120,6 @@
         top: 5px;
         right: 10px;
       }
-    }
-  }
-
-  .add-description {
-    display: inline-block;
-    margin-right: 20px;
-
-    &+ .btn-primary {
-      display: block;
     }
   }
 }
