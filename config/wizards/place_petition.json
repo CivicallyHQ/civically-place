@@ -42,6 +42,11 @@
           "key": "place.petition.topic.post",
           "required": true,
           "min_length": "200"
+        },
+        {
+          "id": "tip",
+          "type": "text-only",
+          "key": "place.petition.topic.tip"
         }
       ]
     },

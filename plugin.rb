@@ -143,11 +143,10 @@ DiscourseEvent.on(:locations_ready) do
 end
 
 DiscourseEvent.on(:custom_wizard_ready) do
-  unless PluginStoreRow.exists?(plugin_name: 'custom_wizard', key: 'place_petition')
-    CustomWizard::Wizard.add_wizard(File.read(File.join(
-      Rails.root, 'plugins', 'civically-place', 'config', 'wizards', 'place_petition.json'
-    )))
-  end
+  ## 'migration' to be wrapped in conditional
+  CustomWizard::Wizard.add_wizard(File.read(File.join(
+    Rails.root, 'plugins', 'civically-place', 'config', 'wizards', 'place_petition.json'
+  )))
 
   CustomWizard::Builder.add_step_handler('place_petition') do |builder|
     updater = builder.updater

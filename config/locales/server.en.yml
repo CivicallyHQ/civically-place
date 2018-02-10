@@ -45,8 +45,7 @@ en:
         title: "Petition"
         description: "Compose the first post in the petition. You can edit the words we've added."
         post:
-          label: "Post"
-          placeholder: "You can edit this after you've posted it."
+          placeholder: "Explain why people should vote for your place petition."
           default: |
             This is a petition to add %{placeName} to Civically.
 
@@ -59,7 +58,8 @@ en:
             - The top 4 successful inviters will earn a [Pathfinder Badge](https://civically.io/badges/201/pathfinder)
 
             - The most successful inviter will earn a [Founder Badge](https://civically.io/badges/202/founder)
-
+        tip:
+          description: "<img src='%{base_url}/plugins/civically-user/images/person.svg'><i>You can edit this after you've posted it.</i>"
         error: "There is no valid post in your submission. If the problem persists, please contact help@civically.io"
       submit:
         title: "Submit"
