@@ -35,7 +35,7 @@ const typeUrl = function(type, category) {
       filter = `${url}/l/ratings`;
       break;
     case 'event':
-      filter = `${url}/l/agenda`;
+      filter = `${url}/l/calendar`;
       break;
   };
 
