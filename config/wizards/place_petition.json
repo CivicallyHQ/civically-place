@@ -12,6 +12,7 @@
         {
           "id": "tip",
           "type": "text-only",
+          "image": "/images/emoji/twitter/adult/4.png",
           "key": "place.petition.intro.tip"
         }
       ]
@@ -28,6 +29,7 @@
         {
           "id": "tip",
           "type": "text-only",
+          "image": "/images/emoji/twitter/adult/4.png",
           "key": "place.petition.location.tip"
         }
       ]
@@ -46,6 +48,7 @@
         {
           "id": "tip",
           "type": "text-only",
+          "image": "/images/emoji/twitter/adult/4.png",
           "key": "place.petition.topic.tip"
         }
       ]
@@ -58,6 +61,7 @@
         {
           "id": "tip",
           "type": "text-only",
+          "image": "/images/emoji/twitter/adult/4.png",
           "key": "place.petition.submit.tip"
         }
       ]

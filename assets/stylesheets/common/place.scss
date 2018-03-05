@@ -66,6 +66,10 @@
 
   .place-set {
     padding-top: 10px;
+
+    .description {
+      min-width: 300px;
+    }
   }
 
   .place-set-image {
@@ -307,13 +311,13 @@ a.p-link {
   }
 
   &.large {
-    font-size: 2em;
+    font-size: 1.7em;
     line-height: 40px;
     margin-bottom: 20px;
   }
 
   &.medium {
-    font-size: 1.5em;
+    font-size: 1.4em;
     line-height: 30px;
     margin-bottom: 10px;
   }

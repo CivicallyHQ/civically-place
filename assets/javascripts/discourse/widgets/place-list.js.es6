@@ -25,8 +25,12 @@ export default createWidget('place-list', {
       data: {
         category_id: category.id
       }
-    }).then((items) => {
-      this.state.items = items;
+    }).then((result) => {
+      if (result.topic_list) {
+        this.state.items = result.topic_list.topics;
+      } else {
+        this.state.items = result;
+      }
       this.state.loading = false;
       this.scheduleRerender();
     });

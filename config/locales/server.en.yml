@@ -31,12 +31,12 @@ en:
         title: "Place Petition"
         description: "Petition for your city or town to be added to Civically."
         tip:
-          description: "<img src='%{base_url}/plugins/civically-user/images/person.svg'><i>You can only create one place petition.</i>"
+          description: "*You can only create one place petition.*"
       location:
         title: "Place"
         description: "A place is a city or town. Search for your place, and select a result."
         tip:
-          description: "<img src='%{base_url}/plugins/civically-user/images/person.svg'><i>Your place is where you live.</i>"
+          description: "*Your place is where you live.*"
         validation:
           petition_exists: "A petition already exists for that location: <a href=%{topic_url} target='_blank'>%{topic_title}</a> "
           place_exists: "A place already exists for that location: <a href=%{category_url} target='_blank'>%{category_name}</a>"
@@ -59,13 +59,13 @@ en:
 
             - The most successful inviter will earn a [Founder Badge](https://civically.io/badges/202/founder)
         tip:
-          description: "<img src='%{base_url}/plugins/civically-user/images/person.svg'><i>You can edit this after you've posted it.</i>"
+          description: "*You can edit this after you've posted it.*"
         error: "There is no valid post in your submission. If the problem persists, please contact help@civically.io"
       submit:
         title: "Submit"
         description: "When you submit this form a petition will be created."
         tip:
-          description: "<img src='%{base_url}/plugins/civically-user/images/person.svg'><i>Your petition needs 100 people who live in your city or town to support it.</i>"
+          description: "*Your petition needs 100 people who live in your city or town to support it.*"
         error: "There was a problem submitting your petition. If the problem persits, please contact help@civically.io"
 
     topic:

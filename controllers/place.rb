@@ -1,4 +1,8 @@
+require_dependency 'topic_list_responder'
+
 class CivicallyPlace::PlaceController < ::ApplicationController
+  include TopicListResponder
+
   def index
     render nothing: true
   end
@@ -50,15 +54,15 @@ class CivicallyPlace::PlaceController < ::ApplicationController
   def events
     params.require(:category_id)
 
-    opts = {
-      category_id: params[:category_id],
-      period: 'upcoming',
+    user = current_user
+    list_opts = {
+      category: params[:category_id],
       limit: 4
     }
 
-    events = CalendarEvents::List.category(opts)
+    list = TopicQuery.new(user, list_opts).list_agenda
 
-    render_serialized(events, CalendarEvents::EventSerializer)
+    respond_with_list(list)
   end
 
   def petitions

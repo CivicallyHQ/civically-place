@@ -37,7 +37,7 @@ export default createWidget('civically-place', {
   },
 
   html(attrs, state) {
-    const category = this.attrs.category;
+    const category = attrs.category;
     if (!category || !category.place) return;
 
     let contents = [];
