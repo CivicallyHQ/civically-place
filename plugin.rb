@@ -1,4 +1,5 @@
 # name: civically-place
+# app: internal
 # about: Provides the place logic for Civically
 # version: 0.1
 # dependencies: discourse-locations, civically-navigation, discourse-layouts, civically-petition, discourse-search-addons

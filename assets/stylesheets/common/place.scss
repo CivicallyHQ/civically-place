@@ -1,5 +1,6 @@
 .place-select {
-  margin: 15px 0;
+  margin-top: 15px;
+  display: inline-block;
 
   .title {
     margin: 5px 0;
@@ -57,11 +58,11 @@
 
   .title {
     font-size: 24px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 
   .description {
-    float: left;
+    display: inline-block;
   }
 
   .place-set {
@@ -84,17 +85,12 @@
   }
 
   .p-text, .container {
-    max-width: 600px;
-  }
-
-  .container {
-    display: inline-block;
+    max-width: 800px;;
   }
 
   .p-note {
-    float: right;
+    margin-top: 20px;
     width: 300px;
-    margin-left: 40px;
   }
 
   .place-petition {
@@ -102,11 +98,7 @@
     padding-top: 40px;
     border-top: 1px solid $tertiary;
 
-    .p-note {
-      float: right;
-    }
-
-    .p-text {
+    .p-text:not(.p-note) {
       margin-bottom: 10px;
     }
 

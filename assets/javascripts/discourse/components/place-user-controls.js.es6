@@ -52,6 +52,11 @@ export default Ember.Component.extend({
     }
   },
 
+  @computed('showPetition')
+  showNotListedNote(showPetition) {
+    return !this.site.mobileView && !showPetition;
+  },
+
   willDestroyElement() {
     this.appEvents.off('place-select:add-place', (f) => this.send('showPetition', f));
   },

@@ -1,27 +1,14 @@
-import { createWidget } from 'discourse/widgets/widget';
+import { createAppWidget } from 'discourse/plugins/civically-app/discourse/widgets/app-widget';
 import Place from '../models/place';
 import { h } from 'virtual-dom';
 import { buildTitle } from 'discourse/plugins/civically-layout/discourse/lib/utilities';
 
-export default createWidget('civically-place', {
-  tagName: 'div',
-  buildKey: () => 'civically-place',
-
+export default createAppWidget('civically-place', {
   defaultState() {
     return {
       currentType: 'event',
       place: null
     };
-  },
-
-  buildClasses() {
-    let classes = 'civically-place widget-container';
-
-    const category = this.attrs.category;
-    if (!category || !category.place) {
-      classes += ' hidden';
-    }
-    return classes;
   },
 
   showList(currentType) {
@@ -36,7 +23,7 @@ export default createWidget('civically-place', {
     });
   },
 
-  html(attrs, state) {
+  contents(attrs, state) {
     const category = attrs.category;
     if (!category || !category.place) return;
 
@@ -47,7 +34,7 @@ export default createWidget('civically-place', {
       this.createPlace(category.id);
     } else {
       contents.push(
-        h('div.widget-label', category.name),
+        h('div.app-title', category.name),
         h('div.widget-multi-title', [
           buildTitle(this, 'place', 'event'),
           buildTitle(this, 'place', 'group'),

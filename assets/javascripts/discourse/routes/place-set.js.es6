@@ -8,5 +8,9 @@ export default Ember.Route.extend({
     } else {
       return null;
     }
+  },
+
+  renderTemplate() {
+    this.render('sidebar-wrapper');
   }
 });
