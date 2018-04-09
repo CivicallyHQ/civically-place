@@ -1,7 +1,7 @@
 import { createAppWidget } from 'discourse/plugins/civically-app/discourse/widgets/app-widget';
 import Place from '../models/place';
 import { h } from 'virtual-dom';
-import { buildTitle } from 'discourse/plugins/civically-layout/discourse/lib/utilities';
+import { buildTitle } from 'discourse/plugins/civically-navigation/discourse/lib/utilities';
 
 export default createAppWidget('civically-place', {
   defaultState() {
@@ -23,8 +23,10 @@ export default createAppWidget('civically-place', {
     });
   },
 
-  contents(attrs, state) {
-    const category = attrs.category;
+  contents() {
+    const { category } = this.attrs;
+    const state = this.state;
+
     if (!category || !category.place) return;
 
     let contents = [];

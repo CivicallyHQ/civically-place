@@ -3,11 +3,11 @@
   "name": "Place Petition",
   "background": "#d1f0ff",
   "save_submissions": true,
+  "theme":"Civically Wizards",
   "steps": [
     {
       "id": "intro",
       "key": "place.petition.intro",
-      "banner": "/plugins/civically-place/images/petition_start.png",
       "fields": [
         {
           "id": "tip",
@@ -56,7 +56,6 @@
     {
       "id": "submit",
       "key": "place.petition.submit",
-      "banner": "/plugins/civically-place/images/ballot_box.png",
       "fields": [
         {
           "id": "tip",

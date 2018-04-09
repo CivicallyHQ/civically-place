@@ -7,7 +7,7 @@ class CivicallyPlace::PlaceManager
     geo_location = opts[:geo_location]
     name = geo_location['name']
     country = geo_location['country']
-    title = I18n.t("place.petition_topic.title", place: name, country: country)
+    title = I18n.t("petition.place.title", place: name, country: country)
     category_id = SiteSetting.place_petition_category_id
     identical = false
 
@@ -27,7 +27,7 @@ class CivicallyPlace::PlaceManager
       skip_validations: true,
       topic_custom_fields: {
         petition: true,
-        petition_type: 'place',
+        petition_id: 'place',
         petition_status: 'open'
       }
     }
@@ -135,7 +135,7 @@ class CivicallyPlace::PlaceManager
 
     topic.category_id = category.id
     topic.custom_fields.delete('petition')
-    topic.custom_fields.delete('petition_type')
+    topic.custom_fields.delete('petition_id')
     topic.custom_fields.delete('petition_status')
     topic.custom_fields.delete('location')
     topic.save!
