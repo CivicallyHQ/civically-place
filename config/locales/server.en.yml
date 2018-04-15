@@ -28,12 +28,6 @@ en:
   petition:
     place:
       title: "%{place}, %{country}"
-      resolution: If you vote for this petition, %{placeName} will become your [Place on Civically](https://civically.io/t/places-policy) when the petition passes.
-      points: |
-        If the petition passes all supporters will earn a [Pioneer Badge](https://civically.io/badges/200/pioneer).
-        For those who successfully invite other supporters:
-        - The top 4 successful inviters will earn a [Pathfinder Badge](https://civically.io/badges/201/pathfinder)
-        - The most successful inviter will earn a [Founder Badge](https://civically.io/badges/202/founder)
 
   place:
     petition:
@@ -59,22 +53,24 @@ en:
           place_exists: "A place already exists for that location: <a href=%{category_url} target='_blank'>%{category_name}</a>"
         error: "There is no valid location in your submission. If the problem persists, please contact help@civically.io"
       topic:
-        title: "Petition Post"
+        title: "Petition"
         description: |
-          The Petition Post is your chance to say something about the civic issues in your town or city.
+          A place petition is a great chance to say something about the civic issues in your town or city.
           - Do you think your government could work better?
           - Do you want access to online legal help?
-          - Do you want to improve community spirit?
+          - Do you want to improve community spirit in your town or city?
         post:
-          placeholder: "Write here your post here."
+          label: "Petition"
+          placeholder: "Write here."
         tip:
           description: "*You can edit this after you've posted it.*"
         error: "There is no valid post in your submission. If the problem persists, please contact help@civically.io"
       submit:
-        title: "Submit!"
-        description: "When you submit this form a petition :ballot_box: will be created."
+        title: "Submit"
+        description: |
+          When you submit this form a petition :ballot_box: will be created. Your petition needs at least **100 people** who live in your city or town to support it.
         tip:
-          description: "Your petition needs 100 people who live in your city or town to support it."
+          description: "*Thanks for taking the time to start this petition!*"
         error: "There was a problem submitting your petition. If the problem persits, please contact help@civically.io"
 
     topic:

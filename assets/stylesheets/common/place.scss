@@ -163,51 +163,6 @@
   }
 }
 
-.place-info {
-  max-width: 700px;
-  display: inline-block;
-  margin-top: 30px;
-  padding: 20px;
-  background-color: $secondary;
-  border: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.25);
-
-  .title {
-    font-size: 20px;
-    display: inline-block;
-    margin-right: 15px;
-  }
-
-  .status {
-    display: inline-block;
-    margin-right: 15px;
-
-    .label, .active, .founding {
-      display: inline-block;
-    }
-  }
-
-  .user-count {
-    display: inline-block;
-  }
-
-  .inactive-info {
-    margin-bottom: 20px;
-    line-height: 25px;
-  }
-
-  .map-component {
-    margin-top: 20px;
-    width: auto;
-  }
-}
-
-.place-status {
-  padding: 10px;
-  width: 550px;
-  margin: 0 auto;
-}
-
 ul.user-nav > span {
   float: left;
   margin-right: 5px;

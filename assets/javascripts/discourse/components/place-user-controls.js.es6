@@ -1,5 +1,4 @@
 import { default as computed, on } from 'ember-addons/ember-computed-decorators';
-import Place from '../models/place';
 import Category from 'discourse/models/category';
 import DiscourseURL from 'discourse/lib/url';
 
@@ -9,6 +8,7 @@ export default Ember.Component.extend({
   showPetition: false,
   searchingPetitions: false,
   placeTitle: '',
+  place: Ember.computed.alias('currentUser.place'),
 
   @on('init')
   initSelectedId() {
@@ -28,9 +28,14 @@ export default Ember.Component.extend({
     this.appEvents.on('place-select:add-place', (f) => this.send('showPetition', f));
   },
 
-  @computed('place.joined_at')
+  @computed('currentUser.place_joined_at')
   updatePlaceAllowed(joinedAt) {
     return joinedAt && moment(joinedAt).diff(moment().format(), 'days') >= Discourse.SiteSettings.place_change_min;
+  },
+
+  @computed('currentUser.place_joined_at')
+  nextTime(joinedAt) {
+    return moment(joinedAt).add(Discourse.SiteSettings.place_change_min, 'days');
   },
 
   @computed('place', 'updatePlaceAllowed')
@@ -68,15 +73,24 @@ export default Ember.Component.extend({
       if (!selectedId || selectedId === placeCategoryId) return;
 
       this.set('loading', true);
-      Place.set(selectedId).then((result) => {
+
+      Category.setPlace(selectedId).then((result) => {
         this.set('loading', false);
+
         if (result.error) {
           return bootbox.alert(result.error);
         }
 
-        Discourse.User.current().set('place_category_id', Number(selectedId));
+        const categoryId = Number(selectedId);
+        const category = Category.findById(categoryId);
+
+        Discourse.User.current().setProperties({
+          place_category_id: categoryId,
+          category
+        });
+
         if (this.get('routeAfterSet')) {
-          DiscourseURL.routeTo(Category.findById(selectedId).get('url'));
+          DiscourseURL.routeTo(category.get('url'));
         }
       });
     },
@@ -93,6 +107,7 @@ export default Ember.Component.extend({
         const petitionOffset = $(".place-petition").offset().top;
         const headerHeight = $('.d-header').height();
         const offset = petitionOffset - headerHeight + 10;
+
         $('html, body').animate({
           scrollTop: offset
         }, 500);

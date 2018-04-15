@@ -1,4 +1,4 @@
-{{#if category.place}}
+{{#if category.is_place}}
   <section class="field">
     <label>
       {{input type='checkbox' checked=category.custom_fields.place_user}}
@@ -9,7 +9,7 @@
   <section class="field">
     {{i18n 'place.user_count_min.label'}}
     <label>
-      {{input type="number" value=category.custom_fields.place_user_count_min}}
+      {{input type="number" value=category.custom_fields.user_count_min}}
     </label>
   </section>
 {{/if}}

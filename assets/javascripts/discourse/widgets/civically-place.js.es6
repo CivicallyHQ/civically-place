@@ -1,68 +1,47 @@
 import { createAppWidget } from 'discourse/plugins/civically-app/discourse/widgets/app-widget';
-import Place from '../models/place';
 import { h } from 'virtual-dom';
 import { buildTitle } from 'discourse/plugins/civically-navigation/discourse/lib/utilities';
 
 export default createAppWidget('civically-place', {
   defaultState() {
     return {
-      currentType: 'event',
-      place: null
+      currentListType: 'event'
     };
   },
 
-  showList(currentType) {
-    this.state.currentType = currentType;
+  showList(currentListType) {
+    this.state.currentListType = currentListType;
     this.scheduleRerender();
   },
 
-  createPlace(categoryId) {
-    Place.create({ category_id: categoryId }).then((result) => {
-      this.state.place = result;
-      this.scheduleRerender();
-    });
-  },
-
   contents() {
-    const { category } = this.attrs;
+    const { category, editing } = this.attrs;
+    const user = this.currentUser;
     const state = this.state;
 
-    if (!category || !category.place) return;
+    if (!category || !category.is_place) return;
 
+    const userPlace = user.get('place');
+    const listType = state.currentListType;
     let contents = [];
 
-    if (!state.place || state.place.category_id !== category.id) {
-      contents.push(h('div.spinner.small'));
-      this.createPlace(category.id);
-    } else {
-      contents.push(
-        h('div.app-title', category.name),
-        h('div.widget-multi-title', [
-          buildTitle(this, 'place', 'event'),
-          buildTitle(this, 'place', 'group'),
-          buildTitle(this, 'place', 'rating'),
-          buildTitle(this, 'place', 'petition')
-        ])
-      );
+    contents.push(
+      h('div.app-title', category.place_name),
+      h('div.widget-multi-title', [
+        buildTitle(this, 'place', 'event'),
+        buildTitle(this, 'place', 'group'),
+        buildTitle(this, 'place', 'rating'),
+        buildTitle(this, 'place', 'petition')
+      ])
+    );
 
-      let listAttrs = {
-        category,
-        type: state.currentType,
-        currentPlace: state.place,
-        userPlace: this.attrs.userPlace
-      };
-
-      contents.push(this.attach(`place-list`, listAttrs));
-
-      if (attrs.editing) {
-        contents.push(this.attach('app-edit', {
-          side: attrs.side,
-          index: attrs.index,
-          name: 'civically-place',
-          noRemove: true
-        }));
-      }
+    let listAttrs = {
+      category,
+      listType,
+      userPlace
     };
+
+    contents.push(this.attach(`place-list`, listAttrs));
 
     return contents;
   }

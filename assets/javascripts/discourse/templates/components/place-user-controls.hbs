@@ -4,11 +4,11 @@
       {{i18n 'user.update_place_period' changeMin=siteSettings.place_change_min}}
     </div>
     <div class="p-text small">
-      {{{i18n 'user.update_place_set' place=place.category.name setTime=(place-time place.joined_at)}}}
+      {{{i18n 'user.update_place_set' place=place.name setTime=(place-time currentUser.place_joined_at)}}}
     </div>
     {{#unless updatePlaceAllowed}}
       <div class="p-text small">
-        {{{i18n 'user.update_place_next' nextTime=(place-time place.nextTime)}}}
+        {{{i18n 'user.update_place_next' nextTime=(place-time nextTime)}}}
       </div>
     {{/unless}}
   </div>

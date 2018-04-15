@@ -13,7 +13,7 @@ const CREATE_URL = {
   group: '/w/group-petition'
 };
 
-const typeUrl = function(type, category) {
+const listTypeUrl = function(listType, category) {
   let url = '/c/';
 
   if (category.parentCategory) {
@@ -24,7 +24,7 @@ const typeUrl = function(type, category) {
 
   let filter = '';
 
-  switch(type) {
+  switch(listType) {
     case 'petition':
       filter = `${url}/l/petitions`;
       break;
@@ -46,20 +46,20 @@ export default createWidget('place-list-controls', {
   tagName: 'div.widget-list-controls',
 
   html(attrs) {
-    const type = attrs.type;
+    const listType = attrs.listType;
     const user = this.currentUser;
     const category = attrs.category;
-    const moreLink = typeUrl(type, category);
+    const moreLink = listTypeUrl(listType, category);
 
     let links = [this.attach('link', {
       className: 'p-link',
       href: moreLink,
-      label: 'civically.list.more'
+      label: 'more'
     })];
 
-    if (user && HAS_CREATE.indexOf(type) > -1) {
+    if (user && HAS_CREATE.indexOf(listType) > -1) {
       links.push(this.attach('link', {
-        label: `place.${type}.create`,
+        label: `place.${listType}.create`,
         action: 'create',
         className: 'pull-right p-link'
       }));
@@ -70,10 +70,9 @@ export default createWidget('place-list-controls', {
 
   create() {
     const attrs = this.attrs;
-    const type = attrs.type;
-    const currentPlace = attrs.currentPlace;
+    const listType = attrs.listType;
     const category = attrs.category;
-    const permissions = CREATE_PERMISSIONS[type];
+    const permissions = CREATE_PERMISSIONS[listType];
     let notPermitted = [];
 
     permissions.forEach((p) => {
@@ -86,10 +85,10 @@ export default createWidget('place-list-controls', {
       notPermitted.forEach((key) => {
         message += '<li>';
         message += I18n.t(`place.list.not_permitted.${key}`, {
-          place: currentPlace.category.name
+          place: category.place_name
         });
-        if (key === 'moderator' && currentPlace.moderator_election_url) {
-          message += ` <a href='${currentPlace.moderator_election_url}' class='p-link' target='_blank'>
+        if (key === 'moderator' && category.moderator_election_url) {
+          message += ` <a href='${category.moderator_election_url}' class='p-link' target='_blank'>
                       ${I18n.t('place.list.not_permitted.moderator_link')}</a>`;
         }
         message += '</li>';
@@ -98,8 +97,8 @@ export default createWidget('place-list-controls', {
       return bootbox.alert(message);
     }
 
-    if (CREATE_URL[type]) {
-      return window.location.href = CREATE_URL[type];
+    if (CREATE_URL[listType]) {
+      return window.location.href = CREATE_URL[listType];
     }
 
     const controller = getOwner(this).lookup('controller:composer');
@@ -109,7 +108,7 @@ export default createWidget('place-list-controls', {
       draftKey: 'new_topic',
       draftSequence: 0,
       addProperties: {
-        subtype: type
+        sublistType: listType
       }
     };
 

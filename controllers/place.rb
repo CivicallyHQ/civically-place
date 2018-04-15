@@ -18,7 +18,7 @@ class CivicallyPlace::PlaceController < ::ApplicationController
     if params[:opts] && params[:opts][:can_join]
       categories = categories.where("categories.id in (
         SELECT category_id FROM category_custom_fields
-        WHERE name = 'place_can_join'
+        WHERE name = 'can_join'
         AND value::boolean IS TRUE
       )")
     end
@@ -31,7 +31,7 @@ class CivicallyPlace::PlaceController < ::ApplicationController
   def get
     params.require(:category_id)
 
-    place = CivicallyPlace::Place.new(params[:category_id], current_user)
+    place = CivicallyPlace::Place.find(params[:category_id])
 
     if place.can_join
       render_serialized(place, CivicallyPlace::PlaceUserSerializer)

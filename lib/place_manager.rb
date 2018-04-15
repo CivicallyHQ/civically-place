@@ -1,3 +1,17 @@
+DiscourseEvent.on(:vote_added) do |user, topic|
+  if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i
+    user.custom_fields['place_topic_id'] = topic.id
+    CivicallyApp::App.update(user, 'civically-site', enabled: true)
+    CivicallyPlace::User.add_pass_petition_to_checklist(user)
+  end
+end
+
+DiscourseEvent.on(:vote_removed) do |user, topic|
+  if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i
+    user.custom_fields['place_topic_id'] = nil
+  end
+end
+
 class PetitionTopicResult < ::NewPostResult; end
 
 class CivicallyPlace::PlaceManager
@@ -68,18 +82,17 @@ class CivicallyPlace::PlaceManager
   end
 
   def self.update_user_count(category_id, count)
-    place = CivicallyPlace::Place.new(category_id)
-    category = place.category
+    place = CivicallyPlace::Place.find(category_id)
     user_count = (place.user_count || 0) + count
 
-    category.custom_fields['place_user_count'] = user_count
-    category.save_custom_fields(true)
+    place.custom_fields['user_count'] = user_count
+    place.save_custom_fields(true)
 
     if user_count = place.user_count_min
       SystemMessage.create_from_system_user(Discourse.site_contact_user,
         :place_reached_user_count_min,
-          place: category.name,
-          path: category.url
+          place: place.name,
+          path: place.url
       )
     end
 
@@ -100,15 +113,22 @@ class CivicallyPlace::PlaceManager
         slug: countrycode,
         permissions: { everyone: 2 },
         custom_fields: {
-          'place': true,
-          'place_can_join': false,
+          'is_place': true,
+          'place_type': 'country',
+          'can_join': false,
           'location': {
             'name': geo_location['country'],
             'geo_location': {
               'boundingbox': bounding_box,
               'countrycode': countrycode,
             }
-          }.to_json
+          }.to_json,
+          'topic_list_social': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+          'topic_list_thumbnail': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+          'topic_list_excerpt': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+          'topic_list_action': "latest|unread|top|new|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+          'topic_list_thumbnail_width': 600,
+          'topic_list_thumbnail_height': 300
         }
       )
 
@@ -124,8 +144,15 @@ class CivicallyPlace::PlaceManager
       permissions: { everyone: 2 },
       parent_category_id: parent_category.id,
       custom_fields: {
-        'place': true,
-        'place_can_join': true
+        'is_place': true,
+        'can_join': true,
+        'place_type': 'town',
+        'topic_list_social': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+        'topic_list_thumbnail': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+        'topic_list_excerpt': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+        'topic_list_action': "latest|unread|top|new|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+        'topic_list_thumbnail_width': 600,
+        'topic_list_thumbnail_height': 300
       }
     )
 
@@ -197,23 +224,25 @@ class CivicallyPlace::PlaceManager
         user_errors.push(user: user.username, error: user_result[:error])
       end
 
-      score = 0
+      points = 0
 
       Invite.where(invited_by_id: user.id).where.not(redeemed_at: nil).each do |invite|
         if invite.user_id && supporters.select { |s| s.id == invite.user_id }.any?
-          score += 1
+          points += 1
         end
       end
 
       if topic.user_id == user.id
-        score += 3
+        points += 3
       end
 
-      user.custom_fields['place_score'] = score
+      existing_points = user.place_points
+      existing_points[category.id] = points
+      user.custom_fields['place_points'] = existing_points
       user.save_custom_fields(true)
     end
 
-    ranked_supporters = topic.petition_supporters.sort_by { |u| [u.place_score, u.created_at] }.reverse!
+    ranked_supporters = topic.petition_supporters.sort_by { |u| [u.place_points, u.created_at] }.reverse!
 
     ranked_supporters.each_with_index do |user, index|
       if index === 0
@@ -250,10 +279,12 @@ class CivicallyPlace::PlaceManager
   end
 
   def self.create_category(opts)
-    Category.create(opts.merge(user: Discourse.system_user,
-                               color: SecureRandom.hex(3),
-                               allow_badges: true,
-                               text_color: 'FFFFF',
-                               topic_featured_link_allowed: true))
+    Category.create(opts.merge(
+      user: Discourse.system_user,
+      color: SecureRandom.hex(3),
+      allow_badges: true,
+      text_color: 'FFFFF',
+      topic_featured_link_allowed: true
+    ))
   end
 end

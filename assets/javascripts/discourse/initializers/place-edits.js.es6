@@ -1,45 +1,51 @@
-import DiscoveryRoute from 'discourse/routes/discovery';
 import DiscoveryController from 'discourse/controllers/discovery';
-import DiscoveryTopicsController from 'discourse/controllers/discovery/topics';
-import DiscourseURL from 'discourse/lib/url';
-import Place from '../models/place';
-import Topic from 'discourse/models/topic';
 import TopicController from 'discourse/controllers/topic';
+import Category from 'discourse/models/category';
+import PlaceMixin from '../mixins/place';
+import DiscourseURL from 'discourse/lib/url';
 import { placeUrl, } from '../lib/place-utilities';
-import { observes, on } from 'ember-addons/ember-computed-decorators';
+import { ajax } from 'discourse/lib/ajax';
+import { default as computed, observes, on } from 'ember-addons/ember-computed-decorators';
 import { withPluginApi } from 'discourse/lib/plugin-api';
-import UserPlaceMixin from '../mixins/user-place';
 
 export default {
   name: 'place-edits',
   initialize(){
 
-    DiscoveryController.reopen(UserPlaceMixin);
-    TopicController.reopen(UserPlaceMixin);
+    DiscoveryController.reopen(PlaceMixin);
+    TopicController.reopen(PlaceMixin);
 
-    DiscoveryTopicsController.reopen({
-      canCreateTopicOnCategory: false,
-
-      @observes('canCreateTopicOnCategory')
-      resetCanCreateTOpicOnCategory() {
-        this.set('canCreateTopicOnCategory', false);
+    Category.reopenClass({
+      setPlace(category_id, user_id = null) {
+        let data = { category_id };
+        if (user_id) data['user_id'] = user_id;
+        return ajax('/place/set', { type: 'POST', data });
       }
-    });
-
-    DiscoveryRoute.reopen({
-      redirect() {
-        const user = Discourse.User.current();
-
-        if (user && user.admin) return;
-
-        const path = window.location.pathname;
-        if (path === "/" || path === "/categories") {
-          DiscourseURL.routeTo(placeUrl(user));
-        }
-      }
-    });
+    })
 
     withPluginApi('0.8.12', api => {
+      api.modifyClass('controller:discovery/topics', {
+        canCreateTopicOnCategory: false,
+
+        @observes('canCreateTopicOnCategory')
+        resetCanCreateTOpicOnCategory() {
+          this.set('canCreateTopicOnCategory', false);
+        }
+      });
+
+      api.modifyClass('route:discovery', {
+        redirect() {
+          const user = Discourse.User.current();
+
+          if (user && user.admin) return;
+
+          const path = window.location.pathname;
+          if (path === "/" || path === "/categories") {
+            DiscourseURL.routeTo(placeUrl(user));
+          }
+        }
+      })
+
       api.modifyClass('component:site-header', {
         @on('init')
         @observes('currentUser.place_category_id')
@@ -66,25 +72,6 @@ export default {
           }
         }
       });
-    });
-
-    Topic.reopen({
-      @observes('category')
-      setupPlace() {
-        const category = this.get('category');
-        const user = Discourse.User.current();
-
-        if (!category || !user) return;
-
-        if (category.place_can_join && user.place_category_id === category.id) {
-          Place.create({ category_id: category.id }).then((result) => {
-            this.setProperties({
-              'place': result,
-              'showActionBox': true
-            });
-          });
-        }
-      }
     });
   }
 };

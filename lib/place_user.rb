@@ -1,6 +1,28 @@
+User.register_custom_field_type('place_category_id', :integer)
+User.register_custom_field_type('place_topic_id', :integer)
+User.register_custom_field_type('place_points', :json)
+
 UserHistory.actions[:place] = 1001
 
-User.class_eval do
+require_dependency 'user'
+class ::User
+
+  def place
+    if place_category_id
+      @place ||= CivicallyPlace::Place.find(place_category_id)
+    else
+      nil
+    end
+  end
+
+  def place_joined_at
+    if place_category_id
+      @place_joined_at ||= CivicallyPlace::Place.joined_at(self.id)
+    else
+      nil
+    end
+  end
+
   def place_category_id
     if self.custom_fields['place_category_id']
       self.custom_fields['place_category_id']
@@ -9,49 +31,51 @@ User.class_eval do
     end
   end
 
-  def place_score
-    if self.custom_fields['place_score']
-      self.custom_fields['place_score'].to_i
+  ## User's points for their current place
+  def place_points
+    if self.custom_fields['place_points']
+      points = self.custom_fields['place_points']
+      points[place_category_id.to_s]
     else
-      0
+      {}
     end
   end
 
   def self.update_place_category_id(user, category_id, force = nil)
-    place = CivicallyPlace::Place.new(category_id, user)
+    place = CivicallyPlace::Place.find(category_id)
 
     if !place
       return { error: I18n.t('user.errors.place_not_found') }
     end
 
-    if place.member
+    if place.id === user.place_category_id
       return { error: I18n.t('user.errors.place_not_changed') }
     end
 
+    is_first_place = false
+
     if user.place_category_id
-      user_place = CivicallyPlace::Place.new(user.place_category_id, user)
+      user_place = CivicallyPlace::Place.find(user.place_category_id)
+      joined_at = CivicallyPlace::Place.joined_at(user.id)
       change_min = SiteSetting.place_change_min.to_i
 
-      if !force && (Time.now.to_date - user_place.joined_at).round < change_min
-        next_time = (user_place.joined_at + change_min).strftime("%B %d")
-        past_time = user_place.joined_at.strftime("%B %d")
+      if !force && (Time.now.to_date - joined_at).round < change_min
+        next_time = (joined_at + change_min).strftime("%B %d")
+        past_time = joined_at.strftime("%B %d")
 
         return {
           error: I18n.t('user.errors.place_set_limit',
             past_time: past_time,
-            place: user_place.category.name,
+            place: user_place.name,
             next_time: next_time,
             change_min: change_min),
           status: 403
         }
       end
 
-      CivicallyPlace::PlaceManager.update_user_count(user_place.category.id, -1)
+      CivicallyPlace::PlaceManager.update_user_count(user_place.id, -1)
     else
-      CivicallyChecklist::Checklist.update_item(user, 'set_place', checked: true)
-      CivicallyChecklist::Checklist.update_item(user, 'set_place', active: false)
-      CivicallyChecklist::Checklist.update_item(user, 'pass_petition', checked: true)
-      CivicallyChecklist::Checklist.update_item(user, 'pass_petition', active: false)
+      is_first_place = true
     end
 
     CivicallyPlace::PlaceManager.update_user_count(category_id, 1)
@@ -69,7 +93,20 @@ User.class_eval do
     user.custom_fields['place_category_id'] = category_id
     user.save_custom_fields(true)
 
+    after_first_place_set(user) if is_first_place
+
     { place_category_id: user.place_category_id }
+  end
+
+  def self.after_first_place_set(user)
+    CivicallyChecklist::Checklist.update_item(user, 'set_place', checked: true)
+    CivicallyChecklist::Checklist.update_item(user, 'set_place', active: false)
+    CivicallyChecklist::Checklist.update_item(user, 'pass_petition', checked: true)
+    CivicallyChecklist::Checklist.update_item(user, 'pass_petition', active: false)
+
+    CivicallyApp::App.update(user, 'civically-site', enabled: true)
+    CivicallyApp::App.update(user, 'civically-navigation', enabled: true)
+    CivicallyApp::App.update(user, 'civically-place', enabled: true)
   end
 end
 

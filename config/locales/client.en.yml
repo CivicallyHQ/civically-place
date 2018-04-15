@@ -9,6 +9,15 @@ en:
     map:
       search_placeholder: "Place"
 
+    petition:
+      place:
+        info: |
+          If you vote for this petition **%{placeName}** will become your [Place on Civically](https://civically.io/t/places-policy) when the petition passes.
+
+          If the petition passes all supporters will earn a [Pioneer Badge](https://civically.io/badges/200/pioneer). For those who successfully invite other supporters:
+          - The top 4 successful inviters will earn a [Pathfinder Badge](https://civically.io/badges/201/pathfinder)
+          - The most successful inviter will earn a [Founder Badge](https://civically.io/badges/202/founder)
+
     place:
       select:
         title: "Start by setting your place."
@@ -76,7 +85,7 @@ en:
         create: "New Rating"
 
       list:
-        none: "No {{type}} for {{place}}."
+        none: "No {{listType}} for {{place}}."
         not_permitted:
           intro: "You can't do that at the moment"
           moderator: "{{place}} needs at least one moderator."

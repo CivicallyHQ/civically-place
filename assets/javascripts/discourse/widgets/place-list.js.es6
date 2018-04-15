@@ -5,7 +5,7 @@ import { h } from 'virtual-dom';
 
 export default createWidget('place-list', {
   tagName: 'div.widget-list',
-  buildKey: (attrs) => `${attrs.type}-event-list`,
+  buildKey: (attrs) => `${attrs.listType}-event-list`,
 
   defaultState() {
     return {
@@ -14,14 +14,14 @@ export default createWidget('place-list', {
     };
   },
 
-  getItems(category, type) {
+  getItems(category, listType) {
     if (!category) {
       this.state.loading = false;
       this.scheduleRerender();
       return;
     }
 
-    ajax(`/place/${type}s`, {
+    ajax(`/place/${listType}s`, {
       data: {
         category_id: category.id
       }
@@ -40,40 +40,39 @@ export default createWidget('place-list', {
     const items = state.items;
     const loading = state.loading;
     const category = attrs.category;
-    const type = attrs.type;
-    const currentPlace = attrs.currentPlace;
-    const member = currentPlace.member;
-    const moderators = currentPlace.category.moderators;
+    const listType = attrs.listType;
+
+    const user = this.currentUser;
+    const isMember = category.id === user.place_category_id;
+    const moderators = category.moderators;
     const moderator = moderators && moderators.length > 2;
 
     let contents = [];
 
     if (loading) {
-      this.getItems(category, type);
+      this.getItems(category, listType);
       contents.push(h('div.spinner.small'));
     } else {
-      let listContents = h('div.no-items', I18n.t('place.list.none', { type, place: category.name }));
+      let listContents = h('div.no-items', I18n.t('place.list.none', { listType, place: category.place_name }));
 
       if (items && items.length > 0) {
         listContents = items.map((item) => {
           return this.attach(`place-list-item`, {
             item,
-            type
+            listType
           });
         });
       };
 
-      clearUnreadList(this, type);
+      clearUnreadList(this, listType);
 
       contents.push(h('ul', listContents));
     }
 
     contents.push(this.attach('place-list-controls', {
       category,
-      currentPlace,
-      member,
       moderator,
-      type,
+      listType,
     }));
 
     return contents;

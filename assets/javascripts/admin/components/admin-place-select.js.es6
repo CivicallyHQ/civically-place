@@ -1,4 +1,4 @@
-import Place from '../../discourse/models/place';
+import Category from 'discourse/models/category';
 import { on } from 'ember-addons/ember-computed-decorators';
 
 export default Ember.Component.extend({
@@ -22,7 +22,7 @@ export default Ember.Component.extend({
       if (!selectedId || selectedId === placeCategoryId) return;
 
       this.set('loading', true);
-      Place.set(selectedId, userId).then((result) => {
+      Category.setPlace(selectedId, userId).then((result) => {
         this.set('loading', false);
         if (result.error) {
           return bootbox.alert(result.error);

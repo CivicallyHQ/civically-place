@@ -182,16 +182,6 @@ DiscourseEvent.on(:custom_wizard_ready) do
 end
 
 after_initialize do
-  Category.register_custom_field_type('place', :boolean)
-  Category.register_custom_field_type('place_can_join', :boolean)
-  Category.register_custom_field_type('place_user_count', :integer)
-  Category.register_custom_field_type('place_user_count_min', :integer)
-  Category.register_custom_field_type('place_location', :json)
-  User.register_custom_field_type('place_category_id', :integer)
-  User.register_custom_field_type('place_topic_id', :integer)
-  User.register_custom_field_type('place_score', :integer)
-  Group.register_custom_field_type('category_id', :integer)
-
   require_dependency "application_controller"
   module ::CivicallyPlace
     class Engine < ::Rails::Engine
@@ -227,67 +217,7 @@ after_initialize do
   load File.expand_path('../lib/place_manager.rb', __FILE__)
   load File.expand_path('../lib/place_badges.rb', __FILE__)
   load File.expand_path('../lib/place_user.rb', __FILE__)
-  load File.expand_path('../serializers/place.rb', __FILE__)
-  load File.expand_path('../serializers/place_user.rb', __FILE__)
-
-  Category.class_eval do
-    def create_category_definition
-      nil
-    end
-
-    def place
-      ActiveModel::Type::Boolean.new.cast(self.custom_fields['place'])
-    end
-
-    def place_can_join
-      self.custom_fields['place_can_join']
-    end
-
-    def country
-      place && !place_can_join
-    end
-
-    def child_categories
-      Category.where(parent_category_id: id)
-    end
-
-    def country_categories
-      return [] if child_categories.blank?
-      child_categories.select { |c| c.place }
-    end
-
-    def country_categories_ids
-      country_categories.map { |c| c.id }
-    end
-
-    def country_categories_active
-      return [] if country_categories.blank?
-      country_categories.select { |c| c.has_category_moderators? }
-    end
-
-    def country_active
-      return false if country_categories_active.blank?
-      country_categories_active.length >= SiteSetting.place_country_active_min
-    end
-
-    def self.is_home_country(user, category)
-      category.country &&
-      category.country_categories_ids.include?(user.place_category_id)
-    end
-  end
-
-  DiscourseEvent.on(:vote_added) do |user, topic|
-    if topic.category_id === SiteSetting.place_petition_category_id
-      user.custom_fields['place_topic_id'] = topic.id
-      CivicallyPlace::User.add_pass_petition_to_checklist(user)
-    end
-  end
-
-  DiscourseEvent.on(:vote_removed) do |user, topic|
-    if topic.category_id === SiteSetting.place_petition_category_id
-      user.custom_fields['place_topic_id'] = nil
-    end
-  end
+  load File.expand_path('../lib/place_category.rb', __FILE__)
 
   DiscourseEvent.on(:category_moderators_updated) do |category, first|
     if first
@@ -300,45 +230,20 @@ after_initialize do
     end
   end
 
-  require_dependency 'guardian/topic_guardian'
-  module ::TopicGuardian
-    ## You can only create topics in your place or your country
-    def can_create_topic_on_category?(category)
-      is_admin? ||
-      (can_create_topic?(nil) &&
-        category &&
-        ## user meets category permissions
-        Category.topic_create_allowed(self).where(id: category.id).count == 1 &&
-        ## is user's place
-        (category.id === user.place_category_id ||
-        ## or user's country
-        Category.is_home_country(user, category) ||
-        ## or is a meta category
-        category.meta))
-    end
-  end
-
   add_to_serializer(:basic_category, :topic_id) { object.topic_id }
-  add_to_serializer(:basic_category, :place) { object.place }
-  add_to_serializer(:basic_category, :place_can_join) { object.place_can_join }
-  add_to_serializer(:basic_category, :include_place_can_join) { object.place }
-  add_to_serializer(:basic_category, :place_user) { object.custom_fields["place_users"] }
-  add_to_serializer(:basic_category, :include_place_user) { object.place }
-  add_to_serializer(:basic_category, :place_user_count) { object.custom_fields["place_user_count"] }
-  add_to_serializer(:basic_category, :include_place_user_count) { object.place }
-  add_to_serializer(:basic_category, :place_user_count_min) { object.custom_fields["place_user_count"] }
-  add_to_serializer(:basic_category, :include_place_user_count_min) { object.place }
-  add_to_serializer(:basic_category, :place_location) { object.custom_fields["place_location"] }
-  add_to_serializer(:basic_category, :include_place_location) { object.place }
-  add_to_serializer(:basic_category, :place_country) { object.country }
-  add_to_serializer(:basic_category, :include_place_country) { object.place }
-  add_to_serializer(:basic_category, :place_country_active) { object.country_active }
-  add_to_serializer(:basic_category, :include_place_country_active) { object.country }
+  add_to_serializer(:basic_category, :is_place) { object.is_place }
+
+  add_to_serializer(:current_user, :place) { object.place }
+  add_to_serializer(:current_user, :include_place?) { object.place_category_id.present? }
+
+  add_to_serializer(:current_user, :place_joined_at) { object.place_joined_at }
+  add_to_serializer(:current_user, :include_place_joined_at?) { object.place_category_id.present? }
+
   add_to_serializer(:current_user, :place_category_id) { object.custom_fields["place_category_id"] }
-  add_to_serializer(:admin_user_list, :place_category_id) { object.custom_fields["place_category_id"] }
   add_to_serializer(:current_user, :place_topic_id) { object.custom_fields["place_topic_id"] }
+
+  add_to_serializer(:admin_user_list, :place_category_id) { object.custom_fields["place_category_id"] }
   add_to_serializer(:admin_user_list, :place_topic_id) { object.custom_fields["place_topic_id"] }
-  add_to_serializer(:basic_group, :category_id) { object.custom_fields["category_id"] }
 
   DiscourseEvent.trigger(:place_ready)
 end
