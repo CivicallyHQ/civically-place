@@ -61,7 +61,7 @@ export default createWidget('place-list-controls', {
       links.push(this.attach('link', {
         label: `place.${listType}.create`,
         action: 'create',
-        className: 'pull-right p-link'
+        className: 'right p-link'
       }));
     }
 
@@ -72,28 +72,44 @@ export default createWidget('place-list-controls', {
     const attrs = this.attrs;
     const listType = attrs.listType;
     const category = attrs.category;
+    const user = this.currentUser;
     const permissions = CREATE_PERMISSIONS[listType];
     let notPermitted = [];
 
     permissions.forEach((p) => {
-      if (!attrs[p]) notPermitted.push(p);
+      let ps = [];
+
+      if (p === 'moderator' && (!category.category_moderators || category.category_moderators.length === 0)) {
+        ps.push(p);
+      }
+
+      if (p === 'member' && user.place_category_id !== category.id) {
+        ps.push(p);
+      }
+
+      if (ps.length > 0) notPermitted.push(...ps);
     });
 
     if (notPermitted.length > 0) {
-      let message = `${I18n.t('place.list.not_permitted.intro')}<br>`;
-      message += `<ul class='list-not-permitted'>`;
+      let message = `${I18n.t('place.list.not_permitted.intro')}<br><ul class='list-not-permitted'>`;
+
       notPermitted.forEach((key) => {
         message += '<li>';
+
         message += I18n.t(`place.list.not_permitted.${key}`, {
           place: category.place_name
         });
+
         if (key === 'moderator' && category.moderator_election_url) {
           message += ` <a href='${category.moderator_election_url}' class='p-link' target='_blank'>
                       ${I18n.t('place.list.not_permitted.moderator_link')}</a>`;
         }
+
         message += '</li>';
       });
+
       message += '</ul>';
+
       return bootbox.alert(message);
     }
 

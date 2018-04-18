@@ -9,6 +9,7 @@ export default Ember.Component.extend({
   searchingPetitions: false,
   placeTitle: '',
   place: Ember.computed.alias('currentUser.place'),
+  loadingNewWindow: false,
 
   @on('init')
   initSelectedId() {
@@ -96,6 +97,7 @@ export default Ember.Component.extend({
     },
 
     addPlace() {
+      this.set('loadingNewWindow', true);
       window.location.href = '/w/place-petition';
     },
 

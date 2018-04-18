@@ -53,7 +53,11 @@ export default createWidget('place-list', {
       this.getItems(category, listType);
       contents.push(h('div.spinner.small'));
     } else {
-      let listContents = h('div.no-items', I18n.t('place.list.none', { listType, place: category.place_name }));
+      let listTypeTitle = I18n.t(`place.${listType}.title`);
+      let listContents = h('div.no-items', I18n.t('place.list.none', {
+        listType: listTypeTitle,
+        place: category.place_name
+      }));
 
       if (items && items.length > 0) {
         listContents = items.map((item) => {

@@ -1,5 +1,5 @@
 # name: civically-place
-# app: internal
+# app: system
 # about: Provides the place logic for Civically
 # version: 0.1
 # dependencies: discourse-locations, civically-navigation, discourse-layouts, civically-petition, discourse-search-addons
@@ -233,17 +233,31 @@ after_initialize do
   add_to_serializer(:basic_category, :topic_id) { object.topic_id }
   add_to_serializer(:basic_category, :is_place) { object.is_place }
 
-  add_to_serializer(:current_user, :place) { object.place }
+  add_to_serializer(:user, :place) {
+    BasicCategorySerializer.new(object.place, scope: scope, root: false)
+  }
+  add_to_serializer(:user, :include_place?) { object.place_category_id.present? }
+  add_to_serializer(:current_user, :place) {
+    BasicCategorySerializer.new(object.place, scope: scope, root: false)
+  }
   add_to_serializer(:current_user, :include_place?) { object.place_category_id.present? }
 
+  add_to_serializer(:user, :place_joined_at) { object.place_joined_at }
+  add_to_serializer(:user, :include_place_joined_at?) { object.place_category_id.present? }
   add_to_serializer(:current_user, :place_joined_at) { object.place_joined_at }
   add_to_serializer(:current_user, :include_place_joined_at?) { object.place_category_id.present? }
 
-  add_to_serializer(:current_user, :place_category_id) { object.custom_fields["place_category_id"] }
-  add_to_serializer(:current_user, :place_topic_id) { object.custom_fields["place_topic_id"] }
+  add_to_serializer(:user, :place_points) { object.place_points[object.place_category_id.to_s] }
+  add_to_serializer(:user, :include_place_points?) { object.place_category_id.present? }
+  add_to_serializer(:current_user, :place_points) { object.place_points[object.place_category_id.to_s] }
+  add_to_serializer(:current_user, :include_place_points?) { object.place_category_id.present? }
 
-  add_to_serializer(:admin_user_list, :place_category_id) { object.custom_fields["place_category_id"] }
-  add_to_serializer(:admin_user_list, :place_topic_id) { object.custom_fields["place_topic_id"] }
+  add_to_serializer(:user, :place_category_id) { object.place_category_id }
+  add_to_serializer(:user, :place_topic_id) { object.place_topic_id }
+  add_to_serializer(:current_user, :place_category_id) { object.place_category_id }
+  add_to_serializer(:current_user, :place_topic_id) { object.place_topic_id }
+  add_to_serializer(:admin_user_list, :place_category_id) { object.place_category_id }
+  add_to_serializer(:admin_user_list, :place_topic_id) { object.place_topic_id }
 
   DiscourseEvent.trigger(:place_ready)
 end

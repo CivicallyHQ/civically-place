@@ -6,7 +6,7 @@ export default Ember.Component.extend({
   @computed('currentUser.place_category_id')
   places(userPlaceCategoryId) {
     return this.site.get('categoriesList')
-      .filter(c => c.get('is_place'));
+      .filter(c => c.is_place && c.place_type !== 'country');
   },
 
   actions: {

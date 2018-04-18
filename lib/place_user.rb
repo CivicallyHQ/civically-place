@@ -31,11 +31,17 @@ class ::User
     end
   end
 
-  ## User's points for their current place
+  def place_topic_id
+    if self.custom_fields['place_topic_id']
+      self.custom_fields['place_topic_id']
+    else
+      nil
+    end
+  end
+
   def place_points
     if self.custom_fields['place_points']
-      points = self.custom_fields['place_points']
-      points[place_category_id.to_s]
+      self.custom_fields['place_points']
     else
       {}
     end
@@ -91,6 +97,10 @@ class ::User
     )
 
     user.custom_fields['place_category_id'] = category_id
+
+    user.place_points[category_id] = 0
+    user.custom_fields['place_points'] = user.place_points
+
     user.save_custom_fields(true)
 
     after_first_place_set(user) if is_first_place
@@ -104,9 +114,9 @@ class ::User
     CivicallyChecklist::Checklist.update_item(user, 'pass_petition', checked: true)
     CivicallyChecklist::Checklist.update_item(user, 'pass_petition', active: false)
 
-    CivicallyApp::App.update(user, 'civically-site', enabled: true)
-    CivicallyApp::App.update(user, 'civically-navigation', enabled: true)
-    CivicallyApp::App.update(user, 'civically-place', enabled: true)
+    CivicallyApp::App.update_data(user, 'civically-site', enabled: true)
+    CivicallyApp::App.update_data(user, 'civically-navigation', enabled: true)
+    CivicallyApp::App.update_data(user, 'civically-place', enabled: true)
   end
 end
 

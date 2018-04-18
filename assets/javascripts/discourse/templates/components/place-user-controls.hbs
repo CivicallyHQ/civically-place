@@ -67,6 +67,7 @@
           {{{i18n 'place.select.petition.start'}}}
         </div>
         {{d-button label='place.select.petition.start_btn' action='addPlace' class="btn btn-primary"}}
+        {{conditional-loading-spinner size='small' condition=loadingNewWindow}}
       </div>
       {{#unless site.mobileView}}
         <div class="p-note small">{{{i18n 'place.select.petition.note'}}}</div>

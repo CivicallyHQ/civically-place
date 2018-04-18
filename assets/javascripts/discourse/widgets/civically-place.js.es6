@@ -17,16 +17,22 @@ export default createAppWidget('civically-place', {
   contents() {
     const { category, editing } = this.attrs;
     const user = this.currentUser;
-    const state = this.state;
 
     if (!category || !category.is_place) return;
 
     const userPlace = user.get('place');
-    const listType = state.currentListType;
+    const listType = this.state.currentListType;
     let contents = [];
 
+    let image = category.place_type === 'country' ?
+                h('img', { attributes: { src: category.location.flag }}) :
+                this.attach('emoji', { name: 'house_buildings' });
+
     contents.push(
-      h('div.app-title', category.place_name),
+      h('div.app-widget-header', [
+        h('span', image),
+        h('span.app-widget-title', category.place_name)
+      ]),
       h('div.widget-multi-title', [
         buildTitle(this, 'place', 'event'),
         buildTitle(this, 'place', 'group'),

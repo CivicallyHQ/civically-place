@@ -87,9 +87,9 @@ en:
       list:
         none: "No {{listType}} for {{place}}."
         not_permitted:
-          intro: "You can't do that at the moment"
+          intro: "You can't do that at the moment."
           moderator: "{{place}} needs at least one moderator."
-          moderator_link: "Help elect a moderator."
+          moderator_link: "Help to elect a moderator."
           member: "You have to be a member of {{place}}."
 
     user:

@@ -1,7 +1,7 @@
 DiscourseEvent.on(:vote_added) do |user, topic|
   if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i
     user.custom_fields['place_topic_id'] = topic.id
-    CivicallyApp::App.update(user, 'civically-site', enabled: true)
+    CivicallyApp::App.update_data(user, 'civically-site', enabled: true)
     CivicallyPlace::User.add_pass_petition_to_checklist(user)
   end
 end
@@ -26,7 +26,7 @@ class CivicallyPlace::PlaceManager
     identical = false
 
     # This is to handle places in the same country with identical names.
-    # Geographic uniqueness is handled seperately in a location form validator; see plugin.rb
+    # Geographic uniqueness is handled seperately in a location form validator (see plugin.rb).
     identical_place = Category.where(name: title)
     identical_petition = Topic.where(category_id: category_id, title: title)
     if identical_place.exists? || identical_petition.exists?
@@ -121,7 +121,10 @@ class CivicallyPlace::PlaceManager
             'geo_location': {
               'boundingbox': bounding_box,
               'countrycode': countrycode,
-            }
+              'type': 'country'
+            },
+            'flag': "/plugins/civically-place/images/flags/#{countrycode}_32.png",
+            'route_to': "/c/#{countrycode}"
           }.to_json,
           'topic_list_social': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
           'topic_list_thumbnail': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
@@ -236,9 +239,9 @@ class CivicallyPlace::PlaceManager
         points += 3
       end
 
-      existing_points = user.place_points
-      existing_points[category.id] = points
-      user.custom_fields['place_points'] = existing_points
+      user.place_points[category.id] = user.place_points[category.id].to_i + points
+      user.custom_fields['place_points'] = user.place_points
+
       user.save_custom_fields(true)
     end
 

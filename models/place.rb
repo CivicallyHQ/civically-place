@@ -37,7 +37,7 @@ class CivicallyPlace::Place < Category
 
   def user_count
     if self.custom_fields['user_count']
-      self.custom_fields['user_count']
+      self.custom_fields['user_count'].to_i
     else
       0
     end
@@ -45,11 +45,11 @@ class CivicallyPlace::Place < Category
 
   def user_count_min
     if self.custom_fields['user_count_min']
-      self.custom_fields['user_count_min']
+      self.custom_fields['user_count_min'].to_i
     elsif place_type && SiteSetting.try("place_#{place_type}_user_count_min".to_sym)
-      SiteSetting.send("place_#{place_type}_user_count_min")
+      SiteSetting.send("place_#{place_type}_user_count_min").to_i
     else
-      nil
+      0
     end
   end
 
