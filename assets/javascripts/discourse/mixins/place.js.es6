@@ -1,4 +1,4 @@
-import { observes, on } from 'ember-addons/ember-computed-decorators';
+import { on } from 'ember-addons/ember-computed-decorators';
 
 export default Ember.Mixin.create({
   @on('init')
@@ -9,9 +9,9 @@ export default Ember.Mixin.create({
       }
     }
 
-    let customWidgetProps = this.get('customWidgetProps') || [];
-    customWidgetProps.push({ widgetConditions });
+    let customSidebarProps = this.get('customSidebarProps') || {};
+    customSidebarProps['widgetConditions'] = widgetConditions;
 
-    this.set('customWidgetProps', customWidgetProps);
+    this.set('customSidebarProps', customSidebarProps);
   }
 });
