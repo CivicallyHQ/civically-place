@@ -1,7 +1,7 @@
 DiscourseEvent.on(:vote_added) do |user, topic|
   if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i
     user.custom_fields['place_topic_id'] = topic.id
-    CivicallyApp::App.update_data(user, 'civically-site', enabled: true)
+    CivicallyApp::App.update(user, 'civically-site', enabled: true)
     CivicallyPlace::User.add_pass_petition_to_checklist(user)
   end
 end
@@ -144,7 +144,7 @@ class CivicallyPlace::PlaceManager
 
     category = create_category(
       name: geo_location['name'],
-      permissions: { everyone: 2 },
+      permissions: { everyone: 3 },
       parent_category_id: parent_category.id,
       custom_fields: {
         'is_place': true,

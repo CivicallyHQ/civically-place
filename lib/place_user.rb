@@ -114,9 +114,9 @@ class ::User
     CivicallyChecklist::Checklist.update_item(user, 'pass_petition', checked: true)
     CivicallyChecklist::Checklist.update_item(user, 'pass_petition', active: false)
 
-    CivicallyApp::App.update_data(user, 'civically-site', enabled: true)
-    CivicallyApp::App.update_data(user, 'civically-navigation', enabled: true)
-    CivicallyApp::App.update_data(user, 'civically-place', enabled: true)
+    CivicallyApp::App.update(user, 'civically-site', enabled: true)
+    CivicallyApp::App.update(user, 'civically-navigation', enabled: true)
+    CivicallyApp::App.update(user, 'civically-place', enabled: true)
   end
 end
 

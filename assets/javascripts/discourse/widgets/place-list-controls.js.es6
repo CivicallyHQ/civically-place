@@ -4,9 +4,9 @@ import { getOwner } from 'discourse-common/lib/get-owner';
 const HAS_CREATE = ['event', 'group', 'rating'];
 
 const CREATE_PERMISSIONS = {
-  event: ['moderator', 'member'],
-  group: ['moderator', 'member'],
-  rating: ['moderator', 'member']
+  event: ['member'],
+  group: ['member'],
+  rating: ['member']
 };
 
 const CREATE_URL = {
@@ -124,7 +124,7 @@ export default createWidget('place-list-controls', {
       draftKey: 'new_topic',
       draftSequence: 0,
       addProperties: {
-        sublistType: listType
+        subtype: listType
       }
     };
 
