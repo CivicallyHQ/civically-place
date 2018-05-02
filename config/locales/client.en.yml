@@ -12,7 +12,7 @@ en:
     petition:
       place:
         info: |
-          If you vote for this petition **%{placeName}** will become your [Place on Civically](https://civically.io/t/places-policy) when the petition passes.
+          If you vote for this petition **%{placeName}** will become your [Place on Civically](https://civically.io/t/places-policy) if the petition passes.
 
           If the petition passes all supporters will earn a [Pioneer Badge](https://civically.io/badges/200/pioneer). For those who successfully invite other supporters:
           - The top 4 successful inviters will earn a [Pathfinder Badge](https://civically.io/badges/201/pathfinder)
@@ -88,9 +88,8 @@ en:
         none: "No {{listType}} for {{place}}."
         not_permitted:
           intro: "You can't do that at the moment."
-          moderator: "{{place}} needs at least one moderator."
-          moderator_link: "Help to elect a moderator."
           member: "You have to be a member of {{place}}."
+          trust: "You need to be a <a class='p-link' href='/badges/{{level}}/{{label}}' target='_blank'>{{label}}</a>."
 
     user:
       place_label: "Place"
@@ -106,3 +105,13 @@ en:
       position:
         title: "Position"
         instructions: "your title (optional)"
+
+    badges:
+      basic_user:
+        name: Resident
+      member:
+        name: Citizen
+      regular:
+        name: Local
+      leader:
+        name: Leader

@@ -37,34 +37,6 @@ DiscourseEvent.on(:petition_ready) do
   end
 end
 
-DiscourseEvent.on(:civically_site_ready) do
-  unless SiteSetting.place_petition_category_id.to_i > 1
-    category = Category.create(
-      user: Discourse.system_user,
-      name: 'Place',
-      color: SecureRandom.hex(3),
-      permissions: { everyone: 2 },
-      allow_badges: true,
-      text_color: 'FFFFF',
-      topic_id: -1,
-      topic_featured_link_allowed: true,
-      parent_category_id: SiteSetting.petition_category_id,
-      custom_fields: {
-       'meta': true,
-       'enable_topic_voting': "true",
-       'petition_enabled': true,
-       'petition_vote_threshold': 100,
-       'tl0_vote_limit': 1,
-       'tl1_vote_limit': 1,
-       'tl2_vote_limit': 1,
-       'tl3_vote_limit': 1,
-       'tl4_vote_limit': 1
-      }
-    )
-    SiteSetting.place_petition_category_id = category.id
-  end
-end
-
 DiscourseEvent.on(:locations_ready) do
   Locations::Geocode.add_options do |options, context|
     options[:lookup] = :nominatim if context === 'place_petition'

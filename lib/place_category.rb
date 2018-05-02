@@ -48,21 +48,3 @@ end
 class ::BasicCategorySerializer
   prepend CategorySerializerPlaceExtension
 end
-
-require_dependency 'guardian/topic_guardian'
-module ::TopicGuardian
-  ## You can only create topics in your place or your country
-  def can_create_topic_on_category?(category)
-    is_admin? ||
-    (can_create_topic?(nil) &&
-      category &&
-      ## user meets category permissions
-      Category.topic_create_allowed(self).where(id: category.id).count == 1 &&
-      ## is user's place
-      ((category.is_place && (category.id === user.place_category_id ||
-      ## or user's country
-      CivicallyPlace::Place.is_home_country(category.id, user))) ||
-      ## or is a meta category
-      category.meta))
-  end
-end

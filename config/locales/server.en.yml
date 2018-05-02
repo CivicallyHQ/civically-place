@@ -23,7 +23,7 @@ en:
         detail: "Your place petition needs to pass so you can use Civically. <a href='/' class='p-link'>Go to the petition</a>."
       elect_moderator:
         title: "Elect your place moderator"
-        detail: "Before you can start posting, your place needs a moderator. <a href='%{mod_url}' class='p-link'>Go to the election</a>."
+        detail: "Your place needs a moderator! <a href='%{mod_url}' class='p-link'>Go to the election</a>."
 
   petition:
     place:
@@ -39,10 +39,10 @@ en:
           This ensures that each place added to Civically has a real community when it goes live.
           <br><br>
           **Points**<br>
-          If your petition success, you'll get 3 bonus [Place Points](https://civically.io/t/place-points).
+          If your petition succeeds, you'll get 3 bonus [Place Points](https://civically.io/t/place-points).
           This improves your chances of getting a rare [Badge](https://civically.io/badges)!
         tip:
-          description: "*Each user can only create one place petition (ever), so make it count!*"
+          description: "*Yous can only create one place petition (ever), so make it count!*"
       location:
         title: "Place"
         description: "A place is a city or town. Search for your place, and select a result."

@@ -105,7 +105,10 @@ class ::User
 
     after_first_place_set(user) if is_first_place
 
-    { place_category_id: user.place_category_id }
+    {
+      place_category_id: user.place_category_id,
+      app_data: CivicallyApp::App.user_app_data(user)
+    }
   end
 
   def self.after_first_place_set(user)

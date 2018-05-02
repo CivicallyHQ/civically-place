@@ -4,9 +4,9 @@ import { getOwner } from 'discourse-common/lib/get-owner';
 const HAS_CREATE = ['event', 'group', 'rating'];
 
 const CREATE_PERMISSIONS = {
-  event: ['member'],
-  group: ['member'],
-  rating: ['member']
+  event: { member: true, trust: { level: 3, key: 'regular' }},
+  group: { member: true, trust: { level: 3, key: 'regular' }},
+  rating: { member: true, trust: { level: 2, key: 'member' }}
 };
 
 const CREATE_URL = {
@@ -76,41 +76,38 @@ export default createWidget('place-list-controls', {
     const permissions = CREATE_PERMISSIONS[listType];
     let notPermitted = [];
 
-    permissions.forEach((p) => {
-      let ps = [];
+    Object.keys(permissions).forEach((k) => {
+      let messages = [];
+      let permission = permissions[k];
 
-      if (p === 'moderator' && (!category.category_moderators || category.category_moderators.length === 0)) {
-        ps.push(p);
+      if (k === 'member' && permission && user.place_category_id !== category.id) {
+        messages.push(I18n.t('place.list.not_permitted.member', {
+          place: category.place_name
+        }));
       }
 
-      if (p === 'member' && user.place_category_id !== category.id) {
-        ps.push(p);
+      if (k === 'trust' && Number(user.trust_level) < Number(permission.level)) {
+        messages.push(I18n.t('place.list.not_permitted.trust', {
+          level: permission.level,
+          label: I18n.t(`badges.${permission.key}.name`)
+        }));
       }
 
-      if (ps.length > 0) notPermitted.push(...ps);
+      if (messages.length > 0) notPermitted.push(...messages);
     });
 
     if (notPermitted.length > 0) {
-      let message = `${I18n.t('place.list.not_permitted.intro')}<br><ul class='list-not-permitted'>`;
+      let body = `${I18n.t('place.list.not_permitted.intro')}<br><ul class='list-not-permitted'>`;
 
-      notPermitted.forEach((key) => {
-        message += '<li>';
-
-        message += I18n.t(`place.list.not_permitted.${key}`, {
-          place: category.place_name
-        });
-
-        if (key === 'moderator' && category.moderator_election_url) {
-          message += ` <a href='${category.moderator_election_url}' class='p-link' target='_blank'>
-                      ${I18n.t('place.list.not_permitted.moderator_link')}</a>`;
-        }
-
-        message += '</li>';
+      notPermitted.forEach((message) => {
+        body += '<li>';
+        body += message;
+        body += '</li>';
       });
 
-      message += '</ul>';
+      body += '</ul>';
 
-      return bootbox.alert(message);
+      return bootbox.alert(body);
     }
 
     if (CREATE_URL[listType]) {

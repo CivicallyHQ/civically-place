@@ -1,4 +1,5 @@
 import { default as computed, on } from 'ember-addons/ember-computed-decorators';
+import { updateAppData } from 'discourse/plugins/civically-app/discourse/lib/app-utilities';
 import Category from 'discourse/models/category';
 import DiscourseURL from 'discourse/lib/url';
 
@@ -82,16 +83,24 @@ export default Ember.Component.extend({
           return bootbox.alert(result.error);
         }
 
-        const categoryId = Number(selectedId);
-        const category = Category.findById(categoryId);
+        if (result.place_category_id) {
+          let categoryId = Number(result.place_category_id);
+          let category = Category.findById(categoryId);
+          let user = this.get('currentUser');
 
-        Discourse.User.current().setProperties({
-          place_category_id: categoryId,
-          category
-        });
+          user.set('place_category_id', categoryId);
 
-        if (this.get('routeAfterSet')) {
-          DiscourseURL.routeTo(category.get('url'));
+          if (result.app_data) {
+            let appData = result.app_data;
+
+            Object.keys(appData).forEach(appName => {
+              updateAppData(user, appName, appData[appName]);
+            });
+          }
+
+          if (this.get('routeAfterSet')) {
+            DiscourseURL.routeTo(category.get('url'));
+          }
         }
       });
     },

@@ -35,43 +35,37 @@ class CivicallyPlace::PlaceManager
       identical_url = identical_place.exists? ? identical_place.first.url : identical_petition.first.url
     end
 
-    topic_params = {
+    petition = CivicallyPetition::Petition.create(user,
       title: title,
-      category: category_id,
-      skip_validations: true,
-      topic_custom_fields: {
-        petition: true,
-        petition_id: 'place',
-        petition_status: 'open'
-      }
-    }
+      id: 'place',
+      category: category_id
+    )
 
-    result = TopicCreator.create(user, Guardian.new(user), topic_params)
-
-    unless result.errors.any?
+    unless petition.errors.any?
       if identical
         SystemMessage.create_from_system_user(Discourse.site_contact_user,
           :identical_place_petition,
-            title: result.title,
-            path: result.url,
+            title: petition.title,
+            path: petition.url,
             identical_name: identical_name,
             identical_url: identical_url
         )
       end
 
-      result.custom_fields['location'] = {
+      petition.custom_fields['location'] = {
         'geo_location': geo_location,
         'circle_marker': {
           'radius': 1,
           'color': '#FFA500',
-          'routeTo': result.relative_url
+          'routeTo': petition.relative_url
         }
       }.to_json
-      result.save_custom_fields(true)
+
+      petition.save_custom_fields(true)
 
       manager = NewPostManager.new(user,
         raw: opts[:raw],
-        topic_id: result.id,
+        topic_id: petition.id,
         skip_validations: true
       )
 
@@ -144,7 +138,7 @@ class CivicallyPlace::PlaceManager
 
     category = create_category(
       name: geo_location['name'],
-      permissions: { everyone: 3 },
+      permissions: { everyone: 1 },
       parent_category_id: parent_category.id,
       custom_fields: {
         'is_place': true,
@@ -245,7 +239,9 @@ class CivicallyPlace::PlaceManager
       user.save_custom_fields(true)
     end
 
-    ranked_supporters = topic.petition_supporters.sort_by { |u| [u.place_points, u.created_at] }.reverse!
+    ranked_supporters = topic.petition_supporters
+      .sort_by { |u| [u.place_points[category.id], u.created_at] }
+      .reverse!
 
     ranked_supporters.each_with_index do |user, index|
       if index === 0
