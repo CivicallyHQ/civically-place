@@ -81,13 +81,28 @@ export default createWidget('place-list-controls', {
       let permission = permissions[k];
 
       if (k === 'member' && permission && user.place_category_id !== category.id) {
-        messages.push(I18n.t('place.list.not_permitted.member', {
-          place: category.place_name
-        }));
+        if (category.place_type === 'country') {
+          if (category.id === user.place.parent_category_id) {
+            if (!category.place_active) {
+              messages.push(I18n.t('place.create.not_permitted.country_active', {
+                categoryName: category.place_name,
+                countryActiveMin: Discourse.SiteSettings.place_country_active_min
+              }));
+            }
+          } else {
+            messages.push(I18n.t('place.create.not_permitted.member_country', {
+              country: category.place_name
+            }));
+          }
+        } else {
+          messages.push(I18n.t('place.create.not_permitted.member', {
+            place: category.place_name
+          }));
+        }
       }
 
       if (k === 'trust' && Number(user.trust_level) < Number(permission.level)) {
-        messages.push(I18n.t('place.list.not_permitted.trust', {
+        messages.push(I18n.t('place.create.not_permitted.trust', {
           level: permission.level,
           label: I18n.t(`badges.${permission.key}.name`)
         }));
@@ -97,7 +112,7 @@ export default createWidget('place-list-controls', {
     });
 
     if (notPermitted.length > 0) {
-      let body = `${I18n.t('place.list.not_permitted.intro')}<br><ul class='list-not-permitted'>`;
+      let body = `${I18n.t('place.create.not_permitted.intro')}<br><ul class='list-not-permitted'>`;
 
       notPermitted.forEach((message) => {
         body += '<li>';

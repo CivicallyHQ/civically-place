@@ -41,6 +41,8 @@ class CivicallyPlace::PlaceManager
       category: category_id
     )
 
+    puts "HERE IS THE TOPIC RESULT: #{petition.inspect}"
+
     unless petition.errors.any?
       if identical
         SystemMessage.create_from_system_user(Discourse.site_contact_user,
@@ -66,10 +68,13 @@ class CivicallyPlace::PlaceManager
       manager = NewPostManager.new(user,
         raw: opts[:raw],
         topic_id: petition.id,
-        skip_validations: true
+        skip_validations: true,
+        skip_guardian: true
       )
 
       result = manager.perform
+
+      puts "HERE IS THE POST RESULT: #{result.inspect}"
     end
 
     result

@@ -28,7 +28,7 @@
     {{/if}}
     {{#if showNotListedNote}}
       <div class="p-note small">
-        {{i18n 'place.select.note'}}
+        <div>{{i18n 'place.select.note'}}</div>
         {{d-button action='showPetition' label='place.select.not_listed'}}
       </div>
     {{/if}}
@@ -68,10 +68,10 @@
         </div>
         {{d-button label='place.select.petition.start_btn' action='addPlace' class="btn btn-primary"}}
         {{conditional-loading-spinner size='small' condition=loadingNewWindow}}
+        {{#unless site.mobileView}}
+          <div class="p-note small">{{petitionNote}}</div>
+        {{/unless}}
       </div>
-      {{#unless site.mobileView}}
-        <div class="p-note small">{{{i18n 'place.select.petition.note'}}}</div>
-      {{/unless}}
     </div>
   {{/if}}
 {{/if}}

@@ -30,7 +30,7 @@ en:
         petition:
           title: "Add your place to Civically."
           description: "A place is added to Civically when 100 people who live there support a petition to add it."
-          note: "Help to add your place to Civically and earn a <a href='/badges/200/pioneer' class='p-text bronze' target='_blank'>Pioneer</a>, <a href='/badges/201/pathfinder' class='p-text silver' target='_blank'>Pathfinder</a> or <a href='/badges/202/founder' class='p-text gold' target='_blank'>Founder</a> badge."
+          note: "You can [earn points](/t/place-points)!"
           search:
             title: Current Petitions
             placeholder: "Search petitions"
@@ -86,10 +86,18 @@ en:
 
       list:
         none: "No {{listType}} for {{place}}."
+
+      create:
         not_permitted:
           intro: "You can't do that at the moment."
           member: "You have to be a member of {{place}}."
+          member_country: "You have to be a member of a place in {{country}}."
           trust: "You need to be a <a class='p-link' href='/badges/{{level}}/{{label}}' target='_blank'>{{label}}</a>."
+          no_category: "You can't create a topic here."
+          no_place: "You have to be a member of a place to create a topic."
+          foreign_place: "You have to be a member of {{categoryName}} to create a topic here."
+          country_active: "{{categoryName}} needs at least {{countryActiveMin}} places before you can create a topic here."
+          foreign_country: "You have to be a member of a place in {{categoryName}} to create a topic here."
 
     user:
       place_label: "Place"

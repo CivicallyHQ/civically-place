@@ -1,11 +1,8 @@
 <div class="controls">
   {{place-select-box value=selectedId
-                     content=places
                      width=300
-                     none='place.select.placeholder'
                      filterable=true
-                     noneRowComponent='none-place-row'
-                     noContentLabel=''}}
+                     noneRowComponent='add-place-row'}}
   <div class='instructions'>
     {{i18n 'place.select.instructions'}}
   </div>

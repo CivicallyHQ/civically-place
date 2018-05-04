@@ -106,16 +106,17 @@ class ::User
     after_first_place_set(user) if is_first_place
 
     {
+      place: BasicCategorySerializer.new(user.place, root: false),
+      place_joined_at: user.place_joined_at,
+      place_points: user.place_points,
       place_category_id: user.place_category_id,
       app_data: CivicallyApp::App.user_app_data(user)
     }
   end
 
   def self.after_first_place_set(user)
-    CivicallyChecklist::Checklist.update_item(user, 'set_place', checked: true)
-    CivicallyChecklist::Checklist.update_item(user, 'set_place', active: false)
-    CivicallyChecklist::Checklist.update_item(user, 'pass_petition', checked: true)
-    CivicallyChecklist::Checklist.update_item(user, 'pass_petition', active: false)
+    CivicallyChecklist::Checklist.update_item(user, 'set_place', checked: true, active: false)
+    CivicallyChecklist::Checklist.update_item(user, 'pass_petition', checked: true, active: false)
 
     CivicallyApp::App.update(user, 'civically-site', enabled: true)
     CivicallyApp::App.update(user, 'civically-navigation', enabled: true)

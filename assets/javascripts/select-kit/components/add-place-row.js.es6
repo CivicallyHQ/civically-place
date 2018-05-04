@@ -1,6 +1,6 @@
 export default Ember.Component.extend({
   tagName: 'li',
-  layoutName: "select-kit/templates/components/none-place-row",
+  layoutName: "select-kit/templates/components/add-place-row",
   classNameBindings: [ ":select-kit-row", ":place-row", "hidden"],
   hidden: Ember.computed.not('options.noContent'),
 

@@ -153,6 +153,13 @@ DiscourseEvent.on(:custom_wizard_ready) do
   end
 end
 
+DiscourseEvent.on(:election_won) do |topic|
+  if topic.category.is_place
+    place = CivicallyPlace::Place.find(topic.category.id)
+
+  end
+end
+
 after_initialize do
   require_dependency "application_controller"
   module ::CivicallyPlace

@@ -45,6 +45,10 @@
   }
 }
 
+.select-kit.combo-box.place-select-box {
+  min-width: 200px;
+}
+
 .place-user-controls {
   overflow: scroll;
   min-height: 260px;
@@ -67,6 +71,10 @@
     .description {
       min-width: 300px;
     }
+
+    .p-note {
+      margin-top: 20px;
+    }
   }
 
   .place-set-image {
@@ -85,8 +93,9 @@
   }
 
   .p-note {
-    margin-top: 20px;
-    width: 400px;
+    p {
+      margin: 0;
+    }
   }
 
   .place-petition {
@@ -142,6 +151,11 @@
         top: 5px;
         right: 10px;
       }
+    }
+
+    .p-note {
+      line-height: initial;
+      margin-left: 10px;
     }
   }
 }

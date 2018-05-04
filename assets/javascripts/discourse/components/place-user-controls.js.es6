@@ -1,5 +1,6 @@
 import { default as computed, on } from 'ember-addons/ember-computed-decorators';
 import { updateAppData } from 'discourse/plugins/civically-app/discourse/lib/app-utilities';
+import { cook } from 'discourse/lib/text';
 import Category from 'discourse/models/category';
 import DiscourseURL from 'discourse/lib/url';
 
@@ -68,6 +69,11 @@ export default Ember.Component.extend({
     this.appEvents.off('place-select:add-place', (f) => this.send('showPetition', f));
   },
 
+  @computed()
+  petitionNote() {
+    return cook(I18n.t('place.select.petition.note'));
+  },
+
   actions: {
     setPlace(selectedId) {
       const placeCategoryId = this.get('currentUser.place_category_id');
@@ -83,24 +89,42 @@ export default Ember.Component.extend({
           return bootbox.alert(result.error);
         }
 
+        const user = this.get('currentUser');
+        let userProps = {};
+        let category = null;
+
         if (result.place_category_id) {
           let categoryId = Number(result.place_category_id);
-          let category = Category.findById(categoryId);
-          let user = this.get('currentUser');
 
-          user.set('place_category_id', categoryId);
+          category = Category.findById(categoryId);
 
-          if (result.app_data) {
-            let appData = result.app_data;
+          userProps['place_category_id'] = categoryId;
+        }
 
-            Object.keys(appData).forEach(appName => {
-              updateAppData(user, appName, appData[appName]);
-            });
-          }
+        if (result.place) {
+          userProps['place'] = result.place;
+        }
 
-          if (this.get('routeAfterSet')) {
-            DiscourseURL.routeTo(category.get('url'));
-          }
+        if (result.place_joined_at) {
+          userProps['place_joined_at'] = result.place_joined_at;
+        }
+
+        if (result.place_points) {
+          userProps['place_points'] = result.place_points;
+        }
+
+        user.setProperties(userProps);
+
+        if (result.app_data) {
+          let appData = result.app_data;
+
+          Object.keys(appData).forEach(appName => {
+            updateAppData(user, appName, appData[appName]);
+          });
+        }
+
+        if (this.get('routeAfterSet') && category) {
+          DiscourseURL.routeTo(category.get('url'));
         }
       });
     },
