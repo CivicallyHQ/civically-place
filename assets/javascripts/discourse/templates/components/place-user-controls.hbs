@@ -1,5 +1,6 @@
 {{#if place}}
   <div class="place-update">
+    <div class="title">{{placeTitle}}</div>
     <div class="p-text small">
       {{i18n 'user.update_place_period' changeMin=siteSettings.place_change_min}}
     </div>
@@ -11,6 +12,15 @@
         {{{i18n 'user.update_place_next' nextTime=(place-time nextTime)}}}
       </div>
     {{/unless}}
+  </div>
+  <div class="place-points">
+    <div class="title">{{i18n 'place.points.title'}}</div>
+    <div class="p-text small">
+      {{i18n 'place.points.current' points=currentUser.place_points}}
+    </div>
+    <div class="p-text small">
+      {{pointsDescription}}
+    </div>
   </div>
 {{else}}
   <div class="place-set">
@@ -39,7 +49,7 @@
   {{#if showPetition}}
     <div class="place-petition">
       <div class="title">{{i18n 'place.select.petition.title'}}</div>
-      <div class="p-text description small">{{{i18n 'place.select.petition.description'}}}</div>
+      <div class="p-text description small">{{petitionDescription}}</div>
       <div class="container">
         <span class="petition-search-title">{{i18n 'place.select.petition.search.title'}}</span>
         <div class="petition-search">
@@ -66,8 +76,10 @@
         <div class="p-text small add-description">
           {{{i18n 'place.select.petition.start'}}}
         </div>
-        {{d-button label='place.select.petition.start_btn' action='addPlace' class="btn btn-primary"}}
-        {{conditional-loading-spinner size='small' condition=loadingNewWindow}}
+        <div class="controls">
+          {{d-button label='place.select.petition.start_btn' action='addPlace' class="btn btn-primary"}}
+          {{conditional-loading-spinner size='small' condition=loadingNewWindow}}
+        </div>
         {{#unless site.mobileView}}
           <div class="p-note small">{{petitionNote}}</div>
         {{/unless}}

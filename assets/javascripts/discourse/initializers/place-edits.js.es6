@@ -44,7 +44,7 @@ export default {
             DiscourseURL.routeTo(placeUrl(user));
           }
         }
-      })
+      });
 
       api.modifyClass('component:site-header', {
         @on('init')

@@ -226,10 +226,12 @@ after_initialize do
   add_to_serializer(:current_user, :place_joined_at) { object.place_joined_at }
   add_to_serializer(:current_user, :include_place_joined_at?) { object.place_category_id.present? }
 
-  add_to_serializer(:user, :place_points) { object.place_points[object.place_category_id.to_s] }
-  add_to_serializer(:user, :include_place_points?) { object.place_category_id.present? }
-  add_to_serializer(:current_user, :place_points) { object.place_points[object.place_category_id.to_s] }
-  add_to_serializer(:current_user, :include_place_points?) { object.place_category_id.present? }
+  add_to_serializer(:user, :place_points) {
+    object.place_category_id ? object.place_points[object.place_category_id.to_s] : 0
+  }
+  add_to_serializer(:current_user, :place_points) {
+    object.place_category_id ? object.place_points[object.place_category_id.to_s] : 0
+  }
 
   add_to_serializer(:user, :place_category_id) { object.place_category_id }
   add_to_serializer(:user, :place_topic_id) { object.place_topic_id }

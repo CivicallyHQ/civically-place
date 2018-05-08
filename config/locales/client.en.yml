@@ -19,18 +19,28 @@ en:
           - The most successful inviter will earn a [Founder Badge](https://civically.io/badges/202/founder)
 
     place:
+      label: "Place"
+      points:
+        title: "Place Points"
+        current: "You have {{points}} place points."
+        description: "Learn more about place points and how you can earn more [here](/t/place-points)."
+      current:
+        title: "Your place is [{{placeName}}]({{placeUrl}})"
+
       select:
-        title: "Start by setting your place."
-        description: 'Civically is built around the city or town you live in. We call this your "place".'
+        title: "What town or city do you live in?"
+        description: 'You can set this once every 30 days.'
         placeholder: "Select a place"
-        instructions: "city or town"
-        note: "If your place is not listed, you can add it."
+        instructions: "town or city"
+        note: "If your place is not listed, help add it to Civically."
         no_content: "Add {{filter}} to Civically"
         not_listed: "Add your place to Civically"
         petition:
-          title: "Add your place to Civically."
-          description: "A place is added to Civically when 100 people who live there support a petition to add it."
-          note: "You can [earn points](/t/place-points)!"
+          title: "Add your town or city to Civically."
+          description: >
+            A place is added to Civically when 100 people who live there support a **petition** to add it.
+            We do this to make sure each place on Civically is a real community.
+          note: "You can earn [place points](/t/place-points)."
           search:
             title: Current Petitions
             placeholder: "Search petitions"

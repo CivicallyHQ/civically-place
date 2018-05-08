@@ -1,6 +1,6 @@
 import { default as computed, on } from 'ember-addons/ember-computed-decorators';
 import { updateAppData } from 'discourse/plugins/civically-app/discourse/lib/app-utilities';
-import { cook } from 'discourse/lib/text';
+import { cook, cookAsync } from 'discourse/lib/text';
 import Category from 'discourse/models/category';
 import DiscourseURL from 'discourse/lib/url';
 
@@ -29,6 +29,19 @@ export default Ember.Component.extend({
 
     this.set('selectedId', selectedId);
     this.appEvents.on('place-select:add-place', (f) => this.send('showPetition', f));
+  },
+
+  @on('init')
+  setPlaceText() {
+    const place = this.get('place');
+
+    if (place) {
+      const placeTitle = I18n.t('place.current.title', { placeName: place.name, placeUrl: place.topic_url });
+      cookAsync(placeTitle).then((cooked) => this.set('placeTitle', cooked));
+
+      const pointsDescription = I18n.t('place.points.description');
+      cookAsync(pointsDescription).then((cooked) => this.set('pointsDescription', cooked));
+    }
   },
 
   @computed('currentUser.place_joined_at')
@@ -67,6 +80,11 @@ export default Ember.Component.extend({
 
   willDestroyElement() {
     this.appEvents.off('place-select:add-place', (f) => this.send('showPetition', f));
+  },
+
+  @computed()
+  petitionDescription() {
+    return cook(I18n.t('place.select.petition.description'));
   },
 
   @computed()

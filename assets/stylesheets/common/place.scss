@@ -77,13 +77,6 @@
     }
   }
 
-  .place-set-image {
-    float: right;
-    clear: both;
-    width: 1000px;
-    height: 250px;
-  }
-
   &.show-petition .place-set {
     padding-bottom: 20px;
   }
@@ -105,6 +98,11 @@
 
     .p-text:not(.p-note) {
       margin-bottom: 10px;
+      max-width: 500px;
+
+      p {
+        margin: 0;
+      }
     }
 
     .p-list-box {
@@ -129,6 +127,16 @@
         display: block;
         float: none;
         margin-right: 20px;
+      }
+
+      .controls {
+        width: 190px;
+        display: inline-block;
+
+        .spinner {
+          vertical-align: middle;
+          margin-left: 5px;
+        }
       }
     }
 
@@ -163,9 +171,17 @@
 .place-update {
   margin-top: 5px;
 
+  .title p {
+    margin: 0;
+  }
+
   .p-text {
     padding: 5px 0;
   }
+}
+
+.place-points {
+  margin-top: 30px;
 }
 
 ul.user-nav > span {
@@ -201,6 +217,16 @@ ul.user-nav > span {
 
 .user-place-link {
   display: inline-block;
+}
+
+.place.set {
+  position: relative;
+
+  .people-image {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+  }
 }
 
 // classes used in other plugins
@@ -372,21 +398,29 @@ a.p-link {
 
 .place-user-details {
   display: flex;
+  align-items: center;
 
-  > div {
+  .place-name-label, .place-points-label {
     margin-right: 10px;
+    display: flex;
+    align-items: center;
   }
 
-  i {
+  span, i {
+    line-height: 20px;
+  }
+
+  i:first-of-type {
     color: $primary-medium;
+    margin-right: 5px;
   }
 
-  .place-name i {
+  .place-name-label i {
     margin-left: 0;
     font-size: 1.1487em;
   }
 
-  .place-points i {
+  .place-points-label i {
     font-size: .8706em;
   }
 }
@@ -394,6 +428,20 @@ a.p-link {
 .user-main .about .details .primary h2.full-name + span {
   display: block;
   margin-left: 50px;
+}
+
+.user-main {
+  position: relative;
+
+  .paginated-topics-list, .user-stream {
+    margin-bottom: 120px;
+  }
+
+  .people-image {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+  }
 }
 
 .about-list .elections {

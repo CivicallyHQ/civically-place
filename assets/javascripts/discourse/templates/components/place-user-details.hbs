@@ -1,10 +1,12 @@
-{{#if user.place}}
-  <div class="place-name">
-    {{d-icon 'home'}}
-    {{user.place.place_name}}
-  </div>
-  <div class="place-points">
-    {{d-icon 'circle'}}
-    {{user.place_points}}
-  </div>
-{{/if}}
+<div class="place-name-label" title="{{i18n 'place.label'}}">
+  {{d-icon 'home'}}
+  {{#if user.place}}
+    <span>{{user.place.place_name}}</span>
+  {{else}}
+    {{d-icon 'question'}}
+  {{/if}}
+</div>
+<div class="place-points-label" title="{{i18n 'place.points'}}">
+  {{d-icon 'circle'}}
+  <span>{{user.place_points}}</span>
+</div>
