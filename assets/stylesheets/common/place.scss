@@ -219,16 +219,6 @@ ul.user-nav > span {
   display: inline-block;
 }
 
-.place.set {
-  position: relative;
-
-  .people-image {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-  }
-}
-
 // classes used in other plugins
 
 .action-box {
@@ -428,20 +418,6 @@ a.p-link {
 .user-main .about .details .primary h2.full-name + span {
   display: block;
   margin-left: 50px;
-}
-
-.user-main {
-  position: relative;
-
-  .paginated-topics-list, .user-stream {
-    margin-bottom: 120px;
-  }
-
-  .people-image {
-    position: absolute;
-    right: 30px;
-    bottom: 30px;
-  }
 }
 
 .about-list .elections {
