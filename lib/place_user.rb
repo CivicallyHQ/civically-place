@@ -86,10 +86,6 @@ class ::User
 
     CivicallyPlace::PlaceManager.update_user_count(category_id, 1)
 
-    if place.has_moderator_election
-      CivicallyPlace::User.add_elect_moderator_to_checklist(user, place)
-    end
-
     UserHistory.create(
       action: UserHistory.actions[:place],
       acting_user_id: user.id,
@@ -117,37 +113,7 @@ class ::User
   def self.after_first_place_set(user)
     CivicallyChecklist::Checklist.update_item(user, 'set_place', checked: true, active: false)
     CivicallyChecklist::Checklist.update_item(user, 'pass_petition', checked: true, active: false)
-
-    CivicallyApp::App.update(user, 'civically-site', enabled: true)
     CivicallyApp::App.update(user, 'civically-navigation', enabled: true)
-    CivicallyApp::App.update(user, 'civically-place', enabled: true)
-  end
-end
-
-class CivicallyPlace::User
-  def self.add_pass_petition_to_checklist(user)
-    petition_checklist_item = {
-      id: "pass_petition",
-      checked: false,
-      checkable: false,
-      active: true,
-      title: I18n.t('checklist.place_setup.pass_petition.title'),
-      detail: I18n.t('checklist.place_setup.pass_petition.detail')
-    }
-
-    CivicallyChecklist::Checklist.add_item(user, petition_checklist_item, 1)
-    CivicallyChecklist::Checklist.update_item(user, 'set_place', active: false)
-  end
-
-  def self.add_elect_moderator_to_checklist(user, place)
-    CivicallyChecklist::Checklist.add_item(user,
-      id: "elect_moderator",
-      checked: false,
-      checkable: false,
-      active: true,
-      title: I18n.t('checklist.place_setup.elect_moderator.title'),
-      detail: I18n.t('checklist.place_setup.elect_moderator.detail', mod_url: place.moderator_election_url)
-    )
   end
 end
 

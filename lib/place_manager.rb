@@ -1,8 +1,19 @@
 DiscourseEvent.on(:vote_added) do |user, topic|
   if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i
     user.custom_fields['place_topic_id'] = topic.id
+
     CivicallyApp::App.update(user, 'civically-site', enabled: true)
-    CivicallyPlace::User.add_pass_petition_to_checklist(user)
+
+    CivicallyChecklist::Checklist.add_item(user, {
+      id: "pass_petition",
+      checked: false,
+      checkable: false,
+      active: true,
+      title: I18n.t('checklist.place_setup.pass_petition.title'),
+      detail: I18n.t('checklist.place_setup.pass_petition.detail')
+    }, 1)
+
+    CivicallyChecklist::Checklist.update_item(user, 'set_place', active: false)
   end
 end
 
@@ -41,8 +52,6 @@ class CivicallyPlace::PlaceManager
       category: category_id
     )
 
-    puts "HERE IS THE TOPIC RESULT: #{petition.inspect}"
-
     unless petition.errors.any?
       if identical
         SystemMessage.create_from_system_user(Discourse.site_contact_user,
@@ -73,8 +82,6 @@ class CivicallyPlace::PlaceManager
       )
 
       result = manager.perform
-
-      puts "HERE IS THE POST RESULT: #{result.inspect}"
     end
 
     result
@@ -196,26 +203,6 @@ class CivicallyPlace::PlaceManager
     topic = Topic.find(category.topic_id)
     user = Discourse.system_user
 
-    moderator_topic_result = DiscourseElections::ElectionTopic.create(user,
-      title: I18n.t('place.election.title', place: category.name, position: "Moderator"),
-      category_id: category.id,
-      position: "moderator",
-      self_nomination_allowed: true,
-      status_banner: true,
-      status_banner_result_hours: SiteSetting.elections_status_banner_default_result_hours.to_i,
-      nomination_message: I18n.t('place.moderator_election.nomination_message', place: category.name),
-      poll_message: I18n.t('place.moderator_election.poll_message', place: category.name),
-      closed_poll_message: I18n.t('place.moderator_election.closed_poll_message', place: category.name),
-      poll_open: true,
-      poll_open_after: true,
-      poll_open_after_hours: 72,
-      poll_open_after_nominations: 3,
-      poll_close: true,
-      poll_close_after: true,
-      poll_close_after_hours: 72,
-      poll_close_after_voters: 50
-    )
-
     user_errors = []
     supporters = topic.petition_supporters
 
@@ -264,14 +251,6 @@ class CivicallyPlace::PlaceManager
       error_messages += user_errors.map do |e|
         I18n.t('place.topic.error.petition_supporter', user: e[:user], message: e[:error])
       end.join(', ')
-    end
-
-    if moderator_topic_result[:error_message]
-      error_messages += "\n\n"
-      error_messages += I18n.t('place.topic.error.election_topic_creation',
-        type: "Moderator",
-        message: moderator_topic_result[:error_message]
-      )
     end
 
     if error_messages.present?

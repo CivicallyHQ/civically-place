@@ -139,7 +139,16 @@ DiscourseEvent.on(:custom_wizard_ready) do
           raw: submission['post']
         )
 
-        CivicallyPlace::User.add_pass_petition_to_checklist(user)
+        CivicallyChecklist::Checklist.add_item(user, {
+          id: "pass_petition",
+          checked: false,
+          checkable: false,
+          active: true,
+          title: I18n.t('checklist.place_setup.pass_petition.title'),
+          detail: I18n.t('checklist.place_setup.pass_petition.detail')
+        }, 1)
+
+        CivicallyChecklist::Checklist.update_item(user, 'set_place', active: false)
 
         if result.errors.any?
           updater.errors.add(:place_petition, result.errors.full_messages.join("\n"))
