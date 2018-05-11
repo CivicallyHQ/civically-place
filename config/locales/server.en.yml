@@ -34,18 +34,13 @@ en:
       intro:
         title: "Place Petition Wizard"
         description: >
-          Places are added to Civically by petition.
-          To pass, each petition needs at least **100 people** who live in the place to support it.
-          This ensures that each place added to Civically has a real community when it goes live.
-          <br><br>
-          **Points**<br>
-          If your petition succeeds, you'll get 3 bonus [Place Points](https://civically.io/t/place-points).
-          This improves your chances of getting a rare [Badge](https://civically.io/badges)!
+          Towns, cities and villages are added to Civically if a petition gets enough votes from people who live there.
+          This ensures that each place added to Civically has a real community.
         tip:
-          description: "*Yous can only create one place petition (ever), so make it count!*"
+          description: "*A city needs 100 votes, a town needs 50, and a village needs 10."
       location:
         title: "Place"
-        description: "A place is a city or town. Search for your place, and select a result."
+        description: "A place is a city, town or village. Search for your place, and select a result."
         tip:
           description: "*Your place is where you live.*"
         validation:
@@ -54,11 +49,10 @@ en:
         error: "There is no valid location in your submission. If the problem persists, please contact help@civically.io"
       topic:
         title: "Petition"
-        description: |
-          A place petition is a great chance to say something about the civic issues in your town or city.
-          - Do you think your government could work better?
-          - Do you want access to online legal help?
-          - Do you want to improve community spirit in your town or city?
+        description: >
+          Write about a legal, government or community issue you need help with.
+          Or maybe you think your city, town or village needs better online public space.
+          Write about what you feel when you think about your government, your legal system or your community.
         post:
           label: "Petition"
           placeholder: "Write here."

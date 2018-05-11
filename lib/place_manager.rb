@@ -1,8 +1,8 @@
 DiscourseEvent.on(:vote_added) do |user, topic|
-  if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i
-    user.custom_fields['place_topic_id'] = topic.id
+  if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i &&
+     !user.place_category_id
 
-    CivicallyApp::App.update(user, 'civically-site', enabled: true)
+    user.custom_fields['place_topic_id'] = topic.id
 
     CivicallyChecklist::Checklist.add_item(user, {
       id: "pass_petition",
@@ -18,7 +18,8 @@ DiscourseEvent.on(:vote_added) do |user, topic|
 end
 
 DiscourseEvent.on(:vote_removed) do |user, topic|
-  if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i
+  if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i &&
+     topic.id === user.place_topic_id.to_i 
     user.custom_fields['place_topic_id'] = nil
   end
 end

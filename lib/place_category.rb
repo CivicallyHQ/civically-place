@@ -31,8 +31,7 @@ SERIALIZED_PLACE_ATTRIBUTES = [
   :place_type,
   :can_join,
   :user_count,
-  :user_count_min,
-  :moderator_election_url
+  :user_count_min
 ]
 
 module CategorySerializerPlaceExtension

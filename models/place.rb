@@ -61,6 +61,10 @@ class CivicallyPlace::Place < Category
     place_type === 'town'
   end
 
+  def is_village
+    place_type === 'village'
+  end
+
   def child_categories
     @child_categories ||= Category.where(parent_category_id: id)
   end
@@ -86,22 +90,6 @@ class CivicallyPlace::Place < Category
     else
       true
     end
-  end
-
-  def moderator_election_topics
-    DiscourseElections::ElectionCategory.topics(self.id, roles: 'moderator')
-  end
-
-  def moderator_election_url
-    if moderator_election_topics.present?
-      moderator_election_topics.first.url
-    else
-      nil
-    end
-  end
-
-  def has_moderator_election
-    moderator_election_topics.any?
   end
 
   def self.members(category_id)

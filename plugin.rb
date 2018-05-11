@@ -162,13 +162,6 @@ DiscourseEvent.on(:custom_wizard_ready) do
   end
 end
 
-DiscourseEvent.on(:election_won) do |topic|
-  if topic.category.is_place
-    place = CivicallyPlace::Place.find(topic.category.id)
-
-  end
-end
-
 after_initialize do
   require_dependency "application_controller"
   module ::CivicallyPlace
@@ -206,17 +199,6 @@ after_initialize do
   load File.expand_path('../lib/place_badges.rb', __FILE__)
   load File.expand_path('../lib/place_user.rb', __FILE__)
   load File.expand_path('../lib/place_category.rb', __FILE__)
-
-  DiscourseEvent.on(:category_moderators_updated) do |category, first|
-    if first
-      user_ids = CivicallyPlace::Place.members(category.id).map(&:id)
-      checked = {
-        id: 'elect_moderator',
-        state: true
-      }
-      Jobs.enqueue(:bulk_checklist_update, user_ids: user_ids, checked: checked)
-    end
-  end
 
   add_to_serializer(:basic_category, :topic_id) { object.topic_id }
   add_to_serializer(:basic_category, :is_place) { object.is_place }
