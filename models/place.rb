@@ -106,7 +106,7 @@ class CivicallyPlace::Place < Category
   end
 
   def self.is_home_country(user, category_id)
-    place = CivicallyPlace::Place.new(category_id, user)
+    place = CivicallyPlace::Place.new(id: category_id)
     place.is_country && place.country_categories_ids.include?(user.place_category_id)
   end
 

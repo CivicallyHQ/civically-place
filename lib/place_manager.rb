@@ -19,7 +19,7 @@ end
 
 DiscourseEvent.on(:vote_removed) do |user, topic|
   if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i &&
-     topic.id === user.place_topic_id.to_i 
+     topic.id === user.place_topic_id.to_i
     user.custom_fields['place_topic_id'] = nil
   end
 end
@@ -50,7 +50,17 @@ class CivicallyPlace::PlaceManager
     petition = CivicallyPetition::Petition.create(user,
       title: title,
       id: 'place',
-      category: category_id
+      category: category_id,
+      messages: {
+        user: {
+          no_vote: I18n.t('petition.place.user.no_vote', place: name, country: country),
+          vote: I18n.t('petition.place.user.vote', place: name, country: country)
+        },
+        petitioner: {
+          vote: I18n.t('petition.place.user.vote', place: name, country: country)
+        },
+        info: I18n.t('petition.place.info', place: name, country: country)
+      }
     )
 
     unless petition.errors.any?
@@ -171,10 +181,14 @@ class CivicallyPlace::PlaceManager
     end
 
     topic.category_id = category.id
+    topic.subtype = nil
+    topic.title = I18n.t('place.about.title', place: geo_location['name'], country: geo_location['country'])
+
     topic.custom_fields.delete('petition')
     topic.custom_fields.delete('petition_id')
     topic.custom_fields.delete('petition_status')
     topic.custom_fields.delete('location')
+
     topic.save!
 
     category.topic_id = topic.id

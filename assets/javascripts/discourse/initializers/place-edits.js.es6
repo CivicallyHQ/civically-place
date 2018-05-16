@@ -72,6 +72,16 @@ export default {
           }
         }
       });
+
+      api.modifyClass('component:location-label-container', {
+        @on('init')
+        setup() {
+          const topic = this.get('topic');
+          if (topic.petition_id === 'place') {
+            this.set('geoAttrs', ['name', 'country']);
+          }
+        }
+      })
     });
   }
 };

@@ -1,5 +1,5 @@
 # name: civically-place
-# app: system
+# app: store
 # about: Provides the place logic for Civically
 # version: 0.1
 # dependencies: discourse-locations, civically-navigation, discourse-layouts, civically-petition, discourse-search-addons
@@ -121,8 +121,23 @@ DiscourseEvent.on(:custom_wizard_ready) do
     Rails.root, 'plugins', 'civically-place', 'config', 'wizards', 'place_petition.json'
   )))
 
+  CustomWizard::Field.add_assets('prefilled-composer', 'civically-place', ['components'])
+
   CustomWizard::Builder.add_step_handler('place_petition') do |builder|
     updater = builder.updater
+
+    if builder.updater && builder.updater.step && builder.updater.step.id === 'location'
+      input = builder.updater.fields.to_h
+
+      if builder.submissions.empty?
+        builder.submissions.push({})
+      end
+
+      default_post = I18n.t('place.petition.topic.post.default', placeName: input['location']['city'])
+      builder.submissions.last["post"] = default_post
+
+      builder.updater.refresh_required = true
+    end
 
     if builder.updater && builder.updater.step && builder.updater.step.id === 'submit'
       updater = builder.updater

@@ -19,7 +19,7 @@ en:
   checklist:
     place_setup:
       pass_petition:
-        title: "Get your place petition passed"
+        title: "Pass your place petition"
         detail: "Your place petition needs to pass so you can use Civically. <a href='/' class='p-link'>Go to the petition</a>."
       elect_moderator:
         title: "Elect your place moderator"
@@ -27,44 +27,59 @@ en:
 
   petition:
     place:
-      title: "%{place}, %{country}"
+      title: "Add %{place}, %{country} to Civically"
+      petitioner:
+        vote: "Share this petition with people who live in %{place}, %{country}."
+      user:
+        no_vote: "Vote for this petition if you live in %{place}, %{country}. [Don't live in %{place}, %{country}?](/place/set)"
+        vote: "Share this petition with people who live in %{place}, %{country}."
+      info: "If you vote for this petition %{place}, %{country} will become your [place](/t/place-policy) when the petition passes."
 
   place:
+    about:
+      title: "%{place}, %{country}"
     petition:
       intro:
         title: "Place Petition Wizard"
         description: >
-          Towns, cities and villages are added to Civically if a petition gets enough votes from people who live there.
-          This ensures that each place added to Civically has a real community.
+          This wizard will create a petition to add a city, town or village to Civically.
         tip:
-          description: "*A city needs 100 votes, a town needs 50, and a village needs 10."
+          description: "*This takes about 1 minute to complete.*"
       location:
         title: "Place"
         description: "A place is a city, town or village. Search for your place, and select a result."
         tip:
           description: "*Your place is where you live.*"
         validation:
-          petition_exists: "A petition already exists for that location: <a href=%{topic_url} target='_blank'>%{topic_title}</a> "
-          place_exists: "A place already exists for that location: <a href=%{category_url} target='_blank'>%{category_name}</a>"
-        error: "There is no valid location in your submission. If the problem persists, please contact help@civically.io"
+          petition_exists: "A petition already exists for that place: <a href=%{topic_url} target='_blank'>%{topic_title}</a> "
+          place_exists: "A place already exists for that place: <a href=%{category_url} target='_blank'>%{category_name}</a>"
+        error: "There is no valid place in your submission. If the problem persists, please contact help@civically.io"
       topic:
-        title: "Petition"
-        description: >
-          Write about a legal, government or community issue you need help with.
-          Or maybe you think your city, town or village needs better online public space.
-          Write about what you feel when you think about your government, your legal system or your community.
-        post:
-          label: "Petition"
-          placeholder: "Write here."
+        title: "Post"
+        description: "You can edit the first post of the petition (optional)."
+        prompt:
+          description: >
+            You could say something about
+            <ul>
+            <li>The community in your city, town or village.</li>
+            <li>What you think about social media.</li>
+            <li>What you think about your government or legal system.</li>
+            </ul>
         tip:
-          description: "*You can edit this after you've posted it.*"
+          description: "*It's fine if you don't want to write anything for now.*"
+        post:
+          label: "Post"
+          placeholder: "Write here."
+          default: "Let's add %{placeName} to Civically!"
         error: "There is no valid post in your submission. If the problem persists, please contact help@civically.io"
       submit:
         title: "Submit"
-        description: |
-          When you submit this form a petition :ballot_box: will be created. Your petition needs at least **100 people** who live in your city or town to support it.
+        description: >
+          When you submit this form a petition :ballot_box: will be created.
+          To pass, a city needs 100 votes, a town needs 50 votes, and a village needs 10 votes
+          from the people who live there.
         tip:
-          description: "*Thanks for taking the time to start this petition!*"
+          description: "*Thanks for taking the time!*"
         error: "There was a problem submitting your petition. If the problem persits, please contact help@civically.io"
 
     topic:

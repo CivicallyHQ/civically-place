@@ -50,8 +50,6 @@
 }
 
 .place-user-controls {
-  overflow: scroll;
-  min-height: 260px;
   padding: 15px;
 
   span, .p-text:not(.medium, .large), input, li {
@@ -78,7 +76,7 @@
   }
 
   &.show-petition .place-set {
-    padding-bottom: 20px;
+    padding-bottom: 10px;
   }
 
   .p-text, .container {
@@ -93,7 +91,7 @@
 
   .place-petition {
     clear: both;
-    padding-top: 40px;
+    padding-top: 30px;
     border-top: 1px solid $tertiary;
 
     .p-text:not(.p-note) {
@@ -110,7 +108,7 @@
 
       .similar-titles {
         border-radius: 4px;
-        height: 150px;
+        height: 130px;
         padding: 5px 0;
       }
     }
@@ -141,7 +139,6 @@
     }
 
     .petition-search-title {
-      font-size: 18px;
       margin-right: 10px;
     }
 

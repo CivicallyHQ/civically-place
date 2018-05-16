@@ -4,6 +4,12 @@ User.register_custom_field_type('place_points', :json)
 
 UserHistory.actions[:place] = 1001
 
+DiscourseEvent.on(:post_created) do |post, opts, user|
+  if (user.user_stat.topic_count < 2 && user.user_stat.post_count < 2)
+    CivicallyChecklist::Checklist.update_item(user, 'post', checked: true)
+  end
+end
+
 require_dependency 'user'
 class ::User
 
@@ -111,28 +117,7 @@ class ::User
   end
 
   def self.after_first_place_set(user)
-    CivicallyChecklist::Checklist.update_item(user, 'set_place', checked: true, active: false)
-    CivicallyChecklist::Checklist.update_item(user, 'pass_petition', checked: true, active: false)
-    CivicallyApp::App.update(user, 'civically-navigation', enabled: true)
+    CivicallyChecklist::Checklist.update_item(user, 'set_place', checked: true, active: true)
+    CivicallyChecklist::Checklist.update_item(user, 'pass_petition', checked: true, active: true)
   end
-end
-
-# If a user is invited to a petition topic it should be set as their place topic id
-module InvitesControllerCivicallyUser
-  private def post_process_invite(user)
-    super(user)
-    if user
-      invite = Invite.find_by(invite_key: params[:id])
-      topic = invite.topics.first
-      if topic && topic.petition && topic.petition_status === 'open'
-        user.custom_fields['place_topic_id'] = topic.id
-        user.save_custom_fields(true)
-      end
-    end
-  end
-end
-
-require_dependency 'invites_controller'
-class ::InvitesController
-  prepend InvitesControllerCivicallyUser
 end

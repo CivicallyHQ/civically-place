@@ -3,6 +3,9 @@ en:
     app:
       civically_place:
         title: "Place"
+        about: >
+          Helps you navigate your place, with easy-to-access
+          lists of events, ratings, groups and petition topics.
         locked: "Become a member of a place to unlock the Place App."
         icon: ':houses:'
 
@@ -11,7 +14,9 @@ en:
 
     petition:
       place:
-        info: If you vote for this petition **%{placeName}** will become your [Place on Civically](https://civically.io/t/places-policy) when the petition passes.
+        info: >
+          If you vote for this petition **%{placeName}** will become your
+          [Place](https://civically.io/t/places-policy) when the petition passes.
 
     place:
       label: "Place"
@@ -23,26 +28,25 @@ en:
         title: "Your place is [{{placeName}}]({{placeUrl}})"
 
       select:
-        title: "What town or city do you live in?"
+        title: "Where do you live?"
         description: 'You can set this once every 30 days.'
-        placeholder: "Select a place"
-        instructions: "town or city"
-        note: "If your place is not listed, help add it to Civically."
+        placeholder: "Select a city, town or village"
+        instructions: "city, town or village"
         no_content: "Add {{filter}} to Civically"
-        not_listed: "Add your place to Civically"
+        not_listed: "Where I live is not listed"
         petition:
-          title: "Add your town or city to Civically."
+          title: "Add your city, town or village to Civically."
           description: >
-            A place is added to Civically when 100 people who live there support a **petition** to add it.
-            We do this to make sure each place on Civically is a real community.
-          note: "You can earn [place points](/t/place-points)."
+            Civically is a community built and run by its members. 
+            That's why places are added to Civically by **Petition**.
+            When people from a place petition to add it to Civically, it shows there's a community ready to work together.
+
           search:
-            title: Current Petitions
+            title: "Current Petitions"
             placeholder: "Search petitions"
             none_title: "No current petitions for {{title}}."
             none: "No current petitions."
-          start: "If there's no petition for your place, you can start one."
-          start_btn: "Start Place Petition"
+          start_btn: "Start a Petition"
 
       user:
         label: "Place can be joined."

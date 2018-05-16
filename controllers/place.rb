@@ -68,10 +68,7 @@ class CivicallyPlace::PlaceController < ::ApplicationController
   def petitions
     params.require(:category_id)
 
-    topics = Topic.where(category_id: params[:category_id])
-      .joins("JOIN topic_custom_fields ON topic_custom_fields.topic_id = topics.id
-              AND topic_custom_fields.name = 'petition'
-              AND topic_custom_fields.value::boolean IS TRUE")
+    topics = Topic.where(category_id: params[:category_id], subtype: 'petition')
       .order(:created_at)
       .limit(4)
 

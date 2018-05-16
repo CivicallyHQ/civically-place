@@ -37,10 +37,7 @@
       </div>
     {{/if}}
     {{#if showNotListedNote}}
-      <div class="p-note small">
-        <div>{{i18n 'place.select.note'}}</div>
-        {{d-button action='showPetition' label='place.select.not_listed'}}
-      </div>
+      {{d-button action='showPetition' label='place.select.not_listed'}}
     {{/if}}
   </div>
 {{/if}}
@@ -69,20 +66,15 @@
                            requireCategory=true
                            translatedNone=noPetitions
                            noDefinitions=true
-                           searching=searchingPetitions}}
+                           searching=searchingPetitions
+                           similarity='0.2'}}
         </div>
       </div>
       <div class="container">
-        <div class="p-text small add-description">
-          {{{i18n 'place.select.petition.start'}}}
-        </div>
         <div class="controls">
           {{d-button label='place.select.petition.start_btn' action='addPlace' class="btn btn-primary"}}
           {{conditional-loading-spinner size='small' condition=loadingNewWindow}}
         </div>
-        {{#unless site.mobileView}}
-          <div class="p-note small">{{petitionNote}}</div>
-        {{/unless}}
       </div>
     </div>
   {{/if}}

@@ -40,10 +40,15 @@
       "fields": [
         {
           "id": "post",
-          "type": "composer",
+          "type": "prefilled-composer",
           "key": "place.petition.topic.post",
           "required": true,
-          "min_length": "200"
+          "min_length": 20
+        },
+        {
+          "id": "prompt",
+          "type": "text-only",
+          "key": "place.petition.topic.prompt"
         },
         {
           "id": "tip",
