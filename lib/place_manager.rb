@@ -116,57 +116,144 @@ class CivicallyPlace::PlaceManager
     user_count
   end
 
-  def self.create_place_category(topic_id)
+  def self.create(geo_location, user)
+    if !user.admin && user.added_place.exists?
+      return { error: I18n.t('place.add.error.only_one') }
+    end
+
+    parent_id = nil
+    category_id = nil
+
+    Category.transaction do
+      if country_category = Category.find_by(slug: geo_location['countrycode'])
+        parent_id = country_category.id
+      else
+        country_category = build_country(geo_location)
+        country_topic_title = geo_location['country']
+        country_topic = build_about_topic(country_topic_title, country_category.id)
+
+        parent_id = finalise_place_creation(country_category, country_topic, geo_location,
+          add_marker: false
+        )
+      end
+
+      if !parent_id
+        return { error: I18n.t('place.topic.error.parent_category_creation') }
+      end
+
+      if CategoryCustomField.exists?(name: 'place_id', value: geo_location['osm_id'])
+        return { error: I18n.t('place.topic.error.place_exists') }
+      end
+
+      category = build_place(parent_id, geo_location)
+
+      if !category || !category.id
+        return { error: I18n.t('place.topic.error.category_creation') }
+      end
+
+      topic_title = geo_location['name'] + ', ' + geo_location['country']
+      topic = build_about_topic(topic_title, category.id)
+
+      category_id = finalise_place_creation(category, topic, geo_location,
+        user: user,
+        add_marker: true
+      )
+    end
+
+    { category_id: category_id }
+  end
+
+  def self.create_from_petition(topic_id)
     topic = Topic.find(topic_id)
     geo_location = topic.location['geo_location']
-    parent_category = Category.find_by(slug: geo_location['countrycode'])
-    result = {}
+    parent = {} ## TO FILL
+    category_id = nil
 
-    if !parent_category
-      countrycode = geo_location['countrycode']
-      bounding_box = Locations::Country.bounding_boxes[countrycode]
-      parent_category = create_category(
-        name: geo_location['country'],
-        slug: countrycode,
-        permissions: { everyone: 2 },
-        custom_fields: {
-          'is_place': true,
-          'place_type': 'country',
-          'can_join': false,
-          'location': {
-            'name': geo_location['country'],
-            'geo_location': {
-              'boundingbox': bounding_box,
-              'countrycode': countrycode,
-              'type': 'country'
-            },
-            'flag': "/plugins/civically-place/images/flags/#{countrycode}_32.png",
-            'route_to': "/c/#{countrycode}"
-          }.to_json,
-          'topic_list_social': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
-          'topic_list_thumbnail': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
-          'topic_list_excerpt': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
-          'topic_list_action': "latest|unread|top|new|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
-          'topic_list_thumbnail_width': 600,
-          'topic_list_thumbnail_height': 300
-        }
+    Category.transaction do
+      category = build_place(parent, geo_location)
+
+      if !category || !category.id
+        return { error: I18n.t('place.topic.error.category_creation') }
+      end
+
+      topic.category_id = category.id
+      topic.subtype = nil
+      topic.title = I18n.t('place.about.title', place: geo_location['name'], parent: geo_location['country'])
+
+      topic.custom_fields.delete('petition')
+      topic.custom_fields.delete('petition_id')
+      topic.custom_fields.delete('petition_status')
+      topic.custom_fields.delete('location')
+
+      topic.save!(validate: false)
+
+      category_id = finalise_place_creation(category, topic, geo_location,
+        add_marker: true
       )
-
-      parent_category.save!
     end
 
-    if !parent_category || !parent_category.id
-      return { error: I18n.t('place.topic.error.parent_category_creation') }
+    after_place_petition(category_id)
+
+    { category_id: category_id }
+  end
+
+  def self.finalise_place_creation(category, topic, geo_location, opts)
+    category.topic_id = topic.id
+
+    if opts[:add_marker]
+      category.custom_fields['location'] = {
+        'geo_location': geo_location,
+        'circle_marker': {
+          'radius': 1,
+          'color': '#08c',
+          'routeTo': topic.relative_url
+        }
+      }.to_json
     end
 
-    category = create_category(
+    category.save!
+
+    DiscourseEvent.trigger(:place_created, category)
+
+    user = opts[:user] ? opts[:user] : Discourse.system_user
+
+    Scheduler::Defer.later "Log staff action create category" do
+      StaffActionLogger.new(user).log_category_creation(category)
+    end
+
+    category.id
+  end
+
+  def self.build_about_topic(title, category_id)
+    topic = Topic.new(
+      title: title,
+      user: Discourse.system_user,
+      category_id: category_id
+    )
+
+    topic.skip_callbacks = true
+    topic.ignore_category_auto_close = true
+    topic.delete_topic_timer(TopicTimer.types[:close])
+    topic.save!(validate: false)
+
+    topic.posts.create(
+      raw: I18n.t('place.about.post', place: title),
+      user: Discourse.system_user
+    )
+
+    topic
+  end
+
+  def self.build_place(parent_id, geo_location)
+    create_category(
       name: geo_location['name'],
       permissions: { everyone: 1 },
-      parent_category_id: parent_category.id,
+      parent_category_id: parent_id,
       custom_fields: {
         'is_place': true,
         'can_join': true,
-        'place_type': 'town',
+        'place_type': geo_location['type'],
+        'place_id': geo_location['osm_id'],
         'topic_list_social': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
         'topic_list_thumbnail': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
         'topic_list_excerpt': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
@@ -175,45 +262,41 @@ class CivicallyPlace::PlaceManager
         'topic_list_thumbnail_height': 300
       }
     )
-
-    if !category || !category.id
-      return { error: I18n.t('place.topic.error.category_creation') }
-    end
-
-    topic.category_id = category.id
-    topic.subtype = nil
-    topic.title = I18n.t('place.about.title', place: geo_location['name'], country: geo_location['country'])
-
-    topic.custom_fields.delete('petition')
-    topic.custom_fields.delete('petition_id')
-    topic.custom_fields.delete('petition_status')
-    topic.custom_fields.delete('location')
-
-    topic.save!
-
-    category.topic_id = topic.id
-    category.custom_fields['location'] = {
-      'geo_location': geo_location,
-      'circle_marker': {
-        'radius': 1,
-        'color': '#08c',
-        'routeTo': topic.relative_url
-      }
-    }.to_json
-    category.save!
-
-    result[:category_id] = category.id
-
-    DiscourseEvent.trigger(:place_created, category)
-
-    Scheduler::Defer.later "Log staff action create category" do
-      StaffActionLogger.new(current_user).log_category_creation(category)
-    end
-
-    result
   end
 
-  def self.setup_place(category_id)
+  def self.build_country(geo_location)
+    countrycode = geo_location['countrycode']
+    bounding_box = Locations::Country.bounding_boxes[countrycode]
+
+    create_category(
+      name: geo_location['country'],
+      slug: countrycode,
+      permissions: { everyone: 2 },
+      custom_fields: {
+        'is_place': true,
+        'place_type': 'country',
+        'can_join': false,
+        'location': {
+          'name': geo_location['country'],
+          'geo_location': {
+            'boundingbox': bounding_box,
+            'countrycode': countrycode,
+            'type': 'country'
+          },
+          'flag': "/plugins/civically-place/images/flags/#{countrycode}_32.png",
+          'route_to': "/c/#{countrycode}"
+        }.to_json,
+        'topic_list_social': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+        'topic_list_thumbnail': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+        'topic_list_excerpt': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+        'topic_list_action': "latest|unread|top|new|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+        'topic_list_thumbnail_width': 600,
+        'topic_list_thumbnail_height': 300
+      }
+    )
+  end
+
+  def self.after_place_petition(category_id)
     category = Category.find(category_id)
     topic = Topic.find(category.topic_id)
     user = Discourse.system_user
@@ -274,6 +357,8 @@ class CivicallyPlace::PlaceManager
         category_id: category.id
       )
     end
+
+    true
   end
 
   def self.create_category(opts)

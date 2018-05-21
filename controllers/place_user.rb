@@ -1,11 +1,11 @@
-class CivicallyPlace::UserPlaceController < ::ApplicationController
+class CivicallyPlace::PlaceUserController < ::ApplicationController
   requires_login
 
   def index
     render nothing: true
   end
 
-  def set_place
+  def set
     params.require(:category_id)
     params.permit(:user_id)
 
@@ -26,7 +26,8 @@ class CivicallyPlace::UserPlaceController < ::ApplicationController
     if result[:error]
       render json: { error: result[:error] }
     else
-      render json: success_json.merge(result)
+      route_to = Category.find(user_result[:place_category_id]).url
+      render json: success_json.merge(result.merge(route_to: route_to))
     end
   end
 end

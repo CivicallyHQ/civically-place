@@ -15,7 +15,11 @@ DiscourseEvent.on(:petition_ready) do
     result = {}
 
     if status === 'accepted'
-      result = CivicallyPlace::Place.create(topic.id, forced)
+      if !forced && topic.petition_supporters.length < topic.petition_vote_threshold
+        result[:error] = I18n.t('place.topic.error.insufficient_supporters')
+      else
+        result = CivicallyPlace::PlaceManager.create_from_petition(topic.id)
+      end
 
       if result[:error]
         result[:message] = result[:error]
@@ -58,9 +62,12 @@ DiscourseEvent.on(:locations_ready) do
   Place = Struct.new(:osm_id, :boundingbox, :latitude, :longitude, :address, :name, :state, :country, :country_code, :type)
 
   Locations::Geocode.add_filter do |locations, context|
-    if context === 'place_petition'
-      permitted_types = SiteSetting.place_permitted_types.split('|')
+    if context === 'place_petition' || context === 'place_add'
+      permitted_types = context === 'place_add' ? SiteSetting.place_add_types.split('|') :
+                                                  SiteSetting.place_petition_types.split('|')
+
       locations.select! { |l| l.data['class'] === 'place' && permitted_types.include?(l.data['type']) }
+
       locations.map! do |l|
         country_code = l.data['address']['country_code']
         country = Locations::Country.codes.select { |c| c[:code] == country_code }.first[:name]
@@ -84,16 +91,12 @@ DiscourseEvent.on(:locations_ready) do
   end
 
   Locations::Geocode.add_validator do |geo_location, context|
-    if context === 'place_petition'
-      osm_id = geo_location['osm_id'].to_i
-      identical_places = CategoryCustomField.where(name: 'location').select do |l|
-        location = ::JSON.parse(l['value'])
-        location['geo_location']['osm_id'].to_i === osm_id
-      end
+    if context === 'place_petition' || context === 'place_add'
+      identical_place = CategoryCustomField.where(name: 'place_id', value: geo_location['osm_id'])
 
       response = {}
-      if identical_places.first
-        category = Category.find(identical_places.first[:category_id])
+      if identical_place.exists?
+        category = Category.find(identical_place.pluck(:category_id))
         response['message'] = I18n.t("place.petition.location.validation.place_exists",
           category_url: category.url,
           category_name: category.name
@@ -194,9 +197,9 @@ after_initialize do
     get "events" => "place#events"
     get "petitions" => "place#petitions"
     get "ratings" => "place#ratings"
-    get "set" => "user_place#index"
-    post "set" => "user_place#set_place"
-    get "add" => "user_place#index"
+    get "set" => "place_user#index"
+    post "set" => "place_user#set"
+    post "add" => "place_manage#add"
   end
 
   Discourse::Application.routes.append do
@@ -208,7 +211,8 @@ after_initialize do
 
   load File.expand_path('../models/place.rb', __FILE__)
   load File.expand_path('../controllers/place.rb', __FILE__)
-  load File.expand_path('../controllers/user_place.rb', __FILE__)
+  load File.expand_path('../controllers/place_user.rb', __FILE__)
+  load File.expand_path('../controllers/place_manage.rb', __FILE__)
   load File.expand_path('../jobs/notify_moderators_of_place_creation_errors.rb', __FILE__)
   load File.expand_path('../lib/place_manager.rb', __FILE__)
   load File.expand_path('../lib/place_badges.rb', __FILE__)
@@ -245,6 +249,9 @@ after_initialize do
   add_to_serializer(:current_user, :place_topic_id) { object.place_topic_id }
   add_to_serializer(:admin_user_list, :place_category_id) { object.place_category_id }
   add_to_serializer(:admin_user_list, :place_topic_id) { object.place_topic_id }
+
+  add_to_serializer(:current_user, :added_place_id) { object.added_place_id }
+  add_to_serializer(:current_user, :include_added_place_id?) { object.added_place_id.present? }
 
   DiscourseEvent.trigger(:place_ready)
 end

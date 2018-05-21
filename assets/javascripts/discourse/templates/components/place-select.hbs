@@ -8,6 +8,10 @@
   </div>
 </div>
 <div class='controls'>
-  {{d-button label='user.set_place' action='setPlace' disabled=setDisabled class="btn btn-primary"}}
+  {{d-button label='user.set_place'
+             action='setPlace'
+             disabled=setDisabled
+             class="btn btn-primary"
+             icon='check'}}
   {{conditional-loading-spinner size="small" condition=loading}}
 </div>

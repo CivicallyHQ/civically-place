@@ -53,6 +53,17 @@ class ::User
     end
   end
 
+  def added_place
+    UserHistory.where(
+      acting_user_id: self.id,
+      action: UserHistory.actions[:create_category]
+    )
+  end
+
+  def added_place_id
+    @added_place_id ||= added_place.pluck(:category_id)[0]
+  end
+
   def self.update_place_category_id(user, category_id, force = nil)
     place = CivicallyPlace::Place.find(category_id)
 

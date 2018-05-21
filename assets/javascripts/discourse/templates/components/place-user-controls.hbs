@@ -1,6 +1,8 @@
 {{#if place}}
   <div class="place-update">
-    <div class="title">{{placeTitle}}</div>
+    <div class="title">
+      <span>{{placeTitle}}</span>
+    </div>
     <div class="p-text small">
       {{i18n 'user.update_place_period' changeMin=siteSettings.place_change_min}}
     </div>
@@ -24,7 +26,10 @@
   </div>
 {{else}}
   <div class="place-set">
-    <div class="title">{{i18n 'place.select.title'}}</div>
+    <div class="title">
+      <span>{{i18n 'place.select.title'}}</span>
+      <img class='title-emoji' src='/images/emoji/twitter/house_with_garden.png'/>
+    </div>
     <div class="p-text description small">{{i18n 'place.select.description'}}</div>
     {{#if setPlaceAllowed}}
       <div class="container">
@@ -33,24 +38,69 @@
                        setPlace="setPlace"
                        loading=loading
                        toggleExtraControls='toggleExtraControls'
-                       addPlace='showPetition'}}
+                       addPlace='toggleShowAddPlace'}}
       </div>
     {{/if}}
-    {{#if showNotListedNote}}
-      {{d-button action='showPetition' label='place.select.not_listed'}}
+    {{#if showNotListedBtn}}
+      <div class="not-listed-btn">
+        {{d-button action='toggleShowAddPlace'
+                   label='place.select.not_listed'}}
+      </div>
     {{/if}}
   </div>
 {{/if}}
-
 {{#if setPlaceAllowed}}
-  {{#if showPetition}}
+  {{#if showAddPlace}}
+    <div class="place-add">
+      <div class="title">
+        <span>{{i18n 'place.select.add.title'}}</span>
+        <img class='title-emoji' src='/images/emoji/twitter/city_sunrise.png'/>
+      </div>
+      <div class="p-text description small">{{i18n 'place.select.add.description'}}</div>
+      {{#if currentUser.added_place_id}}
+        <div class="p-text description small">
+          {{i18n 'place.select.add.added_place' placeName=(place-label currentUser.added_place_id)}}
+        </div>
+      {{else}}
+        <div class="container">
+          <div class="location-selector-container">
+            <div class="controls">
+              {{location-selector location=geoLocation
+                                  class="input-xxlarge location-selector"
+                                  searchError='searchError'
+                                  context=addContext
+                                  placeholder=(i18n 'place.select.add.placeholder')
+                                  geoAttrs=geoAttrs
+                                  showType=true}}
+              <div class='instructions'>
+                {{i18n 'place.select.add.instructions'}}
+              </div>
+            </div>
+          </div>
+          {{d-button action='addPlace'
+                     label='place.select.add.btn'
+                     class='btn-primary'
+                     icon='plus'
+                     disabled=addPlaceDisabled}}
+          {{conditional-loading-spinner size='small' condition=addingPlace}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="text-divider">
+      <span>{{i18n 'place.select.divider'}}</span>
+    </div>
     <div class="place-petition">
-      <div class="title">{{i18n 'place.select.petition.title'}}</div>
+      <div class="title">
+        <span>{{i18n 'place.select.petition.title'}}</span>
+        <img class='title-emoji' src='/images/emoji/twitter/houses.png'/>
+      </div>
       <div class="p-text description small">{{petitionDescription}}</div>
       <div class="container">
         <span class="petition-search-title">{{i18n 'place.select.petition.search.title'}}</span>
         <div class="petition-search">
-          {{input type='text' value=placeTitle placeholder=(i18n 'place.select.petition.search.placeholder')}}
+          {{input type='text'
+                  value=placeTitle
+                  placeholder=(i18n 'place.select.petition.search.placeholder')}}
           <div class="icon">
             {{#if searchingPetitions}}
               {{loading-spinner size='small'}}
@@ -72,7 +122,10 @@
       </div>
       <div class="container">
         <div class="controls">
-          {{d-button label='place.select.petition.start_btn' action='addPlace' class="btn btn-primary"}}
+          {{d-button label='place.select.petition.start_btn'
+                     action='startPetition'
+                     class="btn btn-primary"
+                     icon='check-square'}}
           {{conditional-loading-spinner size='small' condition=loadingNewWindow}}
         </div>
       </div>

@@ -15,10 +15,19 @@ plugins:
   place_country_active_min:
     default: 3
     client: true
-  place_permitted_types:
+  place_add_types:
     type: 'list'
     default: 'city|town|village'
     choices:
       - city
       - town
       - village
+      - hamlet
+  place_petition_types:
+    type: 'list'
+    default: 'suburb|quarter|neighbourhood'
+    choices:
+      - borough
+      - suburb
+      - quarter
+      - neighbourhood

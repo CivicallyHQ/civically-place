@@ -1,17 +1,22 @@
 import { default as computed, on } from 'ember-addons/ember-computed-decorators';
 import { updateAppData } from 'discourse/plugins/civically-app/discourse/lib/app-utilities';
 import { cook, cookAsync } from 'discourse/lib/text';
+import { ajax } from 'discourse/lib/ajax';
+import { popupAjaxError } from 'discourse/lib/ajax-error';
 import Category from 'discourse/models/category';
 import DiscourseURL from 'discourse/lib/url';
 
 export default Ember.Component.extend({
-  classNameBindings: [':place-user-controls', 'showPetition'],
+  classNameBindings: [':place-user-controls', 'showAddPlace'],
   inputFields: ['city', 'countrycode'],
-  showPetition: false,
+  showAddPlace: false,
   searchingPetitions: false,
   placeTitle: '',
   place: Ember.computed.alias('currentUser.place'),
   loadingNewWindow: false,
+  addContext: 'place_add',
+  geoAttrs: ['name', 'state', 'country'],
+  addPlaceDisabled: Ember.computed.empty('geoLocation'),
 
   @on('init')
   initSelectedId() {
@@ -28,7 +33,7 @@ export default Ember.Component.extend({
     }
 
     this.set('selectedId', selectedId);
-    this.appEvents.on('place-select:add-place', (f) => this.send('showPetition', f));
+    this.appEvents.on('place-select:add-place', (f) => this.send('toggleShowAddPlace', f));
   },
 
   @on('init')
@@ -73,13 +78,13 @@ export default Ember.Component.extend({
     }
   },
 
-  @computed('showPetition')
-  showNotListedNote(showPetition) {
-    return !this.site.mobileView && !showPetition;
+  @computed('showAddPlace')
+  showNotListedBtn(showAddPlace) {
+    return !this.site.mobileView && !showAddPlace;
   },
 
   willDestroyElement() {
-    this.appEvents.off('place-select:add-place', (f) => this.send('showPetition', f));
+    this.appEvents.off('place-select:add-place', (f) => this.send('toggleShowAddPlace', f));
   },
 
   @computed()
@@ -92,6 +97,47 @@ export default Ember.Component.extend({
     return cook(I18n.t('place.select.petition.note'));
   },
 
+  resolvePlaceSet(result) {
+    if (result.message || result.error) {
+      return bootbox.alert(result.message || result.error);
+    }
+
+    const user = this.get('currentUser');
+    let userProps = {};
+
+    if (result.place_category_id) {
+      let categoryId = Number(result.place_category_id);
+
+      userProps['place_category_id'] = categoryId;
+    }
+
+    if (result.place) {
+      userProps['place'] = result.place;
+    }
+
+    if (result.place_joined_at) {
+      userProps['place_joined_at'] = result.place_joined_at;
+    }
+
+    if (result.place_points) {
+      userProps['place_points'] = result.place_points;
+    }
+
+    user.setProperties(userProps);
+
+    if (result.app_data) {
+      let appData = result.app_data;
+
+      Object.keys(appData).forEach(appName => {
+        updateAppData(user, appName, appData[appName]);
+      });
+    }
+
+    if (this.get('routeAfterSet') && result.route_to) {
+      window.location = result.route_to;
+    }
+  },
+
   actions: {
     setPlace(selectedId) {
       const placeCategoryId = this.get('currentUser.place_category_id');
@@ -101,65 +147,43 @@ export default Ember.Component.extend({
       this.set('loading', true);
 
       Category.setPlace(selectedId).then((result) => {
+        this.resolvePlaceSet(result);
+      }).catch(popupAjaxError).finally(() => {
         this.set('loading', false);
-
-        if (result.error) {
-          return bootbox.alert(result.error);
-        }
-
-        const user = this.get('currentUser');
-        let userProps = {};
-        let category = null;
-
-        if (result.place_category_id) {
-          let categoryId = Number(result.place_category_id);
-
-          category = Category.findById(categoryId);
-
-          userProps['place_category_id'] = categoryId;
-        }
-
-        if (result.place) {
-          userProps['place'] = result.place;
-        }
-
-        if (result.place_joined_at) {
-          userProps['place_joined_at'] = result.place_joined_at;
-        }
-
-        if (result.place_points) {
-          userProps['place_points'] = result.place_points;
-        }
-
-        user.setProperties(userProps);
-
-        if (result.app_data) {
-          let appData = result.app_data;
-
-          Object.keys(appData).forEach(appName => {
-            updateAppData(user, appName, appData[appName]);
-          });
-        }
-
-        if (this.get('routeAfterSet') && category) {
-          DiscourseURL.routeTo(category.get('url'));
-        }
       });
     },
 
     addPlace() {
+      const geoLocation = this.get('geoLocation');
+      if (!geoLocation) return;
+
+      this.set('addingPlace', true);
+
+      ajax('/place/add', {
+        type: 'POST',
+        data: {
+          geo_location: geoLocation
+        }
+      }).then((result) => {
+        this.resolvePlaceSet(result);
+      }).catch(popupAjaxError).finally(() => {
+        this.set('addingPlace', false);
+      });
+    },
+
+    startPetition() {
       this.set('loadingNewWindow', true);
       window.location.href = '/w/place-petition';
     },
 
-    showPetition(filter) {
+    toggleShowAddPlace(filter) {
       if (filter) this.set('placeTitle', filter);
-      this.set('showPetition', true);
+      this.set('showAddPlace', true);
 
       Ember.run.scheduleOnce('afterRender', () => {
-        const petitionOffset = $(".place-petition").offset().top;
+        const petitionOffset = $(".place-add").offset().top;
         const headerHeight = $('.d-header').height();
-        const offset = petitionOffset - headerHeight + 10;
+        const offset = petitionOffset - headerHeight;
 
         $('html, body').animate({
           scrollTop: offset

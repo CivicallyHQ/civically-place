@@ -30,23 +30,31 @@ en:
       select:
         title: "Where do you live?"
         description: 'You can set this once every 30 days.'
-        placeholder: "Select a city, town or village"
-        instructions: "city, town or village"
+        placeholder: "Select a city, town or neighbourhood"
+        instructions: "city, town or neighbourhood"
         no_content: "Add {{filter}} to Civically"
         not_listed: "Where I live is not listed"
+        add:
+          title: "Add your city or town to Civically."
+          description: "You can only do this once."
+          instructions: "city or town"
+          added_place: "You added {{placeName}}."
+          placeholder: "Search for your city or town."
+          btn: "Add"
+        divider: "Or"
         petition:
-          title: "Add your city, town or village to Civically."
+          title: "Add your neighbourhood to Civically."
           description: >
-            Civically is a community built and run by its members. 
-            That's why places are added to Civically by **Petition**.
-            When people from a place petition to add it to Civically, it shows there's a community ready to work together.
+            You can add your neighbourhood to Civically, so it has it's very own community space online.
+            You need to get at least 100 people who live in your neighbourhood to support a petition :ballot_box:.
+            This shows there's a community ready to work together.
 
           search:
             title: "Current Petitions"
-            placeholder: "Search petitions"
+            placeholder: "Search"
             none_title: "No current petitions for {{title}}."
             none: "No current petitions."
-          start_btn: "Start a Petition"
+          start_btn: "Start a petition"
 
       user:
         label: "Place can be joined."
@@ -54,6 +62,7 @@ en:
       user_count:
         label: "Users"
         value: "{{userCount}} users"
+        low: "Invite people who live in {{placeName}}."
 
       moderator:
         label: "Moderator"
@@ -110,7 +119,7 @@ en:
 
     user:
       place_label: "Place"
-      set_place: "Set Place"
+      set_place: "Set"
       current_place: "Your place is {{userPlace}}"
       current_place_marker: "(current)"
       update_place_set: "Your place was set to {{place}} on <b>{{setTime}}</b>."

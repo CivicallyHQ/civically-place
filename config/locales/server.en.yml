@@ -37,23 +37,27 @@ en:
 
   place:
     about:
-      title: "%{place}, %{country}"
+      post: "This topic is for anything related to the management of %{place}."
+    add:
+      error:
+        failed: "Failed to add place"
+        only_one: "You can only add one place"
     petition:
       intro:
-        title: "Place Petition Wizard"
+        title: "Neighbourhood Petition Wizard"
         description: >
-          This wizard will create a petition to add a city, town or village to Civically.
+          This wizard will create a petition to add a neighbourhood to Civically.
         tip:
           description: "*This takes about 1 minute to complete.*"
       location:
-        title: "Place"
-        description: "A place is a city, town or village. Search for your place, and select a result."
+        title: "Neighbourhood"
+        description: "Search for your neighbourhood, and select a result."
         tip:
-          description: "*Your place is where you live.*"
+          description: "*A neighbourhood could also be a 'suburb' or a 'quarter'.*"
         validation:
-          petition_exists: "A petition already exists for that place: <a href=%{topic_url} target='_blank'>%{topic_title}</a> "
-          place_exists: "A place already exists for that place: <a href=%{category_url} target='_blank'>%{category_name}</a>"
-        error: "There is no valid place in your submission. If the problem persists, please contact help@civically.io"
+          petition_exists: "A petition already exists for that neighbourhood: <a href=%{topic_url} target='_blank'>%{topic_title}</a> "
+          place_exists: "That neighbourhood is already on Civically: <a href=%{category_url} target='_blank'>%{category_name}</a>"
+        error: "There is no valid neighbourhood in your submission. Please contact help@civically.io."
       topic:
         title: "Post"
         description: "You can edit the first post of the petition (optional)."
@@ -86,6 +90,7 @@ en:
       error:
         insufficient_supporters: "Insufficient supporters to create place."
         parent_category_creation: "Failed to create place parent category."
+        place_exists: "Place already exists."
         category_creation: "Failed to create place category."
         election_topic_creation: "Failed to create '%{type}' election topic: \"%{message}\""
         petition_supporter: "Failed to add '%{user}': \"%{message}\""
@@ -105,7 +110,8 @@ en:
     place_change_min: "Days before user can change their place place"
     place_petition_category_id: "Place petition category"
     place_country_active_min: "Minimum active places in country needed for country to be active."
-    place_permitted_types: "Permitted place types"
+    place_add_types: "Permitted place types for user-added places"
+    place_petition_types: "Permitted place types for place petitions"
 
   system_messages:
     identical_place_petition:

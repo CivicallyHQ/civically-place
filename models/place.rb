@@ -2,6 +2,7 @@
 
 Category.register_custom_field_type('is_place', :boolean)
 Category.register_custom_field_type('place_type', :string)
+Category.register_custom_field_type('place_id', :integer)
 Category.register_custom_field_type('can_join', :boolean)
 Category.register_custom_field_type('user_count', :integer)
 Category.register_custom_field_type('user_count_min', :integer)
@@ -19,6 +20,14 @@ class CivicallyPlace::Place < Category
 
   def place_name
     self.topic.present? ? self.topic.title : self.name
+  end
+
+  def place_id
+    if is_country
+      nil
+    else
+      self.custom_fields['place_id'].to_i
+    end
   end
 
   def place_country
@@ -110,22 +119,7 @@ class CivicallyPlace::Place < Category
     place.is_country && place.country_categories_ids.include?(user.place_category_id)
   end
 
-  def self.create(topic_id, forced)
-    topic = Topic.find(topic_id)
-    if !forced && topic.petition_supporters.length < topic.petition_vote_threshold
-      return { error: I18n.t('place.topic.error.insufficient_supporters') }
-    end
-
-    result = nil
-
-    Category.transaction do
-      result = CivicallyPlace::PlaceManager.create_place_category(topic.id)
-
-      return { error: result[:error] } if result[:error]
-
-      CivicallyPlace::PlaceManager.setup_place(result[:category_id])
-    end
-
-    result
+  def self.create_from_location(geo_location)
+    CivicallyPlace::PlaceManager.create_place_category(nil, geo_location)
   end
 end

@@ -7,6 +7,13 @@ class ::Category
   def is_place
     ActiveModel::Type::Boolean.new.cast(self.custom_fields['is_place'])
   end
+
+  def parent_category_validator
+    if parent_category_id
+      errors.add(:base, I18n.t("category.errors.self_parent")) if parent_category_id == id
+      errors.add(:base, I18n.t("category.errors.uncategorized_parent")) if uncategorized?
+    end
+  end
 end
 
 module SiteExtension
@@ -29,6 +36,7 @@ SERIALIZED_PLACE_ATTRIBUTES = [
   :place_name,
   :place_active,
   :place_type,
+  :place_id,
   :can_join,
   :user_count,
   :user_count_min

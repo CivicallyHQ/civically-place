@@ -1,5 +1,13 @@
+.instructions {
+  margin-top: 5px;
+  margin-left: 2px;
+  margin-bottom: 10px;
+  font-size: 80%;
+  line-height: 1.4em;
+  color: #919191;
+}
+
 .place-select {
-  margin-top: 15px;
   display: inline-block;
 
   .title {
@@ -17,12 +25,7 @@
   }
 
   .instructions {
-    margin-top: 5px;
-    margin-left: 2px;
-    margin-bottom: 10px;
-    font-size: 80%;
-    line-height: 1.4em;
-    color: #919191;
+    @extend .instructions;
   }
 
   .combobox {
@@ -46,7 +49,7 @@
 }
 
 .select-kit.combo-box.place-select-box {
-  min-width: 200px;
+  width: 400px;
 }
 
 .place-user-controls {
@@ -56,9 +59,17 @@
     font-size: 16px;
   }
 
-  .title {
-    font-size: 24px;
+  .title span {
+    font-size: 1.7em;
     margin-bottom: 15px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .title-emoji {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
   }
 
   .description {
@@ -70,17 +81,27 @@
       min-width: 300px;
     }
 
-    .p-note {
-      margin-top: 20px;
+    .not-listed-btn {
+      margin-top: 10px;
     }
   }
 
-  &.show-petition .place-set {
-    padding-bottom: 10px;
+  &.show-add-place .place-set {
+    padding-bottom: 20px;
   }
 
-  .p-text, .container {
-    max-width: 800px;;
+  .container {
+    margin-top: 15px;
+    max-width: 800px;
+  }
+
+  .p-text {
+    margin-top: 5px;
+    max-width: 500px;
+
+    p {
+      margin: 0;
+    }
   }
 
   .p-note {
@@ -89,19 +110,63 @@
     }
   }
 
+  .place-add {
+    clear: both;
+    padding: 30px 0;
+    border-top: 1px solid $tertiary;
+
+    .location-selector-container {
+      display: inline-block;
+      vertical-align: top;
+      width: 400px;
+      margin-right: 5px;
+
+      .ac-wrap {
+        width: 100% !important;
+      }
+    }
+
+    .instructions {
+      @extend .instructions;
+    }
+  }
+
+  .text-divider {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+
+    > span {
+      position: relative;
+      display: inline-block;
+      font-size: 1.3em;
+    }
+
+    > span:before,
+    > span:after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 9999px;
+      height: 1px;
+      background: $tertiary;
+    }
+
+    > span:before {
+      right: 100%;
+      margin-right: 15px;
+    }
+
+    > span:after {
+      left: 100%;
+      margin-left: 15px;
+    }
+  }
+
   .place-petition {
     clear: both;
     padding-top: 30px;
-    border-top: 1px solid $tertiary;
-
-    .p-text:not(.p-note) {
-      margin-bottom: 10px;
-      max-width: 500px;
-
-      p {
-        margin: 0;
-      }
-    }
 
     .p-list-box {
       width: 550px;
@@ -114,8 +179,6 @@
     }
 
     .container {
-      margin-top: 10px;
-
       .title {
         float: none;
         margin-right: 10px;
@@ -139,6 +202,7 @@
     }
 
     .petition-search-title {
+      font-size: 1.3em;
       margin-right: 10px;
     }
 
