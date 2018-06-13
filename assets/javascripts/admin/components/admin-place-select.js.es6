@@ -1,4 +1,4 @@
-import Category from 'discourse/models/category';
+import { setPlace } from 'discourse/plugins/civically-place/discourse/lib/place-utilities';
 import { on } from 'ember-addons/ember-computed-decorators';
 
 export default Ember.Component.extend({
@@ -6,28 +6,29 @@ export default Ember.Component.extend({
 
   @on('init')
   initSelectedId() {
-    const placeCategoryId = this.get('model.place_category_id');
-    if (placeCategoryId) {
-      this.set('selectedId', placeCategoryId);
+    const townCategoryId = this.get('model.town_category_id');
+    if (townCategoryId) {
+      this.set('selectedId', townCategoryId);
     }
   },
 
-
-
   actions: {
     setPlace(selectedId) {
-      const placeCategoryId = this.get('model.place_category_id');
+      const townCategoryId = this.get('model.town_category_id');
       const userId = this.get('model.id');
 
-      if (!selectedId || selectedId === placeCategoryId) return;
+      if (!selectedId || selectedId === townCategoryId) return;
 
       this.set('loading', true);
-      Category.setPlace(selectedId, userId).then((result) => {
+
+      setPlace(selectedId, 'town', userId).then((result) => {
         this.set('loading', false);
+
         if (result.error) {
           return bootbox.alert(result.error);
         }
-        this.set('model.place_category_id', Number(selectedId));
+
+        this.set('model.town_category_id', Number(selectedId));
       });
     }
   }

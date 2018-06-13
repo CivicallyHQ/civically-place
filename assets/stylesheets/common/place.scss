@@ -7,7 +7,7 @@
   color: #919191;
 }
 
-.place-select {
+.town-set {
   display: inline-block;
 
   .title {
@@ -55,15 +55,34 @@
 .place-user-controls {
   padding: 15px;
 
+  div.container {
+    padding: 30px 0;
+
+    &:first-of-type {
+      padding-top: 0;
+    }
+  }
+
+  div.town-set {
+    padding-bottom: 10px;
+  }
+
   span, .p-text:not(.medium, .large), input, li {
     font-size: 16px;
   }
 
   .title span {
-    font-size: 1.7em;
+    font-size: 1.5em;
     margin-bottom: 15px;
     vertical-align: middle;
-    margin-right: 5px;
+  }
+
+  .title p {
+    margin: 0;
+  }
+
+  .title img {
+    margin-left: 5px;
   }
 
   .title-emoji {
@@ -76,21 +95,7 @@
     display: inline-block;
   }
 
-  .place-set {
-    .description {
-      min-width: 300px;
-    }
-
-    .not-listed-btn {
-      margin-top: 10px;
-    }
-  }
-
-  &.show-add-place .place-set {
-    padding-bottom: 20px;
-  }
-
-  .container {
+  .controls-container {
     margin-top: 15px;
     max-width: 800px;
   }
@@ -104,15 +109,24 @@
     }
   }
 
-  .p-note {
-    p {
-      margin: 0;
+  .place-home {
+    .controls {
+      display: inline-block;
+      vertical-align: top;
+      margin-top: 15px;
+
+      .combo-box {
+        width: 300px;
+      }
+
+      .btn {
+        margin-left: 10px;
+      }
     }
   }
 
-  .place-add {
+  .town-add {
     clear: both;
-    padding: 30px 0;
     border-top: 1px solid $tertiary;
 
     .location-selector-container {
@@ -130,119 +144,46 @@
       @extend .instructions;
     }
   }
+}
 
-  .text-divider {
-    display: block;
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap;
+.neighbourhood-petition {
+  .description p {
+    margin-top: 0;
+  }
+  .search-title {
+    font-weight: 800;
+    margin-bottom: 5px;
+  }
 
-    > span {
-      position: relative;
-      display: inline-block;
-      font-size: 1.3em;
-    }
+  .search {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 
-    > span:before,
-    > span:after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      width: 9999px;
-      height: 1px;
-      background: $tertiary;
-    }
-
-    > span:before {
-      right: 100%;
-      margin-right: 15px;
-    }
-
-    > span:after {
-      left: 100%;
-      margin-left: 15px;
+    input {
+      margin-bottom: 0;
+      margin-right: 10px;
+      border-radius: 4px;
     }
   }
 
-  .place-petition {
-    clear: both;
-    padding-top: 30px;
+  .p-list-box {
+    width: 550px;
 
-    .p-list-box {
-      width: 550px;
-
-      .similar-titles {
-        border-radius: 4px;
-        height: 130px;
-        padding: 5px 0;
-      }
-    }
-
-    .container {
-      .title {
-        float: none;
-        margin-right: 10px;
-      }
-
-      .add-description {
-        display: block;
-        float: none;
-        margin-right: 20px;
-      }
-
-      .controls {
-        width: 190px;
-        display: inline-block;
-
-        .spinner {
-          vertical-align: middle;
-          margin-left: 5px;
-        }
-      }
-    }
-
-    .petition-search-title {
-      font-size: 1.3em;
-      margin-right: 10px;
-    }
-
-    .petition-search {
-      position: relative;
-      display: inline-block;
-
-      input {
-        padding-right: 30px;
-        border-radius: 4px;
-      }
-
-      .icon {
-        position: absolute;
-        top: 5px;
-        right: 10px;
-      }
-    }
-
-    .p-note {
-      line-height: initial;
-      margin-left: 10px;
+    .similar-titles {
+      border-radius: 4px;
+      height: 130px;
+      padding: 5px 0;
     }
   }
 }
 
-.place-update {
+.town-update {
   margin-top: 5px;
-
-  .title p {
-    margin: 0;
-  }
 
   .p-text {
     padding: 5px 0;
   }
-}
-
-.place-points {
-  margin-top: 30px;
 }
 
 ul.user-nav > span {
@@ -278,121 +219,6 @@ ul.user-nav > span {
 
 .user-place-link {
   display: inline-block;
-}
-
-// classes used in other plugins
-
-.action-box {
-  max-width: 800px;
-  margin-bottom: 10px;
-  line-height: 25px;
-  border: 1px solid $tertiary;
-  background-color: white;
-  border-radius: 4px;
-
-  .btn-success {
-    background-color: $success;
-    color: $secondary;
-  }
-
-  .explanation {
-    padding: 20px;
-  }
-
-  .content {
-    overflow: hidden;
-  }
-}
-
-.main-content.editing .action-box {
-  border: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
-}
-
-a.p-link {
-  background-image: linear-gradient(180deg,transparent 90%, $tertiary 0);
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  text-decoration: none;
-  color: $primary;
-}
-
-.p-emphasis {
-  color: $tertiary
-}
-
-.p-text {
-  text-align: left;
-
-  &.title {
-    font-size: 2.5em;
-    line-height: 60px;
-    margin-bottom: 150px;
-    text-align: center;
-
-    &.start {
-      text-align: left;
-      margin-bottom: 70px;
-    }
-  }
-
-  &.large {
-    font-size: 1.7em;
-    line-height: 40px;
-    margin-bottom: 20px;
-  }
-
-  &.medium {
-    font-size: 1.4em;
-    line-height: 30px;
-    margin-bottom: 10px;
-  }
-
-  &.small {
-    font-size: 1.1em;
-    line-height: 27px;
-  }
-
-  &.bold {
-    font-weight: 800;
-  }
-
-  &.centered {
-    text-align: center;
-  }
-
-  &.seperator {
-    margin: 0 10px;
-    font-size: 2em;
-  }
-
-  &.active {
-    color: $success;
-  }
-
-  &.bronze {
-    color: #cd7f32 !important;
-  }
-
-  &.silver {
-    color: #c0c0c0 !important;
-  }
-
-  &.gold {
-    color: rgb(231, 195, 0) !important;
-  }
-}
-
-.p-note {
-  @extend .p-text;
-  display: inline-block;
-  line-height: initial;
-  padding: 6px 10px;
-  border: 1px solid $tertiary;
-  border-radius: 4px;
-
-  .btn {
-    margin: 5px 0;
-  }
 }
 
 .step-title {
@@ -451,7 +277,7 @@ a.p-link {
   display: flex;
   align-items: center;
 
-  .place-name-label, .place-points-label {
+  .place-name-label {
     margin-right: 10px;
     display: flex;
     align-items: center;
@@ -469,10 +295,6 @@ a.p-link {
   .place-name-label i {
     margin-left: 0;
     font-size: 1.1487em;
-  }
-
-  .place-points-label i {
-    font-size: .8706em;
   }
 }
 

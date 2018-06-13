@@ -1,12 +1,17 @@
-<div class="place-name-label" title="{{i18n 'place.label'}}">
-  {{d-icon 'home'}}
-  {{#if user.place}}
-    <span>{{user.place.place_name}}</span>
+<div class="place-name-label" title="{{i18n 'place.town.label'}}">
+  {{d-icon 'building'}}
+  {{#if user.town}}
+    <span>{{user.town.place_name}}</span>
   {{else}}
     {{d-icon 'question'}}
   {{/if}}
 </div>
-<div class="place-points-label" title="{{i18n 'place.points'}}">
-  {{d-icon 'circle'}}
-  <span>{{user.place_points}}</span>
+
+<div class="place-name-label" title="{{i18n 'place.neighbourhood.label'}}">
+  {{d-icon 'home'}}
+  {{#if user.neighbourhood}}
+    <span>{{user.neighbourhood.place_name}}</span>
+  {{else}}
+    {{d-icon 'question'}}
+  {{/if}}
 </div>

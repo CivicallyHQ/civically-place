@@ -4,7 +4,7 @@ import { observes } from 'ember-addons/ember-computed-decorators';
 export default ComboBoxComponent.extend({
   // Allows noneRow to display when select-kit has no contents
   hasSelection: true,
-  none: 'place.select.placeholder',
+  none: 'place.add.placeholder',
   classNames: "place-select-box",
   includeCountries: false,
 
@@ -20,9 +20,15 @@ export default ComboBoxComponent.extend({
   computeContent() {
     let places = this.site.get('categoriesList').filter(c => c.is_place);
 
-    const includeCountries = this.get('includeCountries');
-    if (!includeCountries) {
-      places = places.filter(c => c.place_type !== 'country')
+    const type = this.get('type');
+
+    if (type) {
+      places = places.filter(c => c.place_type == type);
+    } else {
+      const includeCountries = this.get('includeCountries');
+      if (!includeCountries) {
+        places = places.filter(c => c.place_type !== 'country')
+      }
     }
 
     return places;

@@ -1,25 +1,24 @@
 {
-  "id": "place_petition",
-  "name": "Place Petition",
-  "background": "#d1f0ff",
+  "id": "neighbourhood_petition",
+  "name": "Neighbourhood Petition",
   "save_submissions": true,
   "theme":"Civically Wizards",
   "steps": [
     {
       "id": "intro",
-      "key": "place.petition.intro",
+      "key": "neighbourhood_petition.intro",
       "fields": [
         {
           "id": "tip",
           "type": "text-only",
           "image": "/images/emoji/twitter/adult/4.png",
-          "key": "place.petition.intro.tip"
+          "key": "neighbourhood_petition.intro.tip"
         }
       ]
     },
     {
       "id": "location",
-      "key": "place.petition.location",
+      "key": "neighbourhood_petition.location",
       "fields": [
         {
           "id": "location",
@@ -30,43 +29,43 @@
           "id": "tip",
           "type": "text-only",
           "image": "/images/emoji/twitter/adult/4.png",
-          "key": "place.petition.location.tip"
+          "key": "neighbourhood_petition.location.tip"
         }
       ]
     },
     {
       "id": "topic",
-      "key": "place.petition.topic",
+      "key": "neighbourhood_petition.topic",
       "fields": [
         {
           "id": "post",
           "type": "prefilled-composer",
-          "key": "place.petition.topic.post",
+          "key": "neighbourhood_petition.topic.post",
           "required": true,
           "min_length": 20
         },
         {
           "id": "prompt",
           "type": "text-only",
-          "key": "place.petition.topic.prompt"
+          "key": "neighbourhood_petition.topic.prompt"
         },
         {
           "id": "tip",
           "type": "text-only",
           "image": "/images/emoji/twitter/adult/4.png",
-          "key": "place.petition.topic.tip"
+          "key": "neighbourhood_petition.topic.tip"
         }
       ]
     },
     {
       "id": "submit",
-      "key": "place.petition.submit",
+      "key": "neighbourhood_petition.submit",
       "fields": [
         {
           "id": "tip",
           "type": "text-only",
           "image": "/images/emoji/twitter/adult/4.png",
-          "key": "place.petition.submit.tip"
+          "key": "neighbourhood_petition.submit.tip"
         }
       ]
     }

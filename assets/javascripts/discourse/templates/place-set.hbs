@@ -1,2 +1,4 @@
-{{place-user-controls routeAfterSet=true}}
-{{people-image}}
+{{place-user-controls routeAfterSet=true loadingNewWindow=loadingNewWindow}}
+{{#unless loadingNewWindow}}
+  {{people-image}}
+{{/unless}}

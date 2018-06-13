@@ -19,7 +19,7 @@ class CivicallyPlace::Place < Category
   end
 
   def place_name
-    self.topic.present? ? self.topic.title : self.name
+    self.name
   end
 
   def place_id
@@ -27,16 +27,6 @@ class CivicallyPlace::Place < Category
       nil
     else
       self.custom_fields['place_id'].to_i
-    end
-  end
-
-  def place_country
-    if is_country
-      self
-    elsif is_town
-      self.parent_category
-    else
-      self.parent_category
     end
   end
 
@@ -62,6 +52,26 @@ class CivicallyPlace::Place < Category
     end
   end
 
+  def country
+    if is_country
+      self
+    elsif is_town
+      self.parent_category
+    else
+      self.parent_category
+    end
+  end
+
+  def town
+    if is_neighbourhood
+      self.parent_category
+    elsif is_town
+      self
+    else
+      nil
+    end
+  end
+
   def is_country
     place_type === 'country'
   end
@@ -70,8 +80,8 @@ class CivicallyPlace::Place < Category
     place_type === 'town'
   end
 
-  def is_village
-    place_type === 'village'
+  def is_neighbourhood
+    place_type === 'neighbourhood'
   end
 
   def child_categories
@@ -103,23 +113,42 @@ class CivicallyPlace::Place < Category
 
   def self.members(category_id)
     User.where("id in (
-      SELECT user_id FROM user_custom_fields WHERE name = 'place_category_id' AND value = ?
+      SELECT user_id FROM user_custom_fields
+      WHERE name = '#{CivicallyPlace::Place.type(category_id)}_category_id'
+      AND value = ?
     )", category_id.to_s)
   end
 
-  def self.joined_at(user_id)
+  def self.type(category_id)
+    category = Category.find_by(category_id)
+    category ? category.place_type : nil
+  end
+
+  def self.joined_at(user_id, type)
     UserHistory.where(
-      action: UserHistory.actions[:place],
+      action: UserHistory.actions["join_#{type}".to_sym],
       acting_user_id: user_id
     ).order(:created_at).last[:created_at].to_date
   end
 
-  def self.is_home_country(user, category_id)
+  def self.home_country(user, category_id)
     place = CivicallyPlace::Place.new(id: category_id)
-    place.is_country && place.country_categories_ids.include?(user.place_category_id)
+    place.is_country && place.country_categories_ids.include?(user.town_category_id)
   end
 
-  def self.create_from_location(geo_location)
-    CivicallyPlace::PlaceManager.create_place_category(nil, geo_location)
+  def self.determine_type(geo_location)
+    town_types = ['city', 'town', 'village']
+    neighbourhood_types = ['neighbourhood']
+    country_types = ['country']
+
+    if country_types.include?(geo_location['type'])
+      'country'
+    elsif town_types.include?(geo_location['type'])
+      'town'
+    elsif neighbourhood_types.include?(geo_location['type'])
+      'neighbourhood'
+    else
+      nil
+    end
   end
 end

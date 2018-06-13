@@ -80,9 +80,9 @@ export default createWidget('place-list-controls', {
       let messages = [];
       let permission = permissions[k];
 
-      if (k === 'member' && permission && user.place_category_id !== category.id) {
+      if (k === 'member' && permission && user.town_category_id !== category.id) {
         if (category.place_type === 'country') {
-          if (category.id === user.place.parent_category_id) {
+          if (category.id === user.town.parent_category_id) {
             if (!category.place_active) {
               messages.push(I18n.t('place.create.not_permitted.country_active', {
                 categoryName: category.place_name,

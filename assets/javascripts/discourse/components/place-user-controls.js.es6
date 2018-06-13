@@ -1,22 +1,14 @@
-import { default as computed, on } from 'ember-addons/ember-computed-decorators';
-import { updateAppData } from 'discourse/plugins/civically-app/discourse/lib/app-utilities';
-import { cook, cookAsync } from 'discourse/lib/text';
+import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
+import { placeTypes } from '../lib/place-utilities';
+import { cookAsync } from 'discourse/lib/text';
 import { ajax } from 'discourse/lib/ajax';
 import { popupAjaxError } from 'discourse/lib/ajax-error';
 import Category from 'discourse/models/category';
-import DiscourseURL from 'discourse/lib/url';
 
 export default Ember.Component.extend({
-  classNameBindings: [':place-user-controls', 'showAddPlace'],
-  inputFields: ['city', 'countrycode'],
-  showAddPlace: false,
-  searchingPetitions: false,
-  placeTitle: '',
-  place: Ember.computed.alias('currentUser.place'),
-  loadingNewWindow: false,
-  addContext: 'place_add',
-  geoAttrs: ['name', 'state', 'country'],
-  addPlaceDisabled: Ember.computed.empty('geoLocation'),
+  classNameBindings: [':place-user-controls', 'showAddTown'],
+  showAddTown: false,
+  showHome: Ember.computed.alias('currentUser.town'),
 
   @on('init')
   initSelectedId() {
@@ -27,168 +19,175 @@ export default Ember.Component.extend({
       selectedId = filter.split('=')[1];
     }
 
-    const placeCategoryId = this.get('currentUser.place_category_id');
-    if (placeCategoryId) {
-      selectedId = placeCategoryId;
+    const townCategoryId = this.get('currentUser.town_category_id');
+    if (townCategoryId) {
+      selectedId = townCategoryId;
     }
 
     this.set('selectedId', selectedId);
-    this.appEvents.on('place-select:add-place', (f) => this.send('toggleShowAddPlace', f));
+    this.appEvents.on('town-set:add-town', (f) => {
+      this.send('toggleShowAddTown', f);
+    });
   },
 
   @on('init')
-  setPlaceText() {
-    const place = this.get('place');
+  setText() {
+    const town = this.get('currentUser.town');
 
-    if (place) {
-      const placeTitle = I18n.t('place.current.title', { placeName: place.name, placeUrl: place.topic_url });
-      cookAsync(placeTitle).then((cooked) => this.set('placeTitle', cooked));
+    if (town) {
+      const rawTown = I18n.t('place.town.current', {
+        townName: town.name,
+        townUrl: town.topic_url
+      });
 
-      const pointsDescription = I18n.t('place.points.description');
-      cookAsync(pointsDescription).then((cooked) => this.set('pointsDescription', cooked));
+      cookAsync(rawTown).then((cooked) => this.set('currentTown', cooked));
+
+      const neighbourhood = this.get('currentUser.neighbourhood');
+
+      if (neighbourhood) {
+        const rawNeighbourhood = I18n.t('place.neighbourhood.current', {
+          neighbourhoodName: neighbourhood.name,
+          neighbourhoodUrl: neighbourhood.topic_url
+        });
+
+        cookAsync(rawNeighbourhood).then((cooked) => this.set('currentNeighbourhood', cooked));
+      }
     }
   },
 
-  @computed('currentUser.place_joined_at')
-  updatePlaceAllowed(joinedAt) {
-    return joinedAt && moment(joinedAt).diff(moment().format(), 'days') >= Discourse.SiteSettings.place_change_min;
+  @computed('currentUser.town', 'currentUser.town_joined_at')
+  canSetTown(town, joinedAt) {
+    return !town ||
+           (joinedAt &&
+            moment(joinedAt).diff(moment().format(), 'days') >= Discourse.SiteSettings.place_town_change_min);
   },
 
-  @computed('currentUser.place_joined_at')
-  nextTime(joinedAt) {
-    return moment(joinedAt).add(Discourse.SiteSettings.place_change_min, 'days');
+  @computed('currentUser.town_joined_at')
+  townNextTime(joinedAt) {
+    return moment(joinedAt).add(Discourse.SiteSettings.place_town_change_min, 'days');
   },
 
-  @computed('place', 'updatePlaceAllowed')
-  setPlaceAllowed(place, updatePlaceAllowed) {
-    return !place || updatePlaceAllowed;
+  @computed('currentUser.town', 'currentUser.neighbourhood', 'currentUser.neighbourhood_joined_at')
+  canSetNeighbourhood(town, neighbourhood, joinedAt) {
+    return town &&
+           (joinedAt &&
+            moment(joinedAt).diff(moment().format(), 'days') >= Discourse.SiteSettings.place_neighbourhood_change_min);
   },
 
-  @computed('selectedId', 'currentUser.place_category_id', 'setPlaceAllowed')
-  setDisabled(selectedId, placeCategoryId, setPlaceAllowed) {
-    return !selectedId || selectedId === placeCategoryId || !setPlaceAllowed;
+  @computed('currentUser.neighbourhood_joined_at')
+  neighbourhoodNextTime(joinedAt) {
+    return moment(joinedAt).add(Discourse.SiteSettings.place_neighbourhood_change_min, 'days');
   },
 
-  @computed('placeTitle')
-  noPetitions(title) {
-    if (title) {
-      return I18n.t("place.select.petition.search.none_title", { title });
+  @computed('canSetTown', 'showAddTown')
+  showAddTownBtn(canSetTown, showAddTown) {
+    return !this.site.mobileView && canSetTown && !showAddTown;
+  },
+
+  @computed('currentUser.town')
+  country(town) {
+    return Category.findById(town.parent_category_id);
+  },
+
+  @on('init')
+  setCurrentHome() {
+    this.set('currentHome', this.get('currentUser.place_home'));
+  },
+
+  @on('init')
+  @observes('currentUser.place_home')
+  setHomeTitle() {
+    const showHome = this.get('showHome');
+    if (showHome) {
+      const home = this.get('home');
+      const rawHome = I18n.t('place.home.current', {
+        homeName: home.name,
+        homeUrl: home.topic_url
+      })
+
+      cookAsync(rawHome).then((cooked) => {
+        this.set('homeTitle', cooked);
+      });
+    }
+  },
+
+  @computed('currentUser.place_home')
+  home(home) {
+    if (home === 'country') {
+      return this.get('country');
     } else {
-      return I18n.t("place.select.petition.search.none");
+      return this.get(`currentUser.${home}`);
     }
   },
 
-  @computed('showAddPlace')
-  showNotListedBtn(showAddPlace) {
-    return !this.site.mobileView && !showAddPlace;
+  @computed('currentUser.town', 'currentUser.neighbourhood')
+  homes(town, neighbourhood) {
+    if (!town) return [];
+
+    let placeTypes = [
+      'country',
+      'town'
+    ]
+
+    if (neighbourhood) placeTypes.push('neighbourhood');
+
+    return placeTypes.map((type) => {
+      let params = {};
+
+      if (type === 'country') {
+        params[`${type}Name`] = this.get('country.name');
+      } else {
+        params[`${type}Name`] = type === 'town' ? town.name : neighbourhood.name;
+      }
+
+      return {
+        id: type,
+        name: I18n.t(`place.home.${type}`, params)
+      }
+    });
+  },
+
+  @computed('settingHome')
+  setHomeDisabled(settingHome) {
+    return settingHome;
   },
 
   willDestroyElement() {
-    this.appEvents.off('place-select:add-place', (f) => this.send('toggleShowAddPlace', f));
-  },
-
-  @computed()
-  petitionDescription() {
-    return cook(I18n.t('place.select.petition.description'));
-  },
-
-  @computed()
-  petitionNote() {
-    return cook(I18n.t('place.select.petition.note'));
-  },
-
-  resolvePlaceSet(result) {
-    if (result.message || result.error) {
-      return bootbox.alert(result.message || result.error);
-    }
-
-    const user = this.get('currentUser');
-    let userProps = {};
-
-    if (result.place_category_id) {
-      let categoryId = Number(result.place_category_id);
-
-      userProps['place_category_id'] = categoryId;
-    }
-
-    if (result.place) {
-      userProps['place'] = result.place;
-    }
-
-    if (result.place_joined_at) {
-      userProps['place_joined_at'] = result.place_joined_at;
-    }
-
-    if (result.place_points) {
-      userProps['place_points'] = result.place_points;
-    }
-
-    user.setProperties(userProps);
-
-    if (result.app_data) {
-      let appData = result.app_data;
-
-      Object.keys(appData).forEach(appName => {
-        updateAppData(user, appName, appData[appName]);
-      });
-    }
-
-    if (this.get('routeAfterSet') && result.route_to) {
-      window.location = result.route_to;
-    }
+    this.appEvents.off('place-select:add-town', (f) => this.send('toggleShowAddTown', f));
   },
 
   actions: {
-    setPlace(selectedId) {
-      const placeCategoryId = this.get('currentUser.place_category_id');
-
-      if (!selectedId || selectedId === placeCategoryId) return;
-
-      this.set('loading', true);
-
-      Category.setPlace(selectedId).then((result) => {
-        this.resolvePlaceSet(result);
-      }).catch(popupAjaxError).finally(() => {
-        this.set('loading', false);
-      });
-    },
-
-    addPlace() {
-      const geoLocation = this.get('geoLocation');
-      if (!geoLocation) return;
-
-      this.set('addingPlace', true);
-
-      ajax('/place/add', {
-        type: 'POST',
-        data: {
-          geo_location: geoLocation
-        }
-      }).then((result) => {
-        this.resolvePlaceSet(result);
-      }).catch(popupAjaxError).finally(() => {
-        this.set('addingPlace', false);
-      });
-    },
-
-    startPetition() {
-      this.set('loadingNewWindow', true);
-      window.location.href = '/w/place-petition';
-    },
-
-    toggleShowAddPlace(filter) {
-      if (filter) this.set('placeTitle', filter);
-      this.set('showAddPlace', true);
+    toggleShowAddTown(filter) {
+      this.set('showAddTown', true);
 
       Ember.run.scheduleOnce('afterRender', () => {
-        const petitionOffset = $(".place-add").offset().top;
+        const addOffset = $(".town-add").offset().top;
         const headerHeight = $('.d-header').height();
-        const offset = petitionOffset - headerHeight;
+        const offset = addOffset - headerHeight;
 
         $('html, body').animate({
           scrollTop: offset
-        }, 500);
+        }, 500, () => {
+          $('.town-add input.location-selector').focus();
+        });
       });
+    },
+
+    setHome() {
+      this.set('settingHome', true);
+
+      ajax('/place/user/set-home', {
+        type: 'PUT',
+        data: {
+          place_home: this.get('currentHome')
+        }
+      }).then((result) => {
+        if (result.success) {
+          Discourse.User.currentProp('place_home', result.place_home);
+        } else {
+          this.set('currentHome', this.get('currentUser.place_home'));
+        }
+      }).catch(popupAjaxError).finally(() => this.set('settingHome', false));
     }
   }
 });

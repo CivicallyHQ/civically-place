@@ -1,4 +1,6 @@
 import Category from 'discourse/models/category';
+import { updateAppData } from 'discourse/plugins/civically-app/discourse/lib/app-utilities';
+import { ajax } from 'discourse/lib/ajax';
 
 let placeLabel = function(id, opts = {}) {
   const category = Category.findById(id);
@@ -33,16 +35,22 @@ let formatNum = function(num) {
 let placeUrl = function(user) {
   if (!user) return "/start";
 
-  if (user.place_category_id) {
-    const category = Category.findById(user.place_category_id);
+  if (user.town_category_id) {
+    const home = user.place_home;
+    let categoryId;
+
+    if (home ==='country') {
+      categoryId = user.town.parent_category_id;
+    } else {
+      categoryId = user[`${home}_category_id`];
+    }
+
+    const category = Category.findById(categoryId);
+
     if (category) {
       const url = category.get('url');
       return url;
     }
-  }
-
-  if (user.place_topic_id) {
-    return "/t/" + user.place_topic_id;
   }
 
   return '/place/set';
@@ -54,4 +62,50 @@ let categoryLabel = function(category) {
   return `<span class="category">${contents}</span>`;
 };
 
-export { placeUrl, placeLabel, placeTime, formatNum, categoryLabel };
+let setPlace = function(category_id, type, user_id = null) {
+  let data = {
+    category_id,
+    type
+  };
+
+  if (user_id) data['user_id'] = user_id;
+
+  return ajax('/place/user/set', { type: 'PUT', data });
+}
+
+let resolvePlaceSet = function(result) {
+  if (result.message || result.error) {
+    bootbox.alert(result.message || result.error);
+    return false;
+  }
+
+  const user = Discourse.User.current();
+  let userProps = {};
+
+  if (result.town_category_id) {
+    let categoryId = Number(result.town_category_id);
+    userProps['town_category_id'] = categoryId;
+  }
+
+  if (result.town) {
+    userProps['town'] = result.town;
+  }
+
+  if (result.town_joined_at) {
+    userProps['town_joined_at'] = result.town_joined_at;
+  }
+
+  user.setProperties(userProps);
+
+  if (result.app_data) {
+    let appData = result.app_data;
+
+    Object.keys(appData).forEach(appName => {
+      updateAppData(user, appName, appData[appName]);
+    });
+  }
+
+  return true;
+}
+
+export { placeUrl, placeLabel, placeTime, formatNum, categoryLabel, setPlace, resolvePlaceSet };

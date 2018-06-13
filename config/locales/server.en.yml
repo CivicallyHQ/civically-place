@@ -3,94 +3,92 @@ en:
     please_continue: "Your Civically account is confirmed. You will be redirected shortly."
 
   badges:
-    pioneer:
-      name: "Pioneer"
-      description: "Supported a successful place petition"
-      long_description: "This badge is granted when a place petition you supported is accepted. Your support mattered in getting your town on Civically."
-    pathfinder:
-      name: "Pathfinder"
-      description: "Gathered support for a successful place petition"
-      long_description: "This badge is granted when you are one of the top 4 supporters of a successful place petition. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was important in getting your town on Civically."
+    local:
+      name: "Local"
+      description: "Supported a successful neighbourhood petition"
+      long_description: "This badge is granted when a neighbourhood petition you supported is accepted. Your support mattered in getting your neighbourhood on Civically."
+    supporter:
+      name: "Supporter"
+      description: "Gathered support for a successful neighbourhood petition"
+      long_description: "This badge is granted when you are one of the top 4 supporters of a successful neighbourhood petition. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was important in getting your neighbourhood on Civically."
     founder:
       name: "Founder"
-      description: "Played a key role in the addition of a place"
-      long_description: "This badge is granted when you are the top supporter of a successful place petition, or the first moderator of a new place. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was invaluable in getting your town on Civically."
+      description: "Played a key role in the addition of a neighbourhood"
+      long_description: "This badge is granted when you are the top supporter of a successful neighbourhood petition. When calculating support, 1 point is given for each person you successfully invite to support the petition, and 3 points are given to the person who starts the petition. Your work was invaluable in getting your neighbourhood on Civically."
 
   checklist:
     place_setup:
       pass_petition:
-        title: "Pass your place petition"
-        detail: "Your place petition needs to pass so you can use Civically. <a href='/' class='p-link'>Go to the petition</a>."
+        title: "Pass your neighbourhood petition"
+        detail: "Get your neighbours to support <a href='${petition_url}' class='p-link'>the petition</a>!"
       elect_moderator:
         title: "Elect your place moderator"
         detail: "Your place needs a moderator! <a href='%{mod_url}' class='p-link'>Go to the election</a>."
 
+  neighbourhood_petition:
+    intro:
+      title: "Neighbourhood Petition Wizard"
+      description: >
+        This wizard will create a petition to add a neighbourhood to Civically.
+      tip:
+        description: "*This takes about 1 minute to complete.*"
+    location:
+      title: "Neighbourhood"
+      description: "Search for your neighbourhood, and select a result."
+      tip:
+        description: "*A neighbourhood can also be a 'suburb' or a 'quarter'.*"
+      error: "There is no valid neighbourhood in your submission. Please contact help@civically.io."
+    topic:
+      title: "Post"
+      description: "You can edit the first post of the petition (optional)."
+      prompt:
+        description: "You could say something about what you love about your neighbourhood."
+      tip:
+        description: "*It's fine if you don't want to write anything for now.*"
+      post:
+        label: "Post"
+        placeholder: "Write here."
+        default: "Let's add %{placeName} to Civically!"
+      error: "There is no valid post in your submission. If the problem persists, please contact help@civically.io"
+    submit:
+      title: "Submit"
+      description: >
+        When you submit this form a petition :ballot_box: will be created.
+        Once your petition gets at least 30 votes, your neighbourhood will get
+        its very own place on Civically!
+      tip:
+        description: "*Thanks for taking the time!*"
+      error: "There was a problem submitting your petition. If the problem persits, please contact help@civically.io"
+
   petition:
     place:
-      title: "Add %{place}, %{country} to Civically"
+      title: "Add %{place} to Civically"
       petitioner:
-        vote: "Share this petition with people who live in %{place}, %{country}."
+        vote: "Share this petition with people who live in %{place}."
       user:
-        no_vote: "Vote for this petition if you live in %{place}, %{country}. [Don't live in %{place}, %{country}?](/place/set)"
-        vote: "Share this petition with people who live in %{place}, %{country}."
-      info: "If you vote for this petition %{place}, %{country} will become your [place](/t/place-policy) when the petition passes."
+        no_vote: "Vote for this petition if you live in %{place}. [Don't live in %{place}?](/place/set)"
+        vote: "Share this petition with people who live in %{place}."
+      info: >
+        If you vote for this petition **%{place}** will become your
+        [Neighbourhood](https://civically.io/t/neighbourhood-policy) when the petition passes.
 
   place:
     about:
+      title: "About %{place}"
       post: "This topic is for anything related to the management of %{place}."
+    validation:
+      osm_id: "Failed to retrieve osm_id"
+      place_exists: "That place is already on Civically: <a href=%{category_url} target='_blank'>%{category_name}</a>"
+      petition_exists: "A petition already exists for that location: <a href=%{topic_url} target='_blank'>%{topic_title}</a> "
     add:
       error:
         failed: "Failed to add place"
         only_one: "You can only add one place"
-    petition:
-      intro:
-        title: "Neighbourhood Petition Wizard"
-        description: >
-          This wizard will create a petition to add a neighbourhood to Civically.
-        tip:
-          description: "*This takes about 1 minute to complete.*"
-      location:
-        title: "Neighbourhood"
-        description: "Search for your neighbourhood, and select a result."
-        tip:
-          description: "*A neighbourhood could also be a 'suburb' or a 'quarter'.*"
-        validation:
-          petition_exists: "A petition already exists for that neighbourhood: <a href=%{topic_url} target='_blank'>%{topic_title}</a> "
-          place_exists: "That neighbourhood is already on Civically: <a href=%{category_url} target='_blank'>%{category_name}</a>"
-        error: "There is no valid neighbourhood in your submission. Please contact help@civically.io."
-      topic:
-        title: "Post"
-        description: "You can edit the first post of the petition (optional)."
-        prompt:
-          description: >
-            You could say something about
-            <ul>
-            <li>The community in your city, town or village.</li>
-            <li>What you think about social media.</li>
-            <li>What you think about your government or legal system.</li>
-            </ul>
-        tip:
-          description: "*It's fine if you don't want to write anything for now.*"
-        post:
-          label: "Post"
-          placeholder: "Write here."
-          default: "Let's add %{placeName} to Civically!"
-        error: "There is no valid post in your submission. If the problem persists, please contact help@civically.io"
-      submit:
-        title: "Submit"
-        description: >
-          When you submit this form a petition :ballot_box: will be created.
-          To pass, a city needs 100 votes, a town needs 50 votes, and a village needs 10 votes
-          from the people who live there.
-        tip:
-          description: "*Thanks for taking the time!*"
-        error: "There was a problem submitting your petition. If the problem persits, please contact help@civically.io"
 
     topic:
       error:
         insufficient_supporters: "Insufficient supporters to create place."
         parent_category_creation: "Failed to create place parent category."
-        place_exists: "Place already exists."
         category_creation: "Failed to create place category."
         election_topic_creation: "Failed to create '%{type}' election topic: \"%{message}\""
         petition_supporter: "Failed to add '%{user}': \"%{message}\""
@@ -107,11 +105,12 @@ en:
     place_city_user_count_min: "Minimum users for a city"
     place_town_user_count_min: "Minimum users for a town"
     place_village_user_count_min: "Minimum users for a village"
-    place_change_min: "Days before user can change their place place"
-    place_petition_category_id: "Place petition category"
+    place_neighbourhood_user_count_min: "Minimum users for a neighbourhood."
+    place_town_change_min: "Days before user can change their town."
+    place_neighbourhood_change_min: "Days before user can change their neighbourhood."
     place_country_active_min: "Minimum active places in country needed for country to be active."
-    place_add_types: "Permitted place types for user-added places"
-    place_petition_types: "Permitted place types for place petitions"
+    place_urban_types: "Permitted place types for user-added urban areas."
+    place_neighbourhood_types: "Permitted place types for neighbourhood place petitions."
 
   system_messages:
     identical_place_petition:
@@ -150,3 +149,6 @@ en:
       place_not_found: "The place could not be found"
       place_not_changed: "Place has not been changed"
       place_set_limit: "You can only set your place once every %{change_min} days. You set your place to %{place} on %{past_time}. You can next set your place on %{next_time}."
+      neighbourhood_not_found: "The neighbourhood could not be found"
+      neighbourhood_not_changed: "Neighbourhood has not been changed"
+      neighbourhood_set_limit: "You can only set your neighbourhood once every %{change_min} days. You set your neighbourhood to %{place} on %{past_time}. You can next set your neighbourhood on %{next_time}."

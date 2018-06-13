@@ -7,27 +7,49 @@ class CivicallyPlace::PlaceUserController < ::ApplicationController
 
   def set
     params.require(:category_id)
-    params.permit(:user_id)
+    params.require(:type)
 
     user = current_user
+    type = set_params[:type]
+    category_id = set_params[:category_id].to_i
     force = false
 
-    if params[:user_id]
+    if set_params[:user_id]
       if current_user.admin?
-        user = User.find(params[:user_id])
+        user = User.find(set_params[:user_id])
         force = true
       else
         raise Discourse::InvalidAccess.new
       end
     end
 
-    result = User.update_place_category_id(user, params[:category_id].to_i, force)
+    result = User.send("update_#{type}_category_id", user, category_id, force)
 
     if result[:error]
       render json: { error: result[:error] }
     else
-      route_to = Category.find(user_result[:place_category_id]).url
+      route_to = Category.find(result["#{type}_category_id".to_sym]).url
       render json: success_json.merge(result.merge(route_to: route_to))
     end
+  end
+
+  def set_home
+    params.require(:place_home)
+
+    user = current_user
+
+    user.custom_fields['place_home'] = params[:place_home]
+
+    if user.save_custom_fields(true)
+      render json: success_json.merge(place_home: user.place_home)
+    else
+      render json: failed_json
+    end
+  end
+
+  private
+
+  def set_params
+    params.permit(:category_id, :type, :user_id)
   end
 end

@@ -1,15 +1,18 @@
 <div class="controls">
   {{place-select-box value=selectedId
+                     type=type
                      width=300
                      filterable=true
-                     noneRowComponent='add-place-row'}}
+                     noneRowComponent=noneRowComponent
+                     none=none}}
   <div class='instructions'>
-    {{i18n 'place.select.instructions'}}
+    {{i18n instructions}}
   </div>
 </div>
 <div class='controls'>
-  {{d-button label='user.set_place'
+  {{d-button label='place.set'
              action='setPlace'
+             actionParam=selectedId
              disabled=setDisabled
              class="btn btn-primary"
              icon='check'}}

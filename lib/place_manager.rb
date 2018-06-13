@@ -1,26 +1,26 @@
 DiscourseEvent.on(:vote_added) do |user, topic|
-  if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i &&
-     !user.place_category_id
-
-    user.custom_fields['place_topic_id'] = topic.id
+  if topic.petition_id === 'place'
+    user.custom_fields['neighbourhood_petition_id'] = topic.id
 
     CivicallyChecklist::Checklist.add_item(user, {
       id: "pass_petition",
       checked: false,
       checkable: false,
+      hidden: false,
+      hideable: false,
       active: true,
       title: I18n.t('checklist.place_setup.pass_petition.title'),
-      detail: I18n.t('checklist.place_setup.pass_petition.detail')
-    }, 1)
-
-    CivicallyChecklist::Checklist.update_item(user, 'set_place', active: false)
+      detail: I18n.t('checklist.place_setup.pass_petition.detail',
+        petition_url: topic.url
+      )
+    })
   end
 end
 
 DiscourseEvent.on(:vote_removed) do |user, topic|
-  if topic.category_id.to_i === SiteSetting.place_petition_category_id.to_i &&
-     topic.id === user.place_topic_id.to_i
-    user.custom_fields['place_topic_id'] = nil
+  if topic.petition_id === 'place'
+    user.custom_fields['neighbourhood_petition_id'] = nil
+    CivicallyChecklist::Checklist.remove_item(user, "pass_petition")
   end
 end
 
@@ -32,48 +32,25 @@ class CivicallyPlace::PlaceManager
 
     geo_location = opts[:geo_location]
     name = geo_location['name']
-    country = geo_location['country']
-    title = I18n.t("petition.place.title", place: name, country: country)
-    category_id = SiteSetting.place_petition_category_id
-    identical = false
-
-    # This is to handle places in the same country with identical names.
-    # Geographic uniqueness is handled seperately in a location form validator (see plugin.rb).
-    identical_place = Category.where(name: title)
-    identical_petition = Topic.where(category_id: category_id, title: title)
-    if identical_place.exists? || identical_petition.exists?
-      identical = true
-      identical_name = identical_place.exists? ? identical_place.first.name : identical_petition.first.title
-      identical_url = identical_place.exists? ? identical_place.first.url : identical_petition.first.url
-    end
 
     petition = CivicallyPetition::Petition.create(user,
-      title: title,
+      title: I18n.t("petition.place.title", place: name),
       id: 'place',
-      category: category_id,
+      category: user.town.id,
+      vote_threshold: SiteSetting.place_neighbourhood_user_count_min,
       messages: {
         user: {
-          no_vote: I18n.t('petition.place.user.no_vote', place: name, country: country),
-          vote: I18n.t('petition.place.user.vote', place: name, country: country)
+          no_vote: I18n.t('petition.place.user.no_vote', place: name),
+          vote: I18n.t('petition.place.user.vote', place: name)
         },
         petitioner: {
-          vote: I18n.t('petition.place.user.vote', place: name, country: country)
+          vote: I18n.t('petition.place.petitioner.vote', place: name)
         },
-        info: I18n.t('petition.place.info', place: name, country: country)
+        info: I18n.t('petition.place.info', place: name)
       }
     )
 
     unless petition.errors.any?
-      if identical
-        SystemMessage.create_from_system_user(Discourse.site_contact_user,
-          :identical_place_petition,
-            title: petition.title,
-            path: petition.url,
-            identical_name: identical_name,
-            identical_url: identical_url
-        )
-      end
-
       petition.custom_fields['location'] = {
         'geo_location': geo_location,
         'circle_marker': {
@@ -141,8 +118,15 @@ class CivicallyPlace::PlaceManager
         return { error: I18n.t('place.topic.error.parent_category_creation') }
       end
 
-      if CategoryCustomField.exists?(name: 'place_id', value: geo_location['osm_id'])
-        return { error: I18n.t('place.topic.error.place_exists') }
+      if identical_place = CategoryCustomField.find_by(name: 'place_id', value: geo_location['osm_id'])
+        category = Category.find(identical_place.category_id)
+
+        return {
+          error: I18n.t("place.validation.place_exists",
+            category_url: category.url,
+            category_name: category.name
+          )
+        }
       end
 
       category = build_place(parent_id, geo_location)
@@ -163,14 +147,14 @@ class CivicallyPlace::PlaceManager
     { category_id: category_id }
   end
 
-  def self.create_from_petition(topic_id)
+  def self.create_neighbourhood(topic_id)
     topic = Topic.find(topic_id)
     geo_location = topic.location['geo_location']
-    parent = {} ## TO FILL
+    parent_id = topic.category_id
     category_id = nil
 
     Category.transaction do
-      category = build_place(parent, geo_location)
+      category = build_place(parent_id, geo_location)
 
       if !category || !category.id
         return { error: I18n.t('place.topic.error.category_creation') }
@@ -192,7 +176,7 @@ class CivicallyPlace::PlaceManager
       )
     end
 
-    after_place_petition(category_id)
+    after_create_neighbourhood(category_id)
 
     { category_id: category_id }
   end
@@ -252,14 +236,14 @@ class CivicallyPlace::PlaceManager
       custom_fields: {
         'is_place': true,
         'can_join': true,
-        'place_type': geo_location['type'],
+        'place_type': CivicallyPlace::Place.determine_type(geo_location),
         'place_id': geo_location['osm_id'],
         'topic_list_social': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
         'topic_list_thumbnail': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
         'topic_list_excerpt': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
         'topic_list_action': "latest|unread|top|new|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
         'topic_list_thumbnail_width': 600,
-        'topic_list_thumbnail_height': 300
+        'topic_list_thumbnail_height': 200
       }
     )
   end
@@ -291,12 +275,12 @@ class CivicallyPlace::PlaceManager
         'topic_list_excerpt': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
         'topic_list_action': "latest|unread|top|new|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
         'topic_list_thumbnail_width': 600,
-        'topic_list_thumbnail_height': 300
+        'topic_list_thumbnail_height': 200
       }
     )
   end
 
-  def self.after_place_petition(category_id)
+  def self.after_create_neighbourhood(category_id)
     category = Category.find(category_id)
     topic = Topic.find(category.topic_id)
     user = Discourse.system_user
@@ -305,7 +289,7 @@ class CivicallyPlace::PlaceManager
     supporters = topic.petition_supporters
 
     supporters.each do |user|
-      user_result = User.update_place_category_id(user, category.id)
+      user_result = User.update_neighbourhood_category_id(user, category.id)
 
       if user_result[:error]
         user_errors.push(user: user.username, error: user_result[:error])
@@ -337,9 +321,9 @@ class CivicallyPlace::PlaceManager
       if index === 0
         BadgeGranter.grant(Badge.find(Badge::Founder), user)
       elsif index > 0 && index < 4
-        BadgeGranter.grant(Badge.find(Badge::Pathfinder), user)
+        BadgeGranter.grant(Badge.find(Badge::Supporter), user)
       else
-        BadgeGranter.grant(Badge.find(Badge::Pioneer), user)
+        BadgeGranter.grant(Badge.find(Badge::Local), user)
       end
     end
 

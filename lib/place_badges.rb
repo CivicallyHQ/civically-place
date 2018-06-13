@@ -10,8 +10,8 @@ class ::BadgeGrouping
 end
 
 module BadgePlaceExtension
-  Pioneer = 300
-  Pathfinder = 301
+  Local = 300
+  Supporter = 301
   Founder = 302
 end
 

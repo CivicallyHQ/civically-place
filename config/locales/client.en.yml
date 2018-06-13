@@ -4,36 +4,28 @@ en:
       civically_place:
         title: "Place"
         about: >
-          Helps you navigate your place, with easy-to-access
+          Helps you navigate your city, town or neighbourhood with easy-to-access
           lists of events, ratings, groups and petition topics.
-        locked: "Become a member of a place to unlock the Place App."
+        locked: "Become a member of a town to unlock the Place App."
         icon: ':houses:'
 
     map:
-      search_placeholder: "Place"
-
-    petition:
-      place:
-        info: >
-          If you vote for this petition **%{placeName}** will become your
-          [Place](https://civically.io/t/places-policy) when the petition passes.
+      search_placeholder: "Search"
 
     place:
       label: "Place"
-      points:
-        title: "Place Points"
-        current: "You have {{points}} place points."
-        description: "Learn more about place points and how you can earn more [here](/t/place-points)."
-      current:
-        title: "Your place is [{{placeName}}]({{placeUrl}})"
+      set: "Set"
 
-      select:
+      town:
+        label: "Town"
         title: "Where do you live?"
-        description: 'You can set this once every 30 days.'
-        placeholder: "Select a city, town or neighbourhood"
-        instructions: "city, town or neighbourhood"
+        description: 'You can set this once every {{changeMin}} days.'
+        placeholder: "Select a city or town"
+        instructions: "city or town"
         no_content: "Add {{filter}} to Civically"
         not_listed: "Where I live is not listed"
+        prompt: "Make {{name}} your town."
+        current: "Your town is [{{townName}}]({{townUrl}})."
         add:
           title: "Add your city or town to Civically."
           description: "You can only do this once."
@@ -41,39 +33,50 @@ en:
           added_place: "You added {{placeName}}."
           placeholder: "Search for your city or town."
           btn: "Add"
-        divider: "Or"
-        petition:
-          title: "Add your neighbourhood to Civically."
-          description: >
-            You can add your neighbourhood to Civically, so it has it's very own community space online.
-            You need to get at least 100 people who live in your neighbourhood to support a petition :ballot_box:.
-            This shows there's a community ready to work together.
-
-          search:
-            title: "Current Petitions"
-            placeholder: "Search"
-            none_title: "No current petitions for {{title}}."
-            none: "No current petitions."
-          start_btn: "Start a petition"
-
-      user:
-        label: "Place can be joined."
 
       user_count:
         label: "Users"
         value: "{{userCount}} users"
-        low: "Invite people who live in {{placeName}}."
+        low_one: "{{placeName}} has {{userCount}} member. We need at least {{userCountMin}}!"
+        low_many: "{{placeName}} has {{userCount}} members. We need at least {{userCountMin}}!"
 
       moderator:
         label: "Moderator"
         list_label: "Moderators"
 
+      notifications:
+        label: "Your notifications"
+
+      neighbourhood:
+        label: "Neighbourhood"
+        current: "Your neighbourhood is [{{neighbourhoodName}}]({{neighbourhoodUrl}})."
+        description: 'You can set this once every {{changeMin}} days.'
+        prompt: "Make {{name}} your neighbourhood."
+        petition:
+          title: "Add your neighbourhood to Civically."
+          description: >
+            You can add your neighbourhood to Civically, so it has it's very own space online.
+            To add a neighbourhood, you need at least {{userMin}} people who live there to support a petition :ballot_box:.
+            This support shows there's a community ready to work together.
+
+          search:
+            title: "Neighbourhood Petitions in {{townName}}"
+            placeholder: "Search"
+            none_title: "No current petitions for {{title}}."
+            none: "No current petitions."
+          start_btn: "Start a Petition"
+
+      home:
+        current: "Your home is [{{homeName}}]({{homeUrl}})."
+        description: "Your home is your default place. It's the place you go to when you click the Civically logo."
+        set: "Set"
+        set_instructions: "Select a place"
+        country: "Country - {{countryName}}"
+        town: "Town - {{townName}}"
+        neighbourhood: "Neighbourhood - {{neighbourhoodName}}"
+
       user_count_min:
         label: "Minimum user count"
-        needed: "{{userCountMin}} users are needed for {{place}} to go live."
-
-      notifications:
-        label: "Your Notifications"
 
       about:
         title: "About"
@@ -109,35 +112,24 @@ en:
         not_permitted:
           intro: "You can't do that at the moment."
           member: "You have to be a member of {{place}}."
-          member_country: "You have to be a member of a place in {{country}}."
+          member_country: "You have to be a member of a town in {{country}}."
           trust: "You need to be a <a class='p-link' href='/badges/{{level}}/{{label}}' target='_blank'>{{label}}</a>."
           no_category: "You can't create a topic here."
-          no_place: "You have to be a member of a place to create a topic."
-          foreign_place: "You have to be a member of {{categoryName}} to create a topic here."
-          country_active: "{{categoryName}} needs at least {{countryActiveMin}} places before you can create a topic here."
-          foreign_country: "You have to be a member of a place in {{categoryName}} to create a topic here."
+          no_town: "You have to be a member of a town to create a topic."
+          country_active: "{{categoryName}} needs at least {{countryActiveMin}} towns before you can create a topic here."
+          foreign_country: "You have to be a member of a town in {{categoryName}} to create a topic here."
+          foreign_town: "You have to be a member of {{categoryName}} to create a topic here."
+          foreign_neighbourhood: "You have to be a member of {{categoryName}} to create a topic here."
+      select:
+        placeholder: "Select a place"
+
+    search:
+      context:
+        category: "Search #{{category}}"
 
     user:
       place_label: "Place"
-      set_place: "Set"
-      current_place: "Your place is {{userPlace}}"
-      current_place_marker: "(current)"
-      update_place_set: "Your place was set to {{place}} on <b>{{setTime}}</b>."
-      update_place_period: "You can set your place once every {{changeMin}} days."
-      update_place_next: "You can next set your place on <b>{{nextTime}}</b>."
-      institution:
-        title: "Institution"
-        instructions: "government or organization (optional)"
-      position:
-        title: "Position"
-        instructions: "your title (optional)"
-
-    badges:
-      basic_user:
-        name: Resident
-      member:
-        name: Citizen
-      regular:
-        name: Local
-      leader:
-        name: Leader
+      update_place: >
+        Your {{placeType}} was set to {{place}} on {{setTime}}.
+        You can set your {{placeType}} once every {{changeMin}} days, so
+        you can set your {{placeType}} again on {{nextTime}}.

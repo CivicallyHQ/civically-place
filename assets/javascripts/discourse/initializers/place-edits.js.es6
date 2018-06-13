@@ -1,11 +1,9 @@
 import DiscoveryController from 'discourse/controllers/discovery';
 import TopicController from 'discourse/controllers/topic';
-import Category from 'discourse/models/category';
 import PlaceMixin from '../mixins/place';
 import DiscourseURL from 'discourse/lib/url';
-import { placeUrl, } from '../lib/place-utilities';
-import { ajax } from 'discourse/lib/ajax';
-import { default as computed, observes, on } from 'ember-addons/ember-computed-decorators';
+import { placeUrl } from '../lib/place-utilities';
+import { observes, on } from 'ember-addons/ember-computed-decorators';
 import { withPluginApi } from 'discourse/lib/plugin-api';
 
 export default {
@@ -14,14 +12,6 @@ export default {
 
     DiscoveryController.reopen(PlaceMixin);
     TopicController.reopen(PlaceMixin);
-
-    Category.reopenClass({
-      setPlace(category_id, user_id = null) {
-        let data = { category_id };
-        if (user_id) data['user_id'] = user_id;
-        return ajax('/place/set', { type: 'POST', data });
-      }
-    })
 
     withPluginApi('0.8.12', api => {
       api.modifyClass('controller:discovery/topics', {
@@ -48,8 +38,8 @@ export default {
 
       api.modifyClass('component:site-header', {
         @on('init')
-        @observes('currentUser.place_category_id')
-        placeChanged() {
+        @observes('currentUser.town_category_id', 'currentUser.neighbourhood_category_id', 'currentUser.place_home')
+        homeChanged() {
           const currentUser = this.get('currentUser');
           api.changeWidgetSetting('home-logo', 'href', placeUrl(currentUser));
           this.queueRerender();

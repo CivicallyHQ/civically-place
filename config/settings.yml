@@ -1,21 +1,20 @@
 plugins:
-  place_city_user_count_min:
-    default: 100
   place_town_user_count_min:
     default: 50
-  place_village_user_count_min:
-    default: 10
-  place_change_min:
+    client: true
+  place_neighbourhood_user_count_min:
     default: 30
     client: true
-  place_petition_category_id:
-    default: 1
-    type: category_list
+  place_town_change_min:
+    default: 30
+    client: true
+  place_neighbourhood_change_min:
+    default: 30
     client: true
   place_country_active_min:
     default: 3
     client: true
-  place_add_types:
+  place_urban_types:
     type: 'list'
     default: 'city|town|village'
     choices:
@@ -23,10 +22,13 @@ plugins:
       - town
       - village
       - hamlet
-  place_petition_types:
+  place_neighbourhood_types:
     type: 'list'
-    default: 'suburb|quarter|neighbourhood'
+    default: 'town|village|suburb|quarter|neighbourhood'
     choices:
+      - town
+      - village
+      - hamlet
       - borough
       - suburb
       - quarter

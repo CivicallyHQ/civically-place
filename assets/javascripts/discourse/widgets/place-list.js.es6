@@ -43,7 +43,6 @@ export default createWidget('place-list', {
     const listType = attrs.listType;
 
     const user = this.currentUser;
-    const isMember = category.id === user.place_category_id;
     const moderators = category.moderators;
     const moderator = moderators && moderators.length > 2;
 

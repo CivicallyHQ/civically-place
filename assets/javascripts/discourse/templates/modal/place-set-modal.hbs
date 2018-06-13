@@ -1,0 +1,12 @@
+{{#d-modal-body rawTitle=title class='place-set-modal'}}
+  {{description}}
+{{/d-modal-body}}
+
+<div class="modal-footer">
+  {{d-button label='place.set'
+             action='setPlace'
+             class="btn btn-primary"
+             icon='check'
+             disabled=loading}}
+  {{conditional-loading-spinner size="small" condition=loading}}
+</div>

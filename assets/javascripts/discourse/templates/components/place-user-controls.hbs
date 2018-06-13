@@ -1,134 +1,118 @@
-{{#if place}}
-  <div class="place-update">
-    <div class="title">
-      <span>{{placeTitle}}</span>
-    </div>
-    <div class="p-text small">
-      {{i18n 'user.update_place_period' changeMin=siteSettings.place_change_min}}
-    </div>
-    <div class="p-text small">
-      {{{i18n 'user.update_place_set' place=place.name setTime=(place-time currentUser.place_joined_at)}}}
-    </div>
-    {{#unless updatePlaceAllowed}}
-      <div class="p-text small">
-        {{{i18n 'user.update_place_next' nextTime=(place-time nextTime)}}}
-      </div>
-    {{/unless}}
-  </div>
-  <div class="place-points">
-    <div class="title">{{i18n 'place.points.title'}}</div>
-    <div class="p-text small">
-      {{i18n 'place.points.current' points=currentUser.place_points}}
-    </div>
-    <div class="p-text small">
-      {{pointsDescription}}
-    </div>
-  </div>
+{{#if loadingNewWindow}}
+  {{loading-spinner size='large'}}
 {{else}}
-  <div class="place-set">
-    <div class="title">
-      <span>{{i18n 'place.select.title'}}</span>
-      <img class='title-emoji' src='/images/emoji/twitter/house_with_garden.png'/>
-    </div>
-    <div class="p-text description small">{{i18n 'place.select.description'}}</div>
-    {{#if setPlaceAllowed}}
-      <div class="container">
-        {{place-select selectedId=selectedId
-                       setDisabled=setDisabled
-                       setPlace="setPlace"
-                       loading=loading
-                       toggleExtraControls='toggleExtraControls'
-                       addPlace='toggleShowAddPlace'}}
-      </div>
-    {{/if}}
-    {{#if showNotListedBtn}}
-      <div class="not-listed-btn">
-        {{d-button action='toggleShowAddPlace'
-                   label='place.select.not_listed'}}
-      </div>
-    {{/if}}
-  </div>
-{{/if}}
-{{#if setPlaceAllowed}}
-  {{#if showAddPlace}}
-    <div class="place-add">
+  {{#if currentUser.town}}
+    <div class="town-update container">
       <div class="title">
-        <span>{{i18n 'place.select.add.title'}}</span>
-        <img class='title-emoji' src='/images/emoji/twitter/city_sunrise.png'/>
+        <span>{{currentTown}}</span>
       </div>
-      <div class="p-text description small">{{i18n 'place.select.add.description'}}</div>
-      {{#if currentUser.added_place_id}}
-        <div class="p-text description small">
-          {{i18n 'place.select.add.added_place' placeName=(place-label currentUser.added_place_id)}}
+
+      {{#unless canSetTown}}
+        <div class="p-text small">
+          {{i18n 'user.update_place' changeMin=siteSettings.place_town_change_min
+                                     place=currentUser.town.name
+                                     setTime=(place-time currentUser.town_joined_at)
+                                     placeType='town'
+                                     nextTime=(place-time townNextTime)}}
+        </div>
+      {{/unless}}
+    </div>
+  {{/if}}
+
+  {{#if canSetTown}}
+    <div class='town-set container'>
+      <div class="title">
+        <span>{{i18n 'place.town.title'}}</span>
+        <img class='title-emoji' src='/images/emoji/twitter/house_with_garden.png'/>
+      </div>
+
+      <div class="p-text description small">
+        {{i18n 'place.town.description' changeMin=siteSettings.place_town_change_min}}
+      </div>
+
+      <div class="controls-container">
+        {{place-set selectedId=selectedId
+                    type='town'
+                    loading=loading
+                    routeAfterSet=routeAfterSet
+                    loadingNewWindow=loadingNewWindow}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if currentUser.neighbourhood}}
+    <div class="neighbourhood-update container">
+      <div class="title">
+        <span>{{currentNeighbourhood}}</span>
+      </div>
+
+      {{#if canSetNeighbourhood}}
+        <div class='neighbourhood-set'>
+          <div class="title">
+            <span>{{i18n 'place.neighbourhood.title'}}</span>
+            <img class='title-emoji' src='/images/emoji/twitter/houses.png'/>
+          </div>
+
+          <div class="p-text description small">
+            {{i18n 'place.neighbourhood.description' changeMin=siteSettings.place_neighbourhood_change_min}}
+          </div>
+
+          <div class="controls-container">
+            {{place-set selectedId=selectedId
+                        type='neighbourhood'
+                        loading=loading
+                        routeAfterSet=routeAfterSet
+                        loadingNewWindow=loadingNewWindow}}
+          </div>
         </div>
       {{else}}
-        <div class="container">
-          <div class="location-selector-container">
-            <div class="controls">
-              {{location-selector location=geoLocation
-                                  class="input-xxlarge location-selector"
-                                  searchError='searchError'
-                                  context=addContext
-                                  placeholder=(i18n 'place.select.add.placeholder')
-                                  geoAttrs=geoAttrs
-                                  showType=true}}
-              <div class='instructions'>
-                {{i18n 'place.select.add.instructions'}}
-              </div>
-            </div>
-          </div>
-          {{d-button action='addPlace'
-                     label='place.select.add.btn'
-                     class='btn-primary'
-                     icon='plus'
-                     disabled=addPlaceDisabled}}
-          {{conditional-loading-spinner size='small' condition=addingPlace}}
+        <div class="p-text small">
+          {{i18n 'user.update_place' changeMin=siteSettings.place_neighbourhood_change_min
+                                     place=currentUser.neighbourhood.name
+                                     placeType='neighbourhood'
+                                     setTime=(place-time currentUser.neighbourhood_joined_at)
+                                     nextTime=(place-time neighbourhoodNextTime)}}
         </div>
       {{/if}}
     </div>
-    <div class="text-divider">
-      <span>{{i18n 'place.select.divider'}}</span>
-    </div>
-    <div class="place-petition">
+  {{/if}}
+
+  {{#if showHome}}
+    <div class="place-home container">
       <div class="title">
-        <span>{{i18n 'place.select.petition.title'}}</span>
-        <img class='title-emoji' src='/images/emoji/twitter/houses.png'/>
+        <span>{{homeTitle}}</span>
       </div>
-      <div class="p-text description small">{{petitionDescription}}</div>
-      <div class="container">
-        <span class="petition-search-title">{{i18n 'place.select.petition.search.title'}}</span>
-        <div class="petition-search">
-          {{input type='text'
-                  value=placeTitle
-                  placeholder=(i18n 'place.select.petition.search.placeholder')}}
-          <div class="icon">
-            {{#if searchingPetitions}}
-              {{loading-spinner size='small'}}
-            {{else}}
-              {{d-icon 'search'}}
-            {{/if}}
-          </div>
-        </div>
-        <div class="p-list-box">
-          {{similar-titles title=placeTitle
-                           categoryId=siteSettings.place_petition_category_id
-                           allowBlankSearch=true
-                           requireCategory=true
-                           translatedNone=noPetitions
-                           noDefinitions=true
-                           searching=searchingPetitions
-                           similarity='0.2'}}
+
+      <div class="p-text small">
+        {{i18n 'place.home.description'}}
+      </div>
+
+      <div class="controls">
+        {{combo-box content=homes value=currentHome}}
+
+        <div class='instructions'>
+          {{i18n 'place.home.set_instructions'}}
         </div>
       </div>
-      <div class="container">
-        <div class="controls">
-          {{d-button label='place.select.petition.start_btn'
-                     action='startPetition'
-                     class="btn btn-primary"
-                     icon='check-square'}}
-          {{conditional-loading-spinner size='small' condition=loadingNewWindow}}
-        </div>
+      <div class='controls'>
+        {{d-button label='place.home.set'
+                   action='setHome'
+                   disabled=setHomeDisabled
+                   class="btn btn-primary"
+                   icon='check'}}
+        {{conditional-loading-spinner size="small" condition=settingHome}}
       </div>
     </div>
+  {{/if}}
+
+  {{#if showAddTownBtn}}
+    <div class="show-add-town">
+      {{d-button action='toggleShowAddTown' label='place.town.not_listed'}}
+    </div>
+  {{/if}}
+
+  {{#if showAddTown}}
+    {{town-user-add routeAfterSet=routeAfterSet
+                    loadingNewWindow=loadingNewWindow}}
   {{/if}}
 {{/if}}

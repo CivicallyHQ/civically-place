@@ -1,0 +1,42 @@
+<div class="title">
+  <span>{{i18n 'place.town.add.title'}}</span>
+  <img class='title-emoji' src='/images/emoji/twitter/city_sunrise.png'/>
+</div>
+
+<div class="p-text description small">
+  {{i18n 'place.town.add.description'}}
+</div>
+
+{{#if currentUser.added_place_id}}
+  <div class="p-text description small">
+    {{i18n 'place.town.add.added_place' placeName=(place-label currentUser.added_place_id)}}
+  </div>
+{{else}}
+  <div class="controls-container">
+    <div class="location-selector-container">
+      <div class="controls">
+        {{location-selector location=geoLocation
+                            class="input-xxlarge location-selector"
+                            searchError='locationSearchError'
+                            context=addContext
+                            placeholder=(i18n 'place.town.add.placeholder')
+                            geoAttrs=geoAttrs
+                            showType=true
+                            locationSearchError='locationSearchError'}}
+
+        <div class='instructions'>
+          {{i18n 'place.town.add.instructions'}}
+        </div>
+        {{#if locationSearchError}}
+          {{locationSearchError}}
+        {{/if}}
+      </div>
+    </div>
+    {{d-button action='addTown'
+               label='place.town.add.btn'
+               class='btn-primary'
+               icon='plus'
+               disabled=addTownDisabled}}
+    {{conditional-loading-spinner size='small' condition=addingTown}}
+  </div>
+{{/if}}

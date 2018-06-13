@@ -5,5 +5,6 @@ export default Ember.Controller.extend(Sidebars, {
   showCategoryAdmin: false,
   showCategoryEditBtn: false,
   leftSidebarEnabled: false,
-  rightSidebarEnabled: true
+  rightSidebarEnabled: true,
+  loadingNewWindow: false
 });

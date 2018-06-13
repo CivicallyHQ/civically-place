@@ -24,9 +24,15 @@ export default createAppWidget('civically-place', {
     const listType = this.state.currentListType;
     let contents = [];
 
-    let image = category.place_type === 'country' ?
-                h('img', { attributes: { src: category.location.flag }}) :
-                this.attach('emoji', { name: 'house_buildings' });
+    let image;
+
+    if (category.place_type === 'country') {
+      image = h('img', { attributes: { src: category.location.flag }});
+    } else {
+      let emoji = category.place_type === 'town' ? 'cityscape' : 'house_with_garden';
+      image = this.attach('emoji', { name: emoji });
+    }
+
 
     contents.push(
       h('div.app-widget-header', [

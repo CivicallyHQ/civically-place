@@ -1,0 +1,30 @@
+{{#if currentUser.town}}
+  {{#if hasMinUsers}}
+    {{#if showNeighourhoodPrompts}}
+      {{#if isNeighbourhood}}
+        {{user-prompt key='place.neighbourhood.prompt'
+                      keyParams=(hash name=category.name)
+                      emoji='houses'
+                      modal='place-set-modal'
+                      modalModel=category}}
+      {{/if}}
+      {{user-prompt key='place.neighbourhood.petition.title'
+                    emoji='houses'
+                    modal='neighbourhood-petition'
+                    modalModel=currentUser.town}}
+    {{/if}}
+  {{else}}
+    {{user-prompt rawText=lowUsers
+                  modal='invite'
+                  modalModel=currentUser
+                  emoji='woman:t4'}}
+  {{/if}}
+{{else}}
+  {{#if isTown}}
+    {{user-prompt key='place.town.prompt'
+                  keyParams=(hash name=category.name)
+                  modal='place-set-modal'
+                  modalModel=category
+                  emoji='cityscape'}}
+  {{/if}}
+{{/if}}

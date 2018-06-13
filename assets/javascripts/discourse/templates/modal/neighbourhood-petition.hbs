@@ -1,0 +1,41 @@
+{{#d-modal-body title="place.neighbourhood.petition.title" class='neighbourhood-petition'}}
+  <div class="p-text description small">
+    {{description}}
+  </div>
+  <div class="search-title">
+    {{i18n 'place.neighbourhood.petition.search.title' townName=model.name}}
+  </div>
+  <div class="search">
+    {{input type='text'
+            value=neighbourhoodTitle
+            placeholder=(i18n 'place.neighbourhood.petition.search.placeholder')}}
+    <div class="icon">
+      {{#if searching}}
+        {{loading-spinner size='small'}}
+      {{else}}
+        {{d-icon 'search'}}
+      {{/if}}
+    </div>
+  </div>
+  <div class="p-list-box">
+    {{similar-titles title=neighbourhoodTitle
+                     categoryId=model.id
+                     subtype='petition'
+                     allowBlankSearch=true
+                     requireCategory=true
+                     translatedNone=noPetitions
+                     noDefinitions=true
+                     searching=searching
+                     similarity='0.2'}}
+  </div>
+{{/d-modal-body}}
+
+<div class="modal-footer">
+  {{d-button label='place.neighbourhood.petition.start_btn'
+             action='startPetition'
+             class="btn btn-primary"
+             icon='check-square'
+             disabled=loading}}
+
+  {{conditional-loading-spinner size="small" condition=loading}}
+</div>
