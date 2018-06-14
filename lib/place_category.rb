@@ -38,11 +38,7 @@ module SiteExtension
 
       ## Addition
       categories = categories.map do |c|
-        if c.is_place
-          CivicallyPlace::Place.new(c.attributes.except("topic_slug"))
-        else
-          c
-        end
+        c.is_place ? CivicallyPlace::Place.new(c.attributes.except("topic_slug")) : c
       end
       ## End of addition
 
@@ -93,7 +89,8 @@ SERIALIZED_PLACE_ATTRIBUTES = [
   :place_id,
   :can_join,
   :user_count,
-  :user_count_min
+  :user_count_min,
+  :category_tags
 ]
 
 module CategorySerializerPlaceExtension
@@ -108,10 +105,17 @@ end
 
 class ::BasicCategorySerializer
   prepend CategorySerializerPlaceExtension
+end
 
-  attributes :category_tags
-
-  def category_tags
-    object.category_tags
+module PlaceCategoryGuardianExtension
+  def method_name_for(action, obj)
+    name = obj.class.name.underscore
+    name = 'category' if name.include?('civically_place/place')
+    method_name = :"can_#{action}_#{name}?"
+    return method_name if respond_to?(method_name)
   end
+end
+
+class ::Guardian
+  prepend PlaceCategoryGuardianExtension
 end
