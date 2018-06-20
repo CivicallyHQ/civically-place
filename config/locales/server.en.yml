@@ -109,8 +109,8 @@ en:
     place_town_change_min: "Days before user can change their town."
     place_neighbourhood_change_min: "Days before user can change their neighbourhood."
     place_country_active_min: "Minimum active places in country needed for country to be active."
-    place_urban_types: "Permitted place types for user-added urban areas."
-    place_neighbourhood_types: "Permitted place types for neighbourhood place petitions."
+    place_town_types: "Permitted place types for user-added towns."
+    place_neighbourhood_types: "Permitted place types for neighbourhood petitions."
 
   system_messages:
     identical_place_petition:

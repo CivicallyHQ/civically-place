@@ -55,7 +55,7 @@ DiscourseEvent.on(:locations_ready) do
   end
 
   Locations::Geocode.add_filter do |locations, options|
-    options[:place_type] = 'urban' if options[:context] === 'place_add'
+    options[:place_type] = 'town' if options[:context] === 'place_add'
     options[:place_type] = 'neighbourhood' if options[:context] === 'neighbourhood_petition'
 
     if options[:place_type]

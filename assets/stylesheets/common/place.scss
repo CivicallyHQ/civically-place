@@ -184,6 +184,15 @@
   .p-text {
     padding: 5px 0;
   }
+
+  .regions {
+    display: flex;
+    align-items: center;
+
+    > div {
+      margin-right: 10px;
+    }
+  }
 }
 
 ul.user-nav > span {

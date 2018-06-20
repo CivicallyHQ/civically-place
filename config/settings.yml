@@ -14,7 +14,7 @@ plugins:
   place_country_active_min:
     default: 3
     client: true
-  place_urban_types:
+  place_town_types:
     type: 'list'
     default: 'city|town|village'
     choices:

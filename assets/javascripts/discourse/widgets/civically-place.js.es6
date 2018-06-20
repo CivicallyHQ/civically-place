@@ -33,7 +33,6 @@ export default createAppWidget('civically-place', {
       image = this.attach('emoji', { name: emoji });
     }
 
-
     contents.push(
       h('div.app-widget-header', [
         h('span', image),

@@ -16,6 +16,12 @@ en:
       label: "Place"
       set: "Set"
 
+      place_type: "Place Type"
+      is_place: "Is a place"
+
+      country:
+        current: "{{townName}} is in [{{countryName}}]({{countryLink}})."
+
       town:
         label: "Town"
         title: "Where do you live?"
@@ -39,6 +45,10 @@ en:
         value: "{{userCount}} users"
         low_one: "{{placeName}} has {{userCount}} member. We need at least {{userCountMin}}!"
         low_many: "{{placeName}} has {{userCount}} members. We need at least {{userCountMin}}!"
+
+      location:
+        label: "Place Location"
+        placeholder: "JSON"
 
       moderator:
         label: "Moderator"
@@ -65,6 +75,11 @@ en:
             none_title: "No current petitions for {{title}}."
             none: "No current petitions."
           start_btn: "Start a Petition"
+
+      multinational:
+        current: "{{countryName}} is part of [{{multinationalName}}]({{multinationalLink}})."
+        eu:
+          title: "European Union"
 
       home:
         current: "Your home is [{{homeName}}]({{homeUrl}})."

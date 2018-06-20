@@ -1,3 +1,15 @@
+{{#if currentUser.admin}}
+  <section class="field">
+    {{input type="checkbox" checked=category.custom_fields.is_place}}
+    <span>{{i18n 'place.is_place'}}</span>
+  </section>
+
+  <section class="field">
+    <label>{{i18n 'place.place_type'}}</label>
+    {{combo-box content=placeTypes value=category.custom_fields.place_type}}
+  </section>
+{{/if}}
+
 {{#if category.is_place}}
   <section class="field">
     {{i18n 'place.user_count_min.label'}}
@@ -5,4 +17,16 @@
       {{input type="number" value=category.custom_fields.user_count_min}}
     </label>
   </section>
+
+  {{#if currentUser.admin}}
+    <section class="field">
+      {{i18n 'place.location.label'}}
+      <label>
+        {{textarea value=placeLocation}}
+      </label>
+      {{#if jsonError}}
+        {{jsonError}}
+      {{/if}}
+    </section>
+  {{/if}}
 {{/if}}

@@ -16,6 +16,17 @@
                                      nextTime=(place-time townNextTime)}}
         </div>
       {{/unless}}
+
+      <div class="regions">
+        <div class='country p-text small'>
+          {{currentCountry}}
+        </div>
+        {{#if currentMultinational}}
+          <div class='multinational p-text small'>
+            {{currentMultinational}}
+          </div>
+        {{/if}}
+      </div>
     </div>
   {{/if}}
 

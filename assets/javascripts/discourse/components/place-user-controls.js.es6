@@ -1,5 +1,4 @@
 import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
-import { placeTypes } from '../lib/place-utilities';
 import { cookAsync } from 'discourse/lib/text';
 import { ajax } from 'discourse/lib/ajax';
 import { popupAjaxError } from 'discourse/lib/ajax-error';
@@ -41,6 +40,27 @@ export default Ember.Component.extend({
       });
 
       cookAsync(rawTown).then((cooked) => this.set('currentTown', cooked));
+
+      const country = this.get('country');
+
+      const rawCountry = I18n.t('place.country.current', {
+        townName: town.name,
+        countryName: country.name,
+        countryLink: country.get('url')
+      });
+
+      cookAsync(rawCountry).then((cooked) => this.set('currentCountry', cooked));
+
+      const multinationalCode = country.get('location.geo_location.multinational_code');
+      if (multinationalCode) {
+        const rawMultinational = I18n.t('place.multinational.current', {
+          countryName: country.name,
+          multinationalName: this.get('multinationalName'),
+          multinationalLink: this.get('multinationalLink')
+        });
+
+        cookAsync(rawMultinational).then((cooked) => this.set('currentMultinational', cooked));
+      }
 
       const neighbourhood = this.get('currentUser.neighbourhood');
 
@@ -87,6 +107,16 @@ export default Ember.Component.extend({
   @computed('currentUser.town')
   country(town) {
     return Category.findById(town.parent_category_id);
+  },
+
+  @computed('country.location.geo_location.multinational_code')
+  multinationalName(multinationalCode) {
+    return I18n.t(`place.multinational.${multinationalCode}.title`);
+  },
+
+  @computed('country.location.geo_location.multinational_code')
+  multinationalLink(multinationalCode) {
+    return '/c/' + multinationalCode;
   },
 
   @on('init')

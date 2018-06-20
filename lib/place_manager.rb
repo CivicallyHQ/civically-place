@@ -252,31 +252,41 @@ class CivicallyPlace::PlaceManager
     countrycode = geo_location['countrycode']
     bounding_box = Locations::Country.bounding_boxes[countrycode]
 
+    country_geo_location = {
+      'boundingbox': bounding_box,
+      'countrycode': countrycode,
+      'type': 'country'
+    }
+
+    if geo_location['multinational_code'].present?
+      country_geo_location['multinational_code'] = geo_location['multinational_code']
+    end
+
+    country_location = {
+      'name': geo_location['country'],
+      'flag': "/plugins/civically-place/images/flags/#{countrycode}_32.png",
+      'route_to': "/c/#{countrycode}",
+      'geo_location': country_geo_location
+    }.to_json
+
+    custom_fields = {
+      'is_place': true,
+      'place_type': 'country',
+      'can_join': false,
+      'location': country_location,
+      'topic_list_social': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+      'topic_list_thumbnail': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+      'topic_list_excerpt': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+      'topic_list_action': "latest|unread|top|new|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
+      'topic_list_thumbnail_width': 600,
+      'topic_list_thumbnail_height': 200
+    }
+
     create_category(
       name: geo_location['country'],
       slug: countrycode,
       permissions: { everyone: 2 },
-      custom_fields: {
-        'is_place': true,
-        'place_type': 'country',
-        'can_join': false,
-        'location': {
-          'name': geo_location['country'],
-          'geo_location': {
-            'boundingbox': bounding_box,
-            'countrycode': countrycode,
-            'type': 'country'
-          },
-          'flag': "/plugins/civically-place/images/flags/#{countrycode}_32.png",
-          'route_to': "/c/#{countrycode}"
-        }.to_json,
-        'topic_list_social': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
-        'topic_list_thumbnail': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
-        'topic_list_excerpt': "latest|new|unread|top|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
-        'topic_list_action': "latest|unread|top|new|agenda|latest-mobile|new-mobile|unread-mobile|top-mobile|agenda-mobile",
-        'topic_list_thumbnail_width': 600,
-        'topic_list_thumbnail_height': 200
-      }
+      custom_fields: custom_fields
     )
   end
 

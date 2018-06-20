@@ -14,6 +14,7 @@ PlaceLocation = Struct.new(
   :latitude,
   :postal_code,
   :country_code, # ISO Alpha-2 country code
+  :multinational_code, # E.g. 'eu' for European Union
   :country,
   :state,
   :district,
@@ -37,10 +38,10 @@ class CivicallyPlace::Locations
     if location['class'] === 'place'
       return false unless SiteSetting.send("place_#{options[:place_type]}_types").split('|').include?(location['type'])
 
-      if options[:place_type] === 'urban'
+      if options[:place_type] === 'town'
         return location['type'] === 'city' || location['address']['city'].blank?
       elsif options[:place_type] === 'neighbourhood'
-        if SiteSetting.place_urban_types.include?(location['type'])
+        if SiteSetting.place_town_types.include?(location['type'])
           location['address']['city'].present?
         else
           true
@@ -62,7 +63,7 @@ class CivicallyPlace::Locations
 
     return false unless SiteSetting.send("place_#{options[:place_type]}_types").split('|').include?(components['_type'])
 
-    if options[:place_type] === 'urban'
+    if options[:place_type] === 'town'
       components['city'].present? && components['town'].blank? && components['village'].blank? ||
       components['city'].blank? && components['town'].present? && components['village'].blank? ||
       components['city'].blank? && components['town'].blank? && components['village'].present?
@@ -128,6 +129,10 @@ class CivicallyPlace::Locations
       country_code: components["country_code"],
       address: location["formatted"]
     }
+
+    if components['political_union']
+      formatted[:multinational_code] = 'eu' if components['political_union'] == 'European Union'
+    end
 
     formatted[:state] = components['state'] if components['state']
 
