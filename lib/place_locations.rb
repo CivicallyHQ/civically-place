@@ -14,7 +14,7 @@ PlaceLocation = Struct.new(
   :latitude,
   :postal_code,
   :country_code, # ISO Alpha-2 country code
-  :multinational_code, # E.g. 'eu' for European Union
+  :international_code, # E.g. 'eu' for European Union
   :country,
   :state,
   :district,
@@ -131,7 +131,7 @@ class CivicallyPlace::Locations
     }
 
     if components['political_union']
-      formatted[:multinational_code] = 'eu' if components['political_union'] == 'European Union'
+      formatted[:international_code] = 'eu' if components['political_union'] == 'European Union'
     end
 
     formatted[:state] = components['state'] if components['state']

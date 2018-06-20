@@ -72,8 +72,8 @@ class CivicallyPlace::Place < Category
     end
   end
 
-  def is_multinational
-    place_type === 'multinational'
+  def is_international
+    place_type === 'international'
   end
 
   def is_country

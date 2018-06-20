@@ -76,8 +76,8 @@ en:
             none: "No current petitions."
           start_btn: "Start a Petition"
 
-      multinational:
-        current: "{{countryName}} is part of [{{multinationalName}}]({{multinationalLink}})."
+      international:
+        current: "{{countryName}} is part of [{{internationalName}}]({{internationalLink}})."
         eu:
           title: "European Union"
 

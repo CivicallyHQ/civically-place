@@ -258,8 +258,8 @@ class CivicallyPlace::PlaceManager
       'type': 'country'
     }
 
-    if geo_location['multinational_code'].present?
-      country_geo_location['multinational_code'] = geo_location['multinational_code']
+    if geo_location['international_code'].present?
+      country_geo_location['international_code'] = geo_location['international_code']
     end
 
     country_location = {

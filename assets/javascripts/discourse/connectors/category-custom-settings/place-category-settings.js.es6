@@ -1,7 +1,7 @@
 export default {
   setupComponent(attrs, component) {
     component.set('placeTypes', [
-      'multinational',
+      'international',
       'country',
       'town',
       'neighbourhood'

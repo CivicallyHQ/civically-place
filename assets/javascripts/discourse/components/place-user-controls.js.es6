@@ -51,15 +51,15 @@ export default Ember.Component.extend({
 
       cookAsync(rawCountry).then((cooked) => this.set('currentCountry', cooked));
 
-      const multinationalCode = country.get('location.geo_location.multinational_code');
-      if (multinationalCode) {
-        const rawMultinational = I18n.t('place.multinational.current', {
+      const internationalCode = country.get('location.geo_location.international_code');
+      if (internationalCode) {
+        const rawInternational = I18n.t('place.international.current', {
           countryName: country.name,
-          multinationalName: this.get('multinationalName'),
-          multinationalLink: this.get('multinationalLink')
+          internationalName: this.get('internationalName'),
+          internationalLink: this.get('internationalLink')
         });
 
-        cookAsync(rawMultinational).then((cooked) => this.set('currentMultinational', cooked));
+        cookAsync(rawInternational).then((cooked) => this.set('currentInternational', cooked));
       }
 
       const neighbourhood = this.get('currentUser.neighbourhood');
@@ -109,14 +109,14 @@ export default Ember.Component.extend({
     return Category.findById(town.parent_category_id);
   },
 
-  @computed('country.location.geo_location.multinational_code')
-  multinationalName(multinationalCode) {
-    return I18n.t(`place.multinational.${multinationalCode}.title`);
+  @computed('country.location.geo_location.international_code')
+  internationalName(internationalCode) {
+    return I18n.t(`place.international.${internationalCode}.title`);
   },
 
-  @computed('country.location.geo_location.multinational_code')
-  multinationalLink(multinationalCode) {
-    return '/c/' + multinationalCode;
+  @computed('country.location.geo_location.international_code')
+  internationalLink(internationalCode) {
+    return '/c/' + internationalCode;
   },
 
   @on('init')
