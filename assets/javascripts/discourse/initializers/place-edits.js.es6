@@ -71,7 +71,55 @@ export default {
             this.set('geoAttrs', ['name', 'country']);
           }
         }
-      })
+      });
+
+      api.modifyClass('component:search-advanced-category-chooser', {
+        allowUncategorized: false
+      });
+
+      api.modifyClass('component:search-advanced-options', {
+        _init() {
+          const user = this.get('currentUser');
+          let category = "";
+
+          if (user.town) {
+            category = user.town;
+          }
+
+          if (user.neighbourhood) {
+            category = user.neighbourhood;
+          }
+
+          this.setProperties({
+            searchedTerms: {
+              username: "",
+              category,
+              group: [],
+              badge: [],
+              tags: [],
+              in: "",
+              special: {
+                in: {
+                  title: false,
+                  likes: false,
+                  private: false,
+                  seen: false
+                },
+                all_tags: false
+              },
+              status: "",
+              min_post_count: "",
+              time: {
+                when: "before",
+                days: ""
+              }
+            },
+            inOptions: this.currentUser
+              ? this.inOptionsForUsers.concat(this.inOptionsForAll)
+              : this.inOptionsForAll
+          });
+        }
+      });
     });
   }
 };

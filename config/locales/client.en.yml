@@ -142,6 +142,10 @@ en:
       context:
         category: "Search #{{category}}"
 
+      advanced:
+        in_category:
+          label: "Place or Category"
+
     user:
       place_label: "Place"
       update_place: >

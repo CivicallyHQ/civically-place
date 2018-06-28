@@ -144,7 +144,7 @@ class ::User
     is_first = false
 
     if current_id
-      can_change = self.can_change_place(user, current_id, type)
+      can_change = self.can_change_place(user, current_id, force, type)
 
       return can_change if can_change[:error]
 
@@ -174,7 +174,7 @@ class ::User
     result
   end
 
-  def self.can_change_place(user, current_id, type)
+  def self.can_change_place(user, current_id, force, type)
     user_place = CivicallyPlace::Place.find(current_id)
     joined_at = CivicallyPlace::Place.joined_at(user.id, type)
     change_min = SiteSetting.send("place_#{type}_change_min").to_i
@@ -207,10 +207,10 @@ end
 
 module GuardianPlaceExtension
   ## Consider whether there should be any place restrictions on can_create_post
-  
+
   def can_create_topic_on_category?(category)
     return false unless super(category)
-    return true if is_staff?
+    return true if is_staff? || !category
 
     ## is user's neighbourhood
     (category.is_place && (category.id === user.neighbourhood_category_id ||
