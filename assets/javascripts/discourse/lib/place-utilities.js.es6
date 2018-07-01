@@ -71,7 +71,7 @@ let setPlace = function(category_id, type, user_id = null) {
   if (user_id) data['user_id'] = user_id;
 
   return ajax('/place/user/set', { type: 'PUT', data });
-}
+};
 
 let resolvePlaceSet = function(result) {
   if (result.message || result.error) {
@@ -106,6 +106,6 @@ let resolvePlaceSet = function(result) {
   }
 
   return true;
-}
+};
 
 export { placeUrl, placeLabel, placeTime, formatNum, categoryLabel, setPlace, resolvePlaceSet };

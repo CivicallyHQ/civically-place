@@ -2,7 +2,6 @@
 # app: store
 # about: Provides the place logic for Civically
 # version: 0.1
-# dependencies: discourse-locations, civically-navigation, discourse-layouts, civically-petition, discourse-search-addons
 # authors: angus
 # url: https://github.com/civicallyhq/civically-place
 

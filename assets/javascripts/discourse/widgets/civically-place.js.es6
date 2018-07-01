@@ -1,59 +1,71 @@
-import { createAppWidget } from 'discourse/plugins/civically-app/discourse/widgets/app-widget';
 import { h } from 'virtual-dom';
-import { buildTitle } from 'discourse/plugins/civically-navigation/discourse/lib/utilities';
 
-export default createAppWidget('civically-place', {
-  defaultState() {
-    return {
-      currentListType: 'event'
-    };
-  },
+// Place Widget
+const navigationUtilitiesPath = 'discourse/plugins/civically-navigation/discourse/lib/utilities';
+const appWidgetPath = 'discourse/plugins/civically-app/discourse/widgets/app-widget';
+let placeWidget = {};
 
-  showList(currentListType) {
-    this.state.currentListType = currentListType;
-    this.scheduleRerender();
-  },
+if (requirejs.entries[navigationUtilitiesPath] && requirejs.entries[appWidgetPath]) {
+  const buildTitle = requirejs(navigationUtilitiesPath).buildTitle;
+  const createAppWidget = requirejs(appWidgetPath).createAppWidget;
 
-  contents() {
-    const { category, editing } = this.attrs;
-    const user = this.currentUser;
+  const placeWidgetParams = {
+    defaultState() {
+      return {
+        currentListType: 'event'
+      };
+    },
 
-    if (!category || !category.is_place) return;
+    showList(currentListType) {
+      this.state.currentListType = currentListType;
+      this.scheduleRerender();
+    },
 
-    const userPlace = user.get('place');
-    const listType = this.state.currentListType;
-    let contents = [];
+    contents() {
+      const { category } = this.attrs;
+      const user = this.currentUser;
 
-    let image;
+      if (!category || !category.is_place) return;
 
-    if (category.place_type === 'country') {
-      image = h('img', { attributes: { src: category.location.flag }});
-    } else {
-      let emoji = category.place_type === 'town' ? 'cityscape' : 'house_with_garden';
-      image = this.attach('emoji', { name: emoji });
+      const userPlace = user.get('place');
+      const listType = this.state.currentListType;
+      let contents = [];
+
+      let image;
+
+      if (category.place_type === 'country') {
+        image = h('img', { attributes: { src: category.location.flag }});
+      } else {
+        let emoji = category.place_type === 'town' ? 'cityscape' : 'house_with_garden';
+        image = this.attach('emoji', { name: emoji });
+      }
+
+      contents.push(
+        h('div.app-widget-header', [
+          h('span', image),
+          h('span.app-widget-title', category.place_name)
+        ]),
+        h('div.widget-multi-title', [
+          buildTitle(this, 'place', 'event'),
+          buildTitle(this, 'place', 'group'),
+          buildTitle(this, 'place', 'rating'),
+          buildTitle(this, 'place', 'petition')
+        ])
+      );
+
+      let listAttrs = {
+        category,
+        listType,
+        userPlace
+      };
+
+      contents.push(this.attach(`place-list`, listAttrs));
+
+      return contents;
     }
+  };
 
-    contents.push(
-      h('div.app-widget-header', [
-        h('span', image),
-        h('span.app-widget-title', category.place_name)
-      ]),
-      h('div.widget-multi-title', [
-        buildTitle(this, 'place', 'event'),
-        buildTitle(this, 'place', 'group'),
-        buildTitle(this, 'place', 'rating'),
-        buildTitle(this, 'place', 'petition')
-      ])
-    );
+  placeWidget = createAppWidget('civically-place', placeWidgetParams);
+}
 
-    let listAttrs = {
-      category,
-      listType,
-      userPlace
-    };
-
-    contents.push(this.attach(`place-list`, listAttrs));
-
-    return contents;
-  }
-});
+export default placeWidget;
