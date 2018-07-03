@@ -135,6 +135,7 @@ en:
           foreign_country: "You have to be a member of a town in {{categoryName}} to create a topic here."
           foreign_town: "You have to be a member of {{categoryName}} to create a topic here."
           foreign_neighbourhood: "You have to be a member of {{categoryName}} to create a topic here."
+
       select:
         placeholder: "Select a place"
 

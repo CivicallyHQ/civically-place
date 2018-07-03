@@ -29,7 +29,7 @@ export default Ember.Component.extend({
   instructions(type) {
     return `place.${type}.instructions`;
   },
-  
+
   actions: {
     setPlace(selectedId) {
       if (this.get('setDisabled')) return;
