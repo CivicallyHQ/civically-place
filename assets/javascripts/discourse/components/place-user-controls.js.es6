@@ -133,7 +133,7 @@ export default Ember.Component.extend({
       const rawHome = I18n.t('place.home.current', {
         homeName: home.name,
         homeUrl: home.topic_url
-      })
+      });
 
       cookAsync(rawHome).then((cooked) => {
         this.set('homeTitle', cooked);
@@ -157,7 +157,7 @@ export default Ember.Component.extend({
     let placeTypes = [
       'country',
       'town'
-    ]
+    ];
 
     if (neighbourhood) placeTypes.push('neighbourhood');
 
@@ -173,7 +173,7 @@ export default Ember.Component.extend({
       return {
         id: type,
         name: I18n.t(`place.home.${type}`, params)
-      }
+      };
     });
   },
 

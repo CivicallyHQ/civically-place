@@ -332,6 +332,26 @@ ul.user-nav > span {
   }
 }
 
+.place-image {
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+
+  img {
+    max-width: 30px;
+    margin-right: 6px;
+  }
+}
+
+.place-name {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.civically-place .app-widget-title {
+  margin: 0;
+}
+
 .civically-place .dropdown-menu {
   top: -180px;
   left: 165px;

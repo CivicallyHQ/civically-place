@@ -31,18 +31,9 @@ if (requirejs.entries[navigationUtilitiesPath] && requirejs.entries[appWidgetPat
       const listType = this.state.currentListType;
       let contents = [];
 
-      let image;
-
-      if (category.place_type === 'country') {
-        image = h('img', { attributes: { src: category.location.flag }});
-      } else {
-        let emoji = category.place_type === 'town' ? 'cityscape' : 'house_with_garden';
-        image = this.attach('emoji', { name: emoji });
-      }
-
       contents.push(
         h('div.app-widget-header', [
-          h('span', image),
+          this.attach('place-image', { category }),
           h('span.app-widget-title', category.place_name)
         ]),
         h('div.widget-multi-title', [

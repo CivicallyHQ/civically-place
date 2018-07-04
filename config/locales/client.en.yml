@@ -20,6 +20,7 @@ en:
       is_place: "Is a place"
 
       country:
+        label: 'Country'
         current: "{{townName}} is in [{{countryName}}]({{countryLink}})."
 
       town:
@@ -77,6 +78,7 @@ en:
           start_btn: "Start a Petition"
 
       international:
+        label: "International"
         current: "{{countryName}} is part of [{{internationalName}}]({{internationalLink}})."
         eu:
           title: "European Union"
