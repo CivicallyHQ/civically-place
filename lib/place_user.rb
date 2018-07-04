@@ -148,12 +148,12 @@ class ::User
 
       return can_change if can_change[:error]
 
-      CivicallyPlace::PlaceManager.update_user_count(current_id, -1)
+      CivicallyPlace::PlaceManager.update_user_count(current_id, modifier: -1)
     else
       is_first = true
     end
 
-    CivicallyPlace::PlaceManager.update_user_count(category_id, 1)
+    CivicallyPlace::PlaceManager.update_user_count(category_id, modifier: 1)
 
     UserHistory.create(
       action: UserHistory.actions["join_#{type}".to_sym],

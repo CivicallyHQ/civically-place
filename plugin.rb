@@ -161,7 +161,7 @@ DiscourseEvent.on(:custom_wizard_ready) do
         if result.errors.any?
           updater.errors.add(:neighbourhood_petition, result.errors.full_messages.join("\n"))
         else
-          CivicallyChecklist::Checklist.add_item(user, {
+          CivicallyChecklist::Checklist.add_item(user,
             id: "pass_petition",
             checked: false,
             checkable: false,
@@ -172,7 +172,7 @@ DiscourseEvent.on(:custom_wizard_ready) do
             detail: I18n.t('checklist.place_setup.pass_petition.detail',
               petition_url: result.post.url
             )
-          })
+          )
 
           user.custom_fields['neighbourhood_petition_id'] = result.post.topic_id
           user.save_custom_fields(true)
@@ -218,6 +218,7 @@ after_initialize do
   load File.expand_path('../controllers/place.rb', __FILE__)
   load File.expand_path('../controllers/place_user.rb', __FILE__)
   load File.expand_path('../controllers/place_manage.rb', __FILE__)
+  load File.expand_path('../jobs/update_place_stats.rb', __FILE__)
   load File.expand_path('../jobs/notify_moderators_of_place_creation_errors.rb', __FILE__)
   load File.expand_path('../lib/place_manager.rb', __FILE__)
   load File.expand_path('../lib/place_badges.rb', __FILE__)
@@ -272,6 +273,16 @@ after_initialize do
 
   add_to_serializer(:current_user, :added_place_id) { object.added_place_id }
   add_to_serializer(:current_user, :include_added_place_id?) { object.added_place_id.present? }
+
+  self.add_model_callback(User, :before_destroy, prepend: true) do
+    if town_category_id = self.town_category_id
+      CivicallyPlace::PlaceManager.update_user_count(town_category_id, modifier: -1)
+    end
+
+    if neighbourhood_category_id = self.neighbourhood_category_id
+      CivicallyPlace::PlaceManager.update_user_count(neighbourhood_category_id, modifier: -1)
+    end
+  end
 
   DiscourseEvent.trigger(:place_ready)
 end

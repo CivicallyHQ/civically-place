@@ -124,8 +124,11 @@ class CivicallyPlace::Place < Category
   end
 
   def self.type(category_id)
-    category = Category.find_by(category_id)
-    category ? category.place_type : nil
+    if place = CivicallyPlace::Place.find_by(id: category_id)
+      place.place_type
+    else
+      nil
+    end
   end
 
   def self.joined_at(user_id, type)
@@ -153,6 +156,15 @@ class CivicallyPlace::Place < Category
       'neighbourhood'
     else
       nil
+    end
+  end
+
+  def self.all_places
+    Category.where("id in (
+      SELECT category_id FROM category_custom_fields
+      WHERE name = 'is_place' AND value::boolean IS TRUE
+    )").map do |c|
+      CivicallyPlace::Place.new(c.attributes.except("topic_slug"))
     end
   end
 end

@@ -2,7 +2,7 @@ DiscourseEvent.on(:vote_added) do |user, topic|
   if topic.petition_id === 'place'
     user.custom_fields['neighbourhood_petition_id'] = topic.id
 
-    CivicallyChecklist::Checklist.add_item(user, {
+    CivicallyChecklist::Checklist.add_item(user,
       id: "pass_petition",
       checked: false,
       checkable: false,
@@ -13,7 +13,7 @@ DiscourseEvent.on(:vote_added) do |user, topic|
       detail: I18n.t('checklist.place_setup.pass_petition.detail',
         petition_url: topic.url
       )
-    })
+    )
   end
 end
 
@@ -75,9 +75,14 @@ class CivicallyPlace::PlaceManager
     result
   end
 
-  def self.update_user_count(category_id, count)
+  def self.update_user_count(category_id, args)
     place = CivicallyPlace::Place.find(category_id)
-    user_count = (place.user_count || 0) + count
+
+    if args[:user_count]
+      user_count = args[:user_count]
+    elsif args[:modifier]
+      user_count = (place.user_count || 0) + args[:modifier]
+    end
 
     place.custom_fields['user_count'] = user_count
     place.save_custom_fields(true)
