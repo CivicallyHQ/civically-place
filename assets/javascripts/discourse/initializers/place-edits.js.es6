@@ -1,7 +1,6 @@
 import DiscoveryController from 'discourse/controllers/discovery';
 import TopicController from 'discourse/controllers/topic';
 import PlaceMixin from '../mixins/place';
-import DiscourseURL from 'discourse/lib/url';
 import { placeUrl } from '../lib/place-utilities';
 import { observes, on } from 'ember-addons/ember-computed-decorators';
 import { withPluginApi } from 'discourse/lib/plugin-api';
@@ -20,19 +19,6 @@ export default {
         @observes('canCreateTopicOnCategory')
         resetCanCreateTOpicOnCategory() {
           this.set('canCreateTopicOnCategory', false);
-        }
-      });
-
-      api.modifyClass('route:discovery', {
-        redirect() {
-          const user = Discourse.User.current();
-
-          if (user && user.admin) return;
-
-          const path = window.location.pathname;
-          if (path === "/" || path === "/categories") {
-            DiscourseURL.routeTo(placeUrl(user));
-          }
         }
       });
 
