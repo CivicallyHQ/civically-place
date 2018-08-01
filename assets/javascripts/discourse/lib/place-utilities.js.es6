@@ -9,7 +9,7 @@ let placeLabel = function(id, opts = {}) {
   let label = category.name;
 
   const parent = Category.findById(category.parent_category_id);
-  if (parent) {
+  if (parent && !opts.noParents) {
     label += `, ${parent.name}`;
   }
 
@@ -18,6 +18,14 @@ let placeLabel = function(id, opts = {}) {
   }
 
   return label;
+};
+
+let countryLabel = function(id) {
+  const category = Category.findById(id);
+  if (!category) return;
+  const parent = Category.findById(category.parent_category_id);
+  if (!parent) return;
+  return parent.name;
 };
 
 let placeTime = function(time) {
@@ -108,4 +116,13 @@ let resolvePlaceSet = function(result) {
   return true;
 };
 
-export { placeUrl, placeLabel, placeTime, formatNum, categoryLabel, setPlace, resolvePlaceSet };
+export {
+  placeUrl,
+  placeLabel,
+  countryLabel,
+  placeTime,
+  formatNum,
+  categoryLabel,
+  setPlace,
+  resolvePlaceSet
+};
