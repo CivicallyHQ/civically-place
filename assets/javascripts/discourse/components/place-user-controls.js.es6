@@ -101,7 +101,11 @@ export default Ember.Component.extend({
 
   @computed('canSetTown', 'showAddTown')
   showAddTownBtn(canSetTown, showAddTown) {
-    return !this.site.mobileView && canSetTown && !showAddTown;
+    return !this.site.mobileView &&
+           canSetTown &&
+           !showAddTown &&
+           (this.get('currentUser.admin') ||
+           !Discourse.SiteSettings.invite_only);
   },
 
   @computed('currentUser.town')
@@ -187,7 +191,7 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    toggleShowAddTown(filter) {
+    toggleShowAddTown() {
       this.set('showAddTown', true);
 
       Ember.run.scheduleOnce('afterRender', () => {

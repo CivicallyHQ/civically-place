@@ -22,7 +22,7 @@ export default Ember.Component.extend({
         placeName: town.name,
         userCount: town.user_count,
         userCountMin: town.user_count_min
-      })
+      });
     }
   }
-})
+});

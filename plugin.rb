@@ -185,6 +185,8 @@ DiscourseEvent.on(:custom_wizard_ready) do
 end
 
 after_initialize do
+  ::TopicQuery.public_valid_options.push(:no_definitions, :subtype)
+
   require_dependency "application_controller"
   module ::CivicallyPlace
     class Engine < ::Rails::Engine

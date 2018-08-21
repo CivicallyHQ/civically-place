@@ -25,7 +25,16 @@ let countryLabel = function(id) {
   if (!category) return;
   const parent = Category.findById(category.parent_category_id);
   if (!parent) return;
-  return parent.name;
+
+  let label = '';
+
+  if (parent.location && parent.location.flag) {
+    label += `<span class="place-image"><img src=${parent.location.flag}/></span>`;
+  }
+
+  label += `<span>${parent.name}</span>`;
+
+  return label;
 };
 
 let placeTime = function(time) {
@@ -41,7 +50,7 @@ let formatNum = function(num) {
 };
 
 let placeUrl = function(user) {
-  if (!user) return "/start";
+  if (!user) return "/start#banner";
 
   if (user.town_category_id) {
     const home = user.place_home;
