@@ -19,7 +19,6 @@ export default {
             JSON.parse(placeLocation);
             attrs.category.custom_fields.location = placeLocation;
             component.set('jsonError', null);
-            console.log(attrs.category.custom_fields);
           } catch (e) {
             component.set('jsonError', e);
           }
@@ -27,4 +26,4 @@ export default {
       });
     }
   }
-}
+};
