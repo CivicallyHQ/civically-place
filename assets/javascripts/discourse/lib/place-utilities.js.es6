@@ -29,7 +29,7 @@ let countryLabel = function(id) {
   let label = '';
 
   if (parent.location && parent.location.flag) {
-    label += `<span class="place-image"><img src=${parent.location.flag}/></span>`;
+    label += `<span class="place-image"><img src=${parent.location.flag}></span>`;
   }
 
   label += `<span>${parent.name}</span>`;
