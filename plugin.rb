@@ -276,6 +276,13 @@ after_initialize do
   add_to_serializer(:current_user, :added_place_id) { object.added_place_id }
   add_to_serializer(:current_user, :include_added_place_id?) { object.added_place_id.present? }
 
+  if defined? register_editable_user_custom_field
+    register_editable_user_custom_field :town_category_id
+    register_editable_user_custom_field :neighbourhood_category_id
+    register_editable_user_custom_field :neighbourhood_petition_id
+    register_editable_user_custom_field place_points: {}
+  end
+
   self.add_model_callback(User, :before_destroy, prepend: true) do
     if town_category_id = self.town_category_id
       CivicallyPlace::PlaceManager.update_user_count(town_category_id, modifier: -1)
