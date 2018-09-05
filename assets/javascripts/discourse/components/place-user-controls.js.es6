@@ -103,9 +103,7 @@ export default Ember.Component.extend({
   showAddTownBtn(canSetTown, showAddTown) {
     return !this.site.mobileView &&
            canSetTown &&
-           !showAddTown &&
-           (this.get('currentUser.admin') ||
-           !Discourse.SiteSettings.invite_only);
+           !showAddTown;
   },
 
   @computed('currentUser.town')
