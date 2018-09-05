@@ -101,9 +101,7 @@ export default Ember.Component.extend({
 
   @computed('canSetTown', 'showAddTown')
   showAddTownBtn(canSetTown, showAddTown) {
-    return !this.site.mobileView &&
-           canSetTown &&
-           !showAddTown;
+    return canSetTown && !showAddTown;
   },
 
   @computed('currentUser.town')

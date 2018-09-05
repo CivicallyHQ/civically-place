@@ -1,5 +1,4 @@
 .place-user-controls {
-  padding: 20px 0;
 
   &.show-petition .place-set {
     padding-bottom: 20px;
@@ -49,5 +48,28 @@
     .similar-titles {
       width: calc(100% - 2px);
     }
+  }
+
+  div.town-add.container {
+    padding-bottom: 70px;
+
+    .location-selector-container {
+      width: 70%;
+      max-width: 400px;
+    }
+  }
+}
+
+.place.set {
+  .people-image {
+    height: initial;
+    max-width: 20%;
+    max-height: 90px;
+  }
+}
+
+.town-set {
+  .controls {
+    margin-bottom: 5px;
   }
 }

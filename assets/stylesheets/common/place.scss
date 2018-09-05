@@ -365,3 +365,13 @@ ul.user-nav > span {
     margin: 3px 0;
   }
 }
+
+.place.set {
+  position: relative;
+
+  .people-image {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+  }
+}
