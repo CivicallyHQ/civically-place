@@ -1,0 +1,15 @@
+{{#unless topic.isPrivateMessage}}
+  {{topic-place-label topic}}
+{{/unless}}
+<div class="topic-header-extra">
+  {{#if siteSettings.tagging_enabled}}
+    <div class="list-tags">
+      {{discourse-tags topic mode="list"}}
+    </div>
+  {{/if}}
+  {{#if siteSettings.topic_featured_link_enabled}}
+    {{topic-featured-link topic}}
+  {{/if}}
+</div>
+
+{{plugin-outlet name="topic-category" args=(hash topic=topic category=topic.category)}}

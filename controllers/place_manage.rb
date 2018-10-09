@@ -3,10 +3,11 @@ class CivicallyPlace::PlaceManageController < ::ApplicationController
 
   def add
     params.require(:geo_location)
+    opts = params.permit(geo_location: {}).to_h
 
     user = current_user
 
-    result = CivicallyPlace::PlaceManager.create(params[:geo_location], user)
+    result = CivicallyPlace::PlaceManager.create(opts[:geo_location], user)
 
     if result[:category_id]
       user_result = User.update_town_category_id(user, result[:category_id])

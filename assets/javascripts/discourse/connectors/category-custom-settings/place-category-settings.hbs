@@ -18,6 +18,15 @@
     </label>
   </section>
 
+  <section class="field">
+    {{i18n 'place.region.memberships'}}
+    <label>
+      {{multi-select allowAny=false
+                     content=regions
+                     values=regionMemberships}}
+    </label>
+  </section>
+
   {{#if currentUser.admin}}
     <section class="field">
       {{i18n 'place.location.label'}}

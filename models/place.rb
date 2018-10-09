@@ -88,6 +88,26 @@ class CivicallyPlace::Place < Category
     place_type === 'neighbourhood'
   end
 
+  def region_ids
+    [*self.custom_fields['region_id']]
+  end
+
+  def regions
+    self.region_ids.map do |region_id|
+      CivicallyPlace::Region.find(region_id)
+    end
+  end
+
+  def region_membership_ids
+    [*self.custom_fields['region_membership_id']]
+  end
+
+  def region_memberships
+    self.region_membership_ids.map do |region_id|
+      CivicallyPlace::Region.find(region_id)
+    end
+  end
+
   def child_categories
     @child_categories ||= Category.where(parent_category_id: id)
   end
@@ -166,5 +186,10 @@ class CivicallyPlace::Place < Category
     )").map do |c|
       CivicallyPlace::Place.new(c.attributes.except("topic_slug"))
     end
+  end
+
+  def self.higher_place(first_place, second_place)
+    place_types = ['international', 'country', 'town', 'neighbourhood']
+    place_types.find_index(first_place.place_type) < place_types.find_index(second_place.place_type)
   end
 end

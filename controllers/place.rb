@@ -84,4 +84,12 @@ class CivicallyPlace::PlaceController < ::ApplicationController
 
     render_serialized(topics, DiscourseRatings::RatingListSerializer)
   end
+
+  def regions
+    params.require(:category_id)
+
+    place = CivicallyPlace::Place.find(params[:category_id])
+
+    render_serialized(place.regions, CivicallyPlace::RegionSerializer)
+  end
 end

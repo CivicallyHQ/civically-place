@@ -1,0 +1,27 @@
+<div class="regions-controls">
+  <h2>{{i18n 'place.region.label' placeName=placeLabel}}</h2>
+
+  {{category-chooser
+    none="category.none"
+    value=categoryId
+    categories=places}}
+
+  {{d-button label='place.region.add' action="openAddRegion"}}
+</div>
+
+<div class="regions-list">
+  {{conditional-loading-spinner condition=loading}}
+
+  {{#if showRegions}}
+    <ul>
+      {{#each regions as |region|}}
+        <li data-id={{region.id}}>
+          {{region.name}}
+          <a {{action 'removeRegion' region.id}}>
+            {{d-icon 'times'}}
+          </a>
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+</div>

@@ -61,6 +61,8 @@ class CivicallyPlace::Locations
   def self.filter_opencagedata(location, options)
     components = location['components']
 
+    return true if options[:place_type] === 'region'
+
     return false unless SiteSetting.send("place_#{options[:place_type]}_types").split('|').include?(components['_type'])
 
     if options[:place_type] === 'town'

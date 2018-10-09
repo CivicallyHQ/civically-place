@@ -26,6 +26,10 @@ export default Ember.Controller.extend({
     startPetition() {
       this.set('loading', true);
       window.location.href = '/w/neighbourhood-petition';
+    },
+
+    searching(state) {
+      this.set('searching', state);
     }
   }
 })

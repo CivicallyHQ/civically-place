@@ -375,3 +375,48 @@ ul.user-nav > span {
     bottom: 20px;
   }
 }
+
+.topic-meta .topic-category .badge-wrapper {
+  display: none;
+}
+
+.topic-place-label {
+  display: flex;
+  align-items: center;
+
+  .topic-place-link, .regions-label {
+    margin-right: 10px;
+  }
+
+  .regions-label {
+    display: flex;
+    align-items: center;
+  }
+
+  i {
+    font-size: 11px;
+    margin-right: 3px;
+  }
+}
+
+.add-region.modal-body {
+  overflow: visible;
+}
+
+.regions-controls {
+  background-color: $secondary;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.regions-list {
+  background-color: $secondary;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 15px;
+
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+}

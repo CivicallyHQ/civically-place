@@ -58,7 +58,7 @@ class CivicallyPlace::PlaceManager
           'color': '#FFA500',
           'routeTo': petition.relative_url
         }
-      }.to_json
+      }
 
       petition.save_custom_fields(true)
 
@@ -197,7 +197,7 @@ class CivicallyPlace::PlaceManager
           'color': '#08c',
           'routeTo': topic.relative_url
         }
-      }.to_json
+      }
     end
 
     category.save!
@@ -272,7 +272,7 @@ class CivicallyPlace::PlaceManager
       'flag': "/plugins/civically-place/images/flags/#{countrycode}_32.png",
       'route_to': "/c/#{countrycode}",
       'geo_location': country_geo_location
-    }.to_json
+    }
 
     custom_fields = {
       'is_place': true,
@@ -339,6 +339,17 @@ class CivicallyPlace::PlaceManager
         BadgeGranter.grant(Badge.find(Badge::Supporter), user)
       else
         BadgeGranter.grant(Badge.find(Badge::Local), user)
+      end
+    end
+
+    if location = category.custom_fields["location"]
+      if osm_id = location["geo_location"]["osm_id"]
+        if region = CivicallyPlace::Region.find(osm_id)
+          Jobs.enqueue(:notify_moderators_of_region_neighbourhood_conflict,
+            category_id: category.id,
+            region_id: region[:id]
+          )
+        end
       end
     end
 

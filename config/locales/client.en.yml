@@ -23,6 +23,15 @@ en:
         label: 'Country'
         current: "{{townName}} is in [{{countryName}}]({{countryLink}})."
 
+      region:
+        label: "Regions of {{placeName}}"
+        add: "Add Region"
+        add_place: "Add Region to {{placeName}}"
+        name: "Region Name"
+        location: "Region Location"
+        multiple: "multiple"
+        memberships: "Member of regions"
+
       town:
         label: "Town"
         title: "Where do you live?"

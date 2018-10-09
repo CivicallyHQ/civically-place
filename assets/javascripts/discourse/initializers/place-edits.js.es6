@@ -2,7 +2,7 @@ import DiscoveryController from 'discourse/controllers/discovery';
 import TopicController from 'discourse/controllers/topic';
 import PlaceMixin from '../mixins/place';
 import { placeUrl } from '../lib/place-utilities';
-import { observes, on } from 'ember-addons/ember-computed-decorators';
+import { observes, on, default as computed } from 'ember-addons/ember-computed-decorators';
 import { withPluginApi } from 'discourse/lib/plugin-api';
 
 export default {
@@ -104,6 +104,20 @@ export default {
               ? this.inOptionsForUsers.concat(this.inOptionsForAll)
               : this.inOptionsForAll
           });
+        }
+      });
+
+      api.modifyClass('model:topic', {
+        @computed('region_ids')
+        regions(regionIds) {
+          if (regionIds && regionIds.length) {
+            const categoryRegions = this.get('category.regions') || [];
+            const parentCategoryRegions = this.get('category.parentCategory.regions') || [];
+            let allRegions = categoryRegions.concat(parentCategoryRegions);
+            return allRegions.filter(r => regionIds.indexOf(r.id) > -1);
+          } else {
+            return [];
+          }
         }
       });
     });

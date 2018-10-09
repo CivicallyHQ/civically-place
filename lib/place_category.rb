@@ -90,7 +90,8 @@ SERIALIZED_PLACE_ATTRIBUTES = [
   :can_join,
   :user_count,
   :user_count_min,
-  :category_tags
+  :category_tags,
+  :regions
 ]
 
 module CategorySerializerPlaceExtension
@@ -118,4 +119,23 @@ end
 
 class ::Guardian
   prepend PlaceCategoryGuardianExtension
+end
+
+module PlaceCategoriesControllerExtension
+  def category_params
+    if @category.is_place
+      result = super
+      params[:custom_fields][:location].permit!
+      result[:custom_fields][:location] = params[:custom_fields][:location]
+      result[:custom_fields][:region_id] = params[:custom_fields][:region_id]
+      result
+    else
+      super
+    end
+  end
+end
+
+require_dependency 'categories_controller'
+class ::CategoriesController
+  prepend PlaceCategoriesControllerExtension
 end

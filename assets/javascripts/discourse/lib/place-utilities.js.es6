@@ -20,6 +20,89 @@ let placeLabel = function(id, opts = {}) {
   return label;
 };
 
+let topicPlaceLink = function(category) {
+  let icon;
+
+  switch(category.place_type) {
+    case 'country':
+      icon = 'globe';
+      break;
+    case 'town':
+      icon = 'building';
+      break;
+    case 'neighbourhood':
+      icon = 'home';
+      break;
+  }
+
+  return `<i class="fa fa-${icon}"></i><a href=${category.get('url')} class="topic-place-link p-link">${category.get('name')}</a>`;
+}
+
+let regionLabel = function(name) {
+  return `<span class="region-label">${name}</span>`;
+}
+
+let regionsLabel = function(regions) {
+  let contents = '<i class="fa fa-map"></i>';
+  if (regions.length > 1) {
+    regions.forEach((r, i) => {
+      contents += regionLabel(r.name);
+      if (i < (regions.length - 1)) {
+        contents += ', ';
+      }
+    });
+  } else {
+    contents += regionLabel(regions[0].name);
+  }
+  return `<span class="regions-label">${contents}</span>`;
+}
+
+let topicPlaceLabel = function(topic) {
+  const category = topic.get('category');
+  const parent = category.get('parentCategory');
+  const grandparent = category.get('parentCategory.parentCategory');
+  const regions = topic.get('regions');
+  let grandparentRegions = [];
+  let parentRegions = [];
+  let categoryRegions = [];
+
+  if (regions.length) {
+    if (grandparent) grandparentRegions = regions.filter(r => r.category_id === grandparent.id);
+    if (parent) parentRegions = regions.filter(r => r.category_id === parent.id);
+    categoryRegions = regions.filter(r => r.category_id === category.id);
+  }
+
+  let label = '';
+
+  /*
+  if (grandparent) {
+    label += topicPlaceLink(grandparent);
+  }
+
+  if (regions.length && grandparentRegions.length) {
+    label += `${regionsLabel(grandparentRegions)}`;
+  }
+
+  if (parent) {
+    label += topicPlaceLink(parent);
+  }
+  */
+
+  if (regions.length) {
+    if (categoryRegions.length) {
+      label = regionsLabel(categoryRegions);
+    } else if (parentRegions.length) {
+      label = regionsLabel(parentRegions);
+    } else if (grandparentRegions.length) {
+      label = regionsLabel(grandparentRegions);
+    }
+  } else {
+    label = topicPlaceLink(category);
+  }
+
+  return `<div class="topic-place-label">${label}</div>`;
+}
+
 let countryLabel = function(id) {
   const category = Category.findById(id);
   if (!category) return;
@@ -125,6 +208,24 @@ let resolvePlaceSet = function(result) {
   return true;
 };
 
+const getRegions = function(category) {
+  let regions = [];
+
+  if (category.regions) {
+    regions.push(...category.regions);
+  }
+
+  if (category.place_type === 'town' || category.place_type === 'neighbourhood') {
+    regions.push(...category.get('parentCategory.regions'));
+  }
+
+  if (category.place_type === 'neighbourhood') {
+    regions.push(...category.get('parentCategory.parentCategory.regions'));
+  }
+
+  return regions;
+};
+
 export {
   placeUrl,
   placeLabel,
@@ -132,6 +233,8 @@ export {
   placeTime,
   formatNum,
   categoryLabel,
+  topicPlaceLabel,
   setPlace,
-  resolvePlaceSet
+  resolvePlaceSet,
+  getRegions
 };

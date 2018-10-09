@@ -56,6 +56,7 @@ DiscourseEvent.on(:locations_ready) do
   Locations::Geocode.add_filter do |locations, options|
     options[:place_type] = 'town' if options[:context] === 'place_add'
     options[:place_type] = 'neighbourhood' if options[:context] === 'neighbourhood_petition'
+    options[:place_type] = 'region' if options[:context] === 'region_add'
 
     if options[:place_type]
       locations = CivicallyPlace::Locations.filter(locations, options)
@@ -207,6 +208,10 @@ after_initialize do
     put "add" => "place_manage#add"
     put "user/set" => "place_user#set"
     put "user/set-home" => "place_user#set_home"
+    get "regions" => "place#index"
+    get "regions/:category_id" => "place#regions"
+    put "regions/:category_id" => 'place_admin#add_region'
+    delete "regions/:category_id" => 'place_admin#remove_region'
   end
 
   Discourse::Application.routes.append do
@@ -220,13 +225,18 @@ after_initialize do
   load File.expand_path('../controllers/place.rb', __FILE__)
   load File.expand_path('../controllers/place_user.rb', __FILE__)
   load File.expand_path('../controllers/place_manage.rb', __FILE__)
+  load File.expand_path('../controllers/place_admin.rb', __FILE__)
+  load File.expand_path('../serializers/place_region.rb', __FILE__)
   load File.expand_path('../jobs/update_place_stats.rb', __FILE__)
   load File.expand_path('../jobs/notify_moderators_of_place_creation_errors.rb', __FILE__)
+  load File.expand_path('../jobs/notify_moderators_of_region_neighbourhood_conflict.rb', __FILE__)
   load File.expand_path('../lib/place_manager.rb', __FILE__)
   load File.expand_path('../lib/place_badges.rb', __FILE__)
   load File.expand_path('../lib/place_user.rb', __FILE__)
   load File.expand_path('../lib/place_category.rb', __FILE__)
   load File.expand_path('../lib/place_locations.rb', __FILE__)
+  load File.expand_path('../lib/place_region.rb', __FILE__)
+  load File.expand_path('../lib/place_topics.rb', __FILE__)
 
   add_to_serializer(:basic_category, :topic_id) { object.topic_id }
   add_to_serializer(:basic_category, :is_place) { object.is_place }
@@ -282,6 +292,9 @@ after_initialize do
     register_editable_user_custom_field :neighbourhood_petition_id
     register_editable_user_custom_field place_points: {}
   end
+
+  add_to_serializer(:topic_view, :region_ids) { object.topic.region_ids }
+  add_to_serializer(:topic_list_item, :region_ids) { object.region_ids }
 
   self.add_model_callback(User, :before_destroy, prepend: true) do
     if town_category_id = self.town_category_id

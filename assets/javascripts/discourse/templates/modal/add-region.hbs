@@ -1,0 +1,24 @@
+{{#d-modal-body rawTitle=(i18n "place.region.add_place" placeName=model.placeLabel) class='add-region'}}
+  {{input value=regionName placeholder=(i18n 'place.region.name')}}
+  <div class="location-selector-container">
+    <div class="controls">
+      {{location-selector
+          location=regionLocation
+          class="input-xxlarge location-selector"
+          searchError='locationSearchError'
+          context=addContext
+          geoAttrs=geoAttrs
+          showType=true
+          locationSearchError='locationSearchError'
+          placeholder=(i18n 'place.region.location')}}
+      {{#if locationSearchError}}
+        {{locationSearchError}}
+      {{/if}}
+    </div>
+  </div>
+{{/d-modal-body}}
+
+<div class="modal-footer">
+  {{d-button action="addRegion" class="btn-primary" icon='plus' disabled=addRegionDisabled label='place.region.add'}}
+  {{conditional-loading-spinner size="small" condition=loading}}
+</div>

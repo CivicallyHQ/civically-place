@@ -17,7 +17,7 @@ module Jobs
     def site_moderators
       User.where(moderator: true)
         .human_users
-        .select { |u| u.custom_fields['moderator_category_id'].blank? }
+        .select { |u| u.admin || u.custom_fields['moderator_category_id'].blank? }
     end
   end
 end

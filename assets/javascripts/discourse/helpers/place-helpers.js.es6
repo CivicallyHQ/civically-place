@@ -1,8 +1,12 @@
 import { registerUnbound } from 'discourse-common/lib/helpers';
-import { placeLabel, placeTime, formatNum, countryLabel } from '../lib/place-utilities';
+import { placeLabel, placeTime, formatNum, countryLabel, topicPlaceLabel } from '../lib/place-utilities';
 
 registerUnbound('country-label', function(categoryId, opts) {
   return new Handlebars.SafeString(countryLabel(categoryId, opts));
+});
+
+registerUnbound('topic-place-label', function(topic) {
+  return new Handlebars.SafeString(topicPlaceLabel(topic));
 });
 
 registerUnbound('place-label', function(categoryId, opts) {

@@ -128,6 +128,13 @@ en:
 
         [%{place}](%{path})
 
+    region_neighbourhood_conflict:
+      title: "There is a region neighbourhood conflict"
+      subject_template: "There is a region neighbourhood conflict"
+      text_body_template: >
+        The new neighbourhood [%{neighbourhood}](${neighbourhood_path})
+        conflicts with the region "%{region}" in [%{region_place}](${region_place_path}).
+
     place_reached_user_count_min:
       title: "%{place} reached its minimum user count"
       subject_template: "%{place} reached its minimum user count"
