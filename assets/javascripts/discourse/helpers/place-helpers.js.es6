@@ -5,8 +5,9 @@ registerUnbound('country-label', function(categoryId, opts) {
   return new Handlebars.SafeString(countryLabel(categoryId, opts));
 });
 
-registerUnbound('topic-place-label', function(topic) {
-  return new Handlebars.SafeString(topicPlaceLabel(topic));
+registerUnbound('topic-place-label', function(category, opts) {
+  let topic = opts && opts.topic ? opts.topic : null;
+  return new Handlebars.SafeString(topicPlaceLabel(category, topic));
 });
 
 registerUnbound('place-label', function(categoryId, opts) {

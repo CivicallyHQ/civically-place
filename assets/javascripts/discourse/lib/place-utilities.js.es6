@@ -57,46 +57,35 @@ let regionsLabel = function(regions) {
   return `<span class="regions-label">${contents}</span>`;
 }
 
-let topicPlaceLabel = function(topic) {
-  const category = topic.get('category');
+let topicPlaceLabel = function(category, topic) {
   const parent = category.get('parentCategory');
   const grandparent = category.get('parentCategory.parentCategory');
-  const regions = topic.get('regions');
-  let grandparentRegions = [];
-  let parentRegions = [];
-  let categoryRegions = [];
-
-  if (regions.length) {
-    if (grandparent) grandparentRegions = regions.filter(r => r.category_id === grandparent.id);
-    if (parent) parentRegions = regions.filter(r => r.category_id === parent.id);
-    categoryRegions = regions.filter(r => r.category_id === category.id);
-  }
-
+  let regions = [];
   let label = '';
 
-  /*
-  if (grandparent) {
-    label += topicPlaceLink(grandparent);
-  }
+  if (topic) {
+    regions = topic.get('regions');
 
-  if (regions.length && grandparentRegions.length) {
-    label += `${regionsLabel(grandparentRegions)}`;
-  }
+    let grandparentRegions = [];
+    let parentRegions = [];
+    let categoryRegions = [];
 
-  if (parent) {
-    label += topicPlaceLink(parent);
-  }
-  */
+    if (regions.length) {
+      if (grandparent) grandparentRegions = regions.filter(r => r.category_id === grandparent.id);
+      if (parent) parentRegions = regions.filter(r => r.category_id === parent.id);
+      categoryRegions = regions.filter(r => r.category_id === category.id);
 
-  if (regions.length) {
-    if (categoryRegions.length) {
-      label = regionsLabel(categoryRegions);
-    } else if (parentRegions.length) {
-      label = regionsLabel(parentRegions);
-    } else if (grandparentRegions.length) {
-      label = regionsLabel(grandparentRegions);
+      if (categoryRegions.length) {
+        label = regionsLabel(categoryRegions);
+      } else if (parentRegions.length) {
+        label = regionsLabel(parentRegions);
+      } else if (grandparentRegions.length) {
+        label = regionsLabel(grandparentRegions);
+      }
     }
-  } else {
+  }
+
+  if (!regions.length) {
     label = topicPlaceLink(category);
   }
 

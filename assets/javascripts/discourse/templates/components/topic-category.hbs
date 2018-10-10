@@ -1,5 +1,5 @@
 {{#unless topic.isPrivateMessage}}
-  {{topic-place-label topic}}
+  {{topic-place-label topic.category topic=topic}}
 {{/unless}}
 <div class="topic-header-extra">
   {{#if siteSettings.tagging_enabled}}
