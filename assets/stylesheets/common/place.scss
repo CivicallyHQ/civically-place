@@ -395,6 +395,11 @@ ul.user-nav > span {
   }
 }
 
+.topic-place-label + .topic-header-extra {
+  line-height: 18px;
+  margin-left: 10px;
+}
+
 .add-region.modal-body {
   overflow: visible;
 }
