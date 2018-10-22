@@ -24,7 +24,7 @@ plugins:
       - hamlet
   place_neighbourhood_types:
     type: 'list'
-    default: 'town|village|suburb|quarter|neighbourhood'
+    default: 'town|village|suburb|quarter|neighbourhood|county'
     choices:
       - town
       - village
@@ -33,3 +33,4 @@ plugins:
       - suburb
       - quarter
       - neighbourhood
+      - county

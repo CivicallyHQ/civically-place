@@ -70,7 +70,7 @@ class CivicallyPlace::Locations
       components['city'].blank? && components['town'].present? && components['village'].blank? ||
       components['city'].blank? && components['town'].blank? && components['village'].present?
     elsif options[:place_type] === 'neighbourhood'
-      components['_type'] === 'neighbourhood' ||
+      (components['_type'] === 'neighbourhood' || components['_type'] === 'county') ||
       (components['city'].present? && (components['town'].present? || components['village'].present?))
     else
       false
@@ -150,7 +150,7 @@ class CivicallyPlace::Locations
       formatted[:name] = components[formatted[:type]]
     end
 
-    if type === 'neighbourhood'
+    if type === 'neighbourhood' || type === 'county'
       formatted[:type] = 'neighbourhood'
 
       if components[formatted[:type]]
@@ -158,6 +158,8 @@ class CivicallyPlace::Locations
         formatted[:suburb] = components['suburb'] if components['suburb'].present?
       elsif components['suburb'].present?
         formatted[:name] = components['suburb']
+      elsif components['county'].present?
+        formatted[:name] = components['county']
       end
 
       ## Default is the city used in the request

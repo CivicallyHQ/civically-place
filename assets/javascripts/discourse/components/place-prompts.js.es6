@@ -4,9 +4,9 @@ export default Ember.Component.extend({
   isTown: Ember.computed.equal('category.place_type', 'town'),
   isNeighbourhood: Ember.computed.equal('category.place_type', 'neighbourhood'),
 
-  @computed('currentUser.town.user_count', 'currentUser.town.user_count_min')
-  hasMinUsers(userCount, userCountMin) {
-    return userCount >= userCountMin;
+  @computed('currentUser.town.user_count', 'currentUser.town.user_count_min', 'currentUser.admin')
+  hasMinUsers(userCount, userCountMin, isAdmin) {
+    return isAdmin || (userCount >= userCountMin);
   },
 
   @computed('currentUser.neighbourhood_petition_id', 'currentUser.neighbourhood_category_id')
