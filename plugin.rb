@@ -4,6 +4,7 @@
 # version: 0.1
 # authors: angus
 # url: https://github.com/civicallyhq/civically-place
+# image_url: https://civically.io/plugins/civically-private/images/people_background.png
 
 register_asset "stylesheets/common/place.scss"
 register_asset "stylesheets/mobile/place.scss", :mobile
